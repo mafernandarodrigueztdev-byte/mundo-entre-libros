@@ -1,1 +1,114 @@
-@import url('https://fonts.google.com/specimen/Cormorant+Garamond');
+/* Cormorant Garamond */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+
+/*
+VISION, MISION Y VALORES
+*/
+:root {
+    --fondo-principal-crema: #F1F0E5;
+    --fondo-blanco-calido: #F6EBD9;
+    --texto-principal-cafe-oscuro: #521F12;
+    --boton-principal-acento-fuerte: #4B1D13;
+    --beige-calido-degradado: #f8e1c1;
+    --crema-secundario: #f6ebd9;
+    --cafe-medio: #a0653d;
+    --beige-grisaceo: #D9cdc1;
+}
+
+.about-section {
+    background-color: var(--fondo-principal-crema);
+    padding: 80px 0;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.title-container {
+    background-color: var(--fondo-blanco-calido);
+    border: 4px solid var(--color-verde-acento);
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+}
+
+.about-title {
+    color: var(--texto-principal-cafe-oscuro);
+    font-size: 5rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+/* tarjetas: 365x247 */
+.about-card {
+    background-color: var(--fondo-blanco-calido);
+    padding: 20px 15px;
+    border-radius: 10px;
+    width: 365px;
+    height: 247px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+}
+.about-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* imagenes png */
+.about-image {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.about-card:hover .about-image {
+    transform: scale(1.05);
+}
+
+.about-card h2 {
+    color: var(--texto-principal-cafe-oscuro);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* linea decorativa con punto */
+.line-divider {
+    width: 100px;
+    height: 2px;
+    background-color: var(--cafe-medio);
+    margin: 0 auto 12px auto;
+    position: relative;
+}
+
+.line-divider::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--cafe-medio);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.about-card p {
+    color: var(--boton-principal-acento-fuerte);
+    font-size: 0.8rem;
+    line-height: 1.3rem;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 80px;
+    padding: 0 5px;
+}
+/*
+FINAL VISION,MISION Y VALORES
+*/
