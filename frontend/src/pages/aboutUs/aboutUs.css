@@ -35,15 +35,15 @@ main {
    ========================================== */
 .main-footer {
     background-color: #f8e1c1; /* Color crema base de la captura */
-    padding: 5px 0;
+    padding: 15px 0 10px 0;
     width: 100%;
     margin-top: auto; /* Refuerzo de posicionamiento */
 }
 
-/* Distribución en 3 columnas alineadas verticalmente al centro */
+/* DE VUELTA A TU ORIGINAL: Distribución en 3 columnas alineadas verticalmente al centro */
 .footer-container {
     max-width: 1800px;
-    margin: 0 auto;
+    margin: 3px auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 10px;
@@ -56,7 +56,8 @@ main {
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Alinea logo e imágenes a la izquierda */
-    gap: 0.5px;
+    gap: 3px;
+    margin-left: 20px; /* <--- Ajusta este valor si quieres moverlo más a la derecha en escritorio */
 }
 
 .footer-logo {
@@ -67,33 +68,32 @@ main {
 
 .team-github-icons {
     display: flex;
-    gap: 12px; /* Separación horizontal entre cada imagen */
+    gap: 15px; /* Separación horizontal entre cada imagen */
     margin-top: 5px;
 }
 
-/* CORREGIDO: Estilos para los iconos de fuente de Bootstrap (Reemplaza a .member-img) */
+/* Estilos para los iconos de fuente de Bootstrap */
 .member-icon {
-    font-size: 2.0rem;         /* Controla el tamaño del gatito de forma limpia */
-    color: #4a3319;            /* El color café oscuro idéntico a tu imagen */
+    font-size: 2.0rem;         
+    color: #4a3319;            
     transition: transform 0.2s ease, color 0.2s ease;
     display: inline-block;
 }
 
-/* CORREGIDO: Efecto al pasar el cursor encima de un icono (Reemplaza al hover de la imagen) */
+/* Efecto al pasar el cursor encima de un icono */
 .team-github-icons a:hover .member-icon {
-    transform: translateY(-3px); /* Levanta levemente el icono */
-    color: black;            /* Cambia sutilmente al azul turquesa */
+    transform: translateY(-3px); 
+    color: black;            
 }
 
 /* --- COLUMNA 2: EXPLORA (NAVEGACIÓN) --- */
 .footer-section h3 {
-    color: #4a3319; /* Título color café oscuro */
+    color: #4a3319; 
     font-size: 1.2rem;
     font-weight: 900;
     margin-bottom: 5px;
 }
 
-/* Se oculta la línea decorativa para asemejar el diseño limpio de tu captura */
 .footer-section h3::after {
     display: none; 
 }
@@ -103,7 +103,7 @@ main {
 }
 
 .footer-section ul li {
-    margin-bottom: 0.5px; /* Enlaces juntos como en el menú de la imagen */
+    margin-bottom: 0.5px; 
 }
 
 .footer-section ul li a {
@@ -113,20 +113,27 @@ main {
     transition: color 0.4s ease;
 }
 
-/* Color interactivo al pasar el mouse por los enlaces */
 .footer-section ul li a:hover {
     color: #00adb5;
 }
 
-/* --- COLUMNA 3: COPYRIGHT --- */
-.copyright-section {
-    display: flex;
-    justify-content: flex-start;
+/* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
+.spacer-section {
+    display: block;
 }
 
-.copyright-section p {
+/* --- PARTE INFERIOR: NUEVA SECCIÓN DE COPYRIGHT --- */
+.footer-bottom {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(74, 51, 25, 0.1); /* Línea divisoria muy sutil */
+    width: 100%;
+}
+
+.footer-bottom p {
     color: #4a3319;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin: 0;
 }
 
@@ -140,13 +147,19 @@ main {
         gap: 25px;
     }
 
-    /* Centra todos los contenidos en celulares */
-    .logo-section, .copyright-section {
+    /* Centra todos los contenidos en celulares y remueve el margen izquierdo */
+    .logo-section {
         align-items: center;
         justify-content: center;
+        margin-left: 0;
     }
     
     .team-github-icons {
         justify-content: center;
+    }
+
+    /* Oculta la columna espaciadora en celulares para evitar saltos raros */
+    .spacer-section {
+        display: none;
     }
 }
