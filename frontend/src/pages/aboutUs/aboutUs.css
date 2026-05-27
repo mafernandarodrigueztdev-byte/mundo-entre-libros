@@ -44,6 +44,70 @@ main {
 }
 
 /* ==========================================================================
+   HEADER - NOSOTROS
+   ========================================================================== */
+
+.header {
+    width: 100%;
+    background-color: var(--fondo-principal-crema);
+}
+
+.header-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.header-item {
+    width: 100%;
+}
+
+.header-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* Capa suave para mejorar lectura */
+.header-inner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(246, 235, 217, 0.28);
+    z-index: 1;
+}
+
+.header-caption-custom {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    color: var(--texto-principal-cafe-oscuro);
+    padding: 1rem;
+}
+
+.header-caption-custom h1 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.7rem;
+}
+
+.header-caption-custom p {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    line-height: 1.2;
+    max-width: 650px;
+    margin: 0 auto;
+}
+/* ==========================================================================
    SECCIÓN: VISIÓN, MISIÓN Y VALORES (About Section)
    ========================================================================== */
 .about-section {
@@ -141,6 +205,96 @@ main {
     max-height: 80px;
     padding: 0 5px;
 }
+
+/* ==========================================================================
+   SECCIÓN: CONOCE AL EQUIPO
+   ========================================================================== */
+
+.team {
+    background-color: var(--fondo-principal-crema);
+    padding: 40px 0 70px;
+    text-align: center;
+}
+
+.team h2 {
+    color: var(--texto-principal-cafe-oscuro);
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 45px;
+    letter-spacing: 0.5px;
+}
+
+/* Contenedor general */
+.team-carousel {
+    position: relative;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+/* En desktop no necesitamos scroll */
+.team-carousel-window {
+    width: 100%;
+    overflow: visible;
+}
+
+/* Desktop: cards distribuidas en fila */
+.team-track {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 18px;
+    align-items: stretch;
+}
+
+/* Card de cada integrante */
+.member {
+    background-color: var(--fondo-blanco-calido);
+    border: 2px solid var(--beige-calido-degradado);
+    border-radius: 14px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 8px 18px rgba(82, 31, 18, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(82, 31, 18, 0.18);
+}
+
+/* Imagen rectangular tipo poster */
+.member-photo {
+    width: 100%;
+    height: 155px;
+    background-color: var(--boton-principal-acento-fuerte);
+    overflow: hidden;
+}
+
+.member-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Nombre debajo de la imagen */
+.member-name {
+    min-height: 58px;
+    padding: 10px 8px;
+    color: var(--texto-principal-cafe-oscuro);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Flechas ocultas en desktop */
+.team-arrow {
+    display: none;
+}
+
 
 /* ==========================================================================
    SECCIÓN: ESTILOS DEL FOOTER
@@ -252,7 +406,142 @@ main {
 /* ==========================================================================
    AJUSTES RESPONSIVOS (Pantallas Móviles)
    ========================================================================== */
+
+@media (max-width: 1024px) {
+    .team {
+        padding: 45px 20px 65px;
+    }
+
+    .team h2 {
+        font-size: 2.7rem;
+        margin-bottom: 35px;
+    }
+
+    .team-track {
+       grid-template-columns: repeat(4, 1fr);
+       gap: 24px 18px;
+    }
+
+    .member-photo {
+        height: 145px;
+    }
+
+    .member-name {
+        font-size: 0.85rem;
+    }
+}
+
+
 @media (max-width: 767px) {
+    .header-caption-custom {
+        justify-content: center;
+        padding: 0.5rem 1rem;
+    }
+
+    .header-caption-custom h1 {
+        font-size: 2rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .header-caption-custom p {
+        font-size: 0.72rem;
+        line-height: 1.05;
+        max-width: 230px;
+    }
+
+    .about-section {
+        padding-top: 45px;
+    }
+    
+    .team-github-icons {
+        justify-content: center;
+    }
+
+    /* Oculta la columna espaciadora en celulares */
+    .spacer-section {
+        display: none;
+    }
+
+    .team {
+        padding: 35px 0 50px;
+        background-color: var(--fondo-principal-crema);
+    }
+
+    .team h2 {
+        font-size: 2rem;
+        margin-bottom: 25px;
+    }
+
+    .team-carousel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        max-width: 100%;
+        padding: 0 12px;
+    }
+
+    .team-carousel-window {
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        width: 100%;
+    }
+
+    .team-carousel-window::-webkit-scrollbar {
+        display: none;
+    }
+
+    .team-track {
+        display: flex;
+        grid-template-columns: none;
+        gap: 16px;
+        width: max-content;
+        padding: 8px 0 14px;
+    }
+
+    .member {
+        flex: 0 0 135px;
+        scroll-snap-align: center;
+        border-radius: 12px;
+    }
+
+    .member:hover {
+        transform: none;
+    }
+
+    .member-photo {
+        height: 165px;
+    }
+
+    .member-name {
+        min-height: 54px;
+        padding: 8px 6px;
+        font-size: 0.78rem;
+        line-height: 0.9rem;
+    }
+
+    .team-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px;
+        height: 32px;
+        border: none;
+        background-color: transparent;
+        color: var(--beige-grisaceo);
+        font-size: 1.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .team-arrow:hover {
+        color: var(--texto-principal-cafe-oscuro);
+        transform: scale(1.1);
+    }
+
     .footer-container {
         grid-template-columns: 1fr; /* Cambia a una sola columna vertical */
         text-align: center;
@@ -265,13 +554,34 @@ main {
         justify-content: center;
         margin-left: 0;
     }
-    
-    .team-github-icons {
-        justify-content: center;
+}
+
+/* Celulares pequeños */
+@media (max-width: 430px) {
+    .team h2 {
+        font-size: 1.8rem;
     }
 
-    /* Oculta la columna espaciadora en celulares */
-    .spacer-section {
-        display: none;
+    .team-carousel {
+        gap: 4px;
+        padding: 0 8px;
+    }
+
+    .member {
+        flex: 0 0 120px;
+    }
+
+    .member-photo {
+        height: 150px;
+    }
+
+    .member-name {
+        font-size: 0.72rem;
+        line-height: 0.85rem;
+    }
+
+    .team-arrow {
+        min-width: 20px;
+        font-size: 1.5rem;
     }
 }
