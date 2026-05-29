@@ -1,59 +1,106 @@
-const teamCarouselWindow = document.querySelector(".team-carousel-window");
-const teamTrack = document.querySelector(".team-track");
+const teamMembers = Array.from(document.querySelectorAll(".member"));
 const teamArrowLeft = document.querySelector(".team-arrow-left");
 const teamArrowRight = document.querySelector(".team-arrow-right");
 
-function getScrollAmount() {
-    if (!teamCarouselWindow) return 0;
+let activeMemberIndex = 0;
+let autoFlipInterval = null;
 
-    const memberCard = teamCarouselWindow.querySelector(".member");
-    if (!memberCard) return 0;
-
-    const trackStyles = window.getComputedStyle(teamTrack);
-    const gap = parseInt(trackStyles.gap) || 16;
-
-    return memberCard.offsetWidth + gap;
+function isCarouselView() {
+    return window.matchMedia("(max-width: 1030px)").matches;
 }
 
-function moveTeamCarousel(direction) {
-    if (!teamCarouselWindow) return;
+function getPreviousIndex(index) {
+    return (index - 1 + teamMembers.length) % teamMembers.length;
+}
 
-    const scrollAmount = getScrollAmount();
+function getNextIndex(index) {
+    return (index + 1) % teamMembers.length;
+}
 
-    const maxScrollLeft =
-        teamCarouselWindow.scrollWidth - teamCarouselWindow.clientWidth;
+function updateCarousel() {
+    if (teamMembers.length === 0) return;
 
-    const currentScroll = teamCarouselWindow.scrollLeft;
-
-    const isAtStart = currentScroll <= 5;
-    const isAtEnd = currentScroll >= maxScrollLeft - 5;
-
-    if (direction === 1 && isAtEnd) {
-        teamCarouselWindow.scrollTo({
-            left: 0,
-            behavior: "smooth"
+    if (!isCarouselView()) {
+        teamMembers.forEach((member) => {
+            member.classList.remove("is-prev", "is-active", "is-next", "is-flipped");
         });
         return;
     }
 
-    if (direction === -1 && isAtStart) {
-        teamCarouselWindow.scrollTo({
-            left: maxScrollLeft,
-            behavior: "smooth"
-        });
-        return;
-    }
+    const previousIndex = getPreviousIndex(activeMemberIndex);
+    const nextIndex = getNextIndex(activeMemberIndex);
 
-    teamCarouselWindow.scrollBy({
-        left: direction * scrollAmount,
-        behavior: "smooth"
+    teamMembers.forEach((member, index) => {
+        member.classList.remove("is-prev", "is-active", "is-next", "is-flipped");
+
+        if (index === previousIndex) {
+            member.classList.add("is-prev");
+        }
+
+        if (index === activeMemberIndex) {
+            member.classList.add("is-active");
+        }
+
+        if (index === nextIndex) {
+            member.classList.add("is-next");
+        }
     });
 }
 
-teamArrowLeft?.addEventListener("click", () => {
-    moveTeamCarousel(-1);
+function goToNextMember() {
+    activeMemberIndex = getNextIndex(activeMemberIndex);
+    updateCarousel();
+    restartAutoFlip();
+}
+
+function goToPreviousMember() {
+    activeMemberIndex = getPreviousIndex(activeMemberIndex);
+    updateCarousel();
+    restartAutoFlip();
+}
+
+function flipActiveMember() {
+    if (!isCarouselView()) return;
+
+    const activeMember = document.querySelector(".member.is-active");
+
+    if (!activeMember) return;
+
+    activeMember.classList.toggle("is-flipped");
+}
+
+function startAutoFlip() {
+    if (!isCarouselView()) return;
+
+    autoFlipInterval = setInterval(() => {
+        flipActiveMember();
+    }, 3000);
+}
+
+function stopAutoFlip() {
+    if (autoFlipInterval) {
+        clearInterval(autoFlipInterval);
+        autoFlipInterval = null;
+    }
+}
+
+function restartAutoFlip() {
+    stopAutoFlip();
+    startAutoFlip();
+}
+
+teamArrowRight?.addEventListener("click", goToNextMember);
+teamArrowLeft?.addEventListener("click", goToPreviousMember);
+
+window.addEventListener("resize", () => {
+    updateCarousel();
+
+    if (isCarouselView()) {
+        restartAutoFlip();
+    } else {
+        stopAutoFlip();
+    }
 });
 
-teamArrowRight?.addEventListener("click", () => {
-    moveTeamCarousel(1);
-});
+updateCarousel();
+startAutoFlip();

@@ -49,49 +49,98 @@ main {
 }
 
 /* ==========================================================================
-   NAVBAR - HEADER - NAVBAR
+   NAVBAR
    ========================================================================== */
 
 .navbar {
-  padding: 20px 0;
+  background-color: var(--beige-calido-degradado);
   font-family: "Cormorant Garamond", serif;
-  font-size: 27px;
-  font-weight: 1000;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 0.5rem 0;
   box-shadow: var(--sombra);
-  background: var(--beige-calido-degradado);
 }
 
-/* Control para el tamaño del logo en el Header */
+/* Contenedor interno de Bootstrap */
+.navbar .container {
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+}
+
+/* Marca / logo */
+.navbar-brand {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Logo */
 .navbar-logo {
-  max-width: 100px; /* Un poco más pequeño que el del footer (250px) por ser el header */
+  width: 90px;
+  max-width: 90px;
   height: auto;
-  transform: scale(2);
+  object-fit: contain;
+  transform: none;
 }
 
+/* Links */
 .nav-link {
   position: relative;
-  transition: all var(--transicion);
-  /* Opcional: Si quieres que el color coincida con tu footer, puedes usar el marrón */
-  /* color: #4a3319 !important; */
+  color: var(--texto-principal-cafe-oscuro) !important;
+  padding: 0.5rem 1rem;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Efecto al pasar el cursor (Hover) */
-.nav-link:hover {
+.nav-link:hover,
+.nav-link.active {
+  color: var(--cafe-medio) !important;
   transform: translateY(-2px);
-  /* Opcional: Si quieres que coincida con el hover teal de tu footer */
-  color: #00adb5 !important;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
-/* Animación de la línea inferior */
+/* Línea decorativa inferior */
 .nav-link::after {
   content: "";
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 0.2rem;
+  left: 50%;
   width: 0;
   height: 2px;
-  transition: width 0.3s;
+  background-color: var(--cafe-medio);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 60%;
+}
+
+/* Iconos de cuenta y carrito */
+.navbar-icon {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+/* Buscador */
+.search-form input {
+  font-size: 1rem;
+}
+
+.search-form .btn {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border: none;
+  font-size: 1rem;
+  padding: 0.45rem 1rem;
+}
+
+.search-form .btn:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
 }
 
 /* ==========================================================================
@@ -310,24 +359,22 @@ main {
 
 .team {
   background-color: var(--fondo-principal-crema);
-  padding: 40px 0 70px;
+  padding: 80px 40px;
   text-align: center;
 }
 
 .team h2 {
   color: var(--texto-principal-cafe-oscuro);
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 45px;
-  letter-spacing: 0.5px;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 45px;
 }
 
 /* Contenedor general */
 .team-carousel {
   position: relative;
-  max-width: 1250px;
-  margin: 0 auto;
-  padding: 0 25px;
+    max-width: 1350px;
+    margin: 0 auto;
 }
 
 /* En desktop no necesitamos scroll */
@@ -340,7 +387,7 @@ main {
 .team-track {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 18px;
+  gap: 32px;
   align-items: stretch;
 }
 
@@ -355,17 +402,46 @@ main {
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
+  height: 390px;
+  perspective: 1000px;
 }
 
-.member:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(82, 31, 18, 0.18);
+.member-card-inner{
+  position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s ease;
+    transform-style: preserve-3d;
 }
+
+/* Desktop: flip con hover */
+.member:hover .member-card-inner {
+    transform: rotateY(180deg);
+}
+
+.member-card-front,
+.member-card-back {
+    position: absolute;
+    inset: 0;
+    background-color: var(--fondo-blanco-calido);
+    border: 2px solid var(--beige-calido-degradado);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 18px rgba(82, 31, 18, 0.12);
+    backface-visibility: hidden;
+}
+
+/* Frente */
+.member-card-front {
+    display: flex;
+    flex-direction: column;
+}
+
 
 /* Imagen rectangular tipo poster */
 .member-photo {
   width: 100%;
-  height: 210px;
+  height: 235px;
   background-color: var(--boton-principal-acento-fuerte);
   overflow: hidden;
 }
@@ -378,6 +454,15 @@ main {
   display: block;
 }
 
+.member-info {
+    min-height: 155px;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Nombre debajo de la imagen */
 .member-name {
   min-height: 70px;
@@ -385,10 +470,79 @@ main {
   color: var(--texto-principal-cafe-oscuro);
   font-size: 1rem;
   font-weight: 700;
-  line-height: 1.1rem;
+  line-height: 1.15rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 0 10px;
+}
+
+.member-role {
+    color: var(--cafe-medio);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1rem;
+    margin: 0;
+}
+
+/* Reverso */
+.member-card-back {
+    transform: rotateY(180deg);
+    padding: 22px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--texto-principal-cafe-oscuro);
+    overflow: hidden;
+}
+
+/* Nombre corto en el reverso */
+.member-card-back h3 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.4rem;
+    margin: 0 0 12px;
+    flex-shrink: 0;
+}
+
+/* Biografía */
+.member-card-back p {
+    flex: 1;
+    width: 100%;
+    margin: 0;
+    padding: 0 4px;
+    color: var(--boton-principal-acento-fuerte);
+    font-size: 0.78rem;
+    line-height: 1.08rem;
+    text-align: center;
+    overflow-y: auto;
+}
+
+/* Scroll interno discreto */
+.member-card-back p::-webkit-scrollbar {
+    width: 4px;
+}
+
+
+/* Botón fijo abajo */
+.member-card-back a {
+    flex-shrink: 0;
+    margin-top: 14px;
+    display: inline-block;
+    background-color: var(--boton-principal-acento-fuerte);
+    color: var(--fondo-principal-crema);
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.member-card-back a:hover {
+    background-color: var(--texto-principal-cafe-oscuro);
+    transform: translateY(-2px);
 }
 
 /* Flechas ocultas en desktop */
@@ -486,14 +640,14 @@ main {
 }
 
 .footer-section ul li a {
-  color: #4a3319;
+  color: var(--texto-principal-cafe-oscuro);
   text-decoration: none;
   font-size: 1rem;
   transition: color 0.4s ease;
 }
 
 .footer-section ul li a:hover {
-  color: #00adb5;
+  color: var(--cafe-medio);
 }
 
 /* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
@@ -519,6 +673,37 @@ main {
 /* ==========================================================================
    FOOTER - SPRITES 8 BIT DEL EQUIPO
    ========================================================================== */
+
+.pixel-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    padding-right: 0;
+}
+
+.pixel-interaction-title {
+    width: 100%;
+    text-align: center;
+    color: var(--texto-principal-cafe-oscuro);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin: 0 0 2px 0;
+    letter-spacing: 0.5px;
+}
+
+.pixel-interaction-title::after {
+    content: "";
+    display: block;
+    width: 95px;
+    height: 2px;
+    background-color: var(--cafe-medio);
+    margin: 4px auto 0;
+    border-radius: 999px;
+}
 
 .pixel-section {
   width: 100%;
@@ -658,31 +843,229 @@ main {
    ========================================================================== */
 
 @media (max-width: 1030px) {
+  .navbar {
+    padding: 8px 0;
+  }
+
+  .navbar-logo {
+    width: 95px;
+    max-width: 95px;
+  }
+
+  .nav-link {
+    font-size: 1.4rem;
+  }
+  
   .team {
-    padding: 45px 20px 65px;
-  }
+        padding: 60px 0;
+        overflow: hidden;
+    }
 
-  .team h2 {
-    font-size: 2.7rem;
-    margin-bottom: 35px;
-  }
+    .team h2 {
+        font-size: 2.5rem;
+        margin-bottom: 35px;
+    }
 
-  .team-track {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px 18px;
-  }
+    .team-carousel {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        min-height: 430px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 48px;
+    }
 
-  .member-photo {
-    height: 190px;
-  }
+    .team-carousel-window {
+        width: 100%;
+        height: 430px;
+        overflow: hidden;
+        position: relative;
+    }
 
-  .member-name {
-    font-size: 0.9rem;
-    min-height: 65px;
-  }
+    .team-track {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .member {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 260px;
+        height: 370px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0.7);
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        scroll-snap-align: unset;
+    }
+
+    .member.is-prev {
+        opacity: 0.75;
+        pointer-events: auto;
+        transform: translate(calc(-50% - 250px), -50%) scale(0.78);
+        z-index: 1;
+    }
+
+    .member.is-active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+        z-index: 3;
+    }
+
+    .member.is-next {
+        opacity: 0.75;
+        pointer-events: auto;
+        transform: translate(calc(-50% + 250px), -50%) scale(0.78);
+        z-index: 1;
+    }
+
+    /* En carrusel se desactiva el hover general */
+    .member:hover .member-card-inner {
+        transform: none;
+    }
+
+    /* Solo la card central puede voltearse */
+    .member.is-active.is-flipped .member-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .member:not(.is-active) .member-card-inner {
+        transform: rotateY(0deg) !important;
+    }
+
+    .member.is-prev .member-card-back,
+    .member.is-next .member-card-back {
+        display: none;
+    }
+
+    .member.is-prev,
+    .member.is-next {
+        filter: opacity(0.85);
+    }
+
+    .member-photo {
+        height: 215px;
+    }
+
+    .member-info {
+        min-height: 155px;
+    }
+
+    .member-card-back {
+        padding: 22px 18px;
+    }
+
+    .member-card-back h3 {
+        font-size: 1.35rem;
+        line-height: 1.35rem;
+    }
+
+    .member-card-back p {
+        font-size: 0.76rem;
+        line-height: 1.02rem;
+    }
+
+    .member-card-back a {
+        font-size: 0.78rem;
+        padding: 8px 18px;
+    }
+
+    .team-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
+        width: 38px;
+        height: 38px;
+        border: none;
+        border-radius: 50%;
+        background-color: var(--beige-calido-degradado);
+        color: var(--texto-principal-cafe-oscuro);
+        font-size: 1.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 6px 14px rgba(82, 31, 18, 0.14);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .team-arrow:hover {
+        background-color: var(--texto-principal-cafe-oscuro);
+        color: var(--fondo-principal-crema);
+        transform: translateY(-50%) scale(1.08);
+    }
+
+    .team-arrow-left {
+        left: 16px;
+    }
+
+    .team-arrow-right {
+        right: 16px;
+    }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
+  .navbar {
+    padding: 0.4rem 1rem;
+  }
+
+  .navbar .container {
+    min-height: 90px;
+    max-width: 100%;
+  }
+
+  .navbar-logo {
+    width: 95px;
+    max-width: 95px;
+  }
+
+  .navbar-toggler {
+    border: none;
+    padding: 0.25rem;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  .navbar-collapse {
+    background-color: var(--beige-calido-degradado);
+    padding: 1rem 0;
+    text-align: center;
+  }
+
+  .navbar-nav {
+    gap: 0.4rem;
+  }
+
+  .nav-link {
+    font-size: 1.4rem;
+    padding: 0.4rem 0;
+  }
+
+  .nav-link:hover {
+    transform: none;
+  }
+
+  .navbar-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .search-form {
+    width: 90%;
+    margin: 1rem auto 0;
+    justify-content: center;
+  }
+  
   .header-caption-custom {
     justify-content: center;
     padding: 0.5rem 1rem;
@@ -703,95 +1086,99 @@ main {
     padding-top: 45px;
   }
 
-  .team-github-icons {
-    justify-content: center;
-  }
-
   /* Oculta la columna espaciadora en celulares */
   .spacer-section {
     display: none;
   }
 
   .team {
-    padding: 35px 0 50px;
-    background-color: var(--fondo-principal-crema);
-  }
+        padding: 45px 0;
+    }
 
-  .team h2 {
-    font-size: 2rem;
-    margin-bottom: 25px;
-  }
+    .team h2 {
+        font-size: 2rem;
+        margin-bottom: 24px;
+    }
 
-  .team-carousel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    max-width: 100%;
-    padding: 0 12px;
-  }
+    .team-carousel {
+        min-height: 360px;
+        padding: 0 34px;
+    }
 
-  .team-carousel-window {
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    width: 100%;
-  }
+    .team-carousel-window {
+        height: 360px;
+    }
 
-  .team-carousel-window::-webkit-scrollbar {
-    display: none;
-  }
+    .member {
+        width: 170px;
+        height: 310px;
+    }
 
-  .team-track {
-    display: flex;
-    grid-template-columns: none;
-    gap: 16px;
-    width: max-content;
-    padding: 8px 0 14px;
-  }
+    .member.is-prev {
+        transform: translate(calc(-50% - 145px), -50%) scale(0.72);
+    }
 
-  .member {
-    flex: 0 0 145px;
-    scroll-snap-align: center;
-  }
+    .member.is-active {
+        transform: translate(-50%, -50%) scale(1);
+    }
 
-  .member:hover {
-    transform: none;
-  }
+    .member.is-next {
+        transform: translate(calc(-50% + 145px), -50%) scale(0.72);
+    }
 
-  .member-photo {
-    height: 175px;
-  }
+    .member-photo {
+        height: 160px;
+    }
 
-  .member-name {
-    min-height: 58px;
-    padding: 10px 8px;
-    font-size: 0.78rem;
-    line-height: 0.9rem;
-  }
+    .member-info {
+        min-height: 150px;
+        padding: 10px 8px;
+    }
 
-  .team-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    height: 32px;
-    border: none;
-    background-color: transparent;
-    color: var(--beige-grisaceo);
-    font-size: 1.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition:
-      color 0.3s ease,
-      transform 0.3s ease;
-  }
+    .member-name {
+        font-size: 0.8rem;
+        line-height: 0.95rem;
+    }
 
-  .team-arrow:hover {
-    color: var(--texto-principal-cafe-oscuro);
-    transform: scale(1.1);
-  }
+    .member-role {
+        font-size: 0.68rem;
+        line-height: 0.8rem;
+    }
+
+    .member-card-back {
+        padding: 16px 12px;
+    }
+
+    .member-card-back h3 {
+        font-size: 1.1rem;
+        line-height: 1.15rem;
+        margin-bottom: 8px;
+    }
+
+    .member-card-back p {
+        font-size: 0.63rem;
+        line-height: 0.78rem;
+    }
+
+    .member-card-back a {
+        font-size: 0.64rem;
+        padding: 7px 12px;
+        margin-top: 10px;
+    }
+
+    .team-arrow {
+        width: 30px;
+        height: 30px;
+        font-size: 1.4rem;
+    }
+
+    .team-arrow-left {
+        left: 6px;
+    }
+
+    .team-arrow-right {
+        right: 6px;
+    }
 
   .footer-container {
     grid-template-columns: 1fr; /* Cambia a una sola columna vertical */
@@ -807,6 +1194,20 @@ main {
   }
 
   /*Responsive de los 8bit*/
+  .pixel-section {
+        align-items: center;
+        gap: 8px;
+    }
+
+    .pixel-interaction-title {
+        font-size: 1.25rem;
+        margin-bottom: 4px;
+    }
+
+    .pixel-interaction-title::after {
+        width: 75px;
+    }
+  
   .pixel-section {
     align-items: center;
     text-align: center;
@@ -838,6 +1239,17 @@ main {
   }
 }
 
+@media (max-width: 576px) {
+  .navbar .container {
+    min-height: 78px;
+  }
+
+  .navbar-logo {
+    width: 78px;
+    max-width: 78px;
+  }
+}
+
 /* Celulares pequeños */
 @media (max-width: 430px) {
   .team h2 {
@@ -850,17 +1262,30 @@ main {
   }
 
   .member {
-    flex: 0 0 130px;
-  }
+        flex: 0 0 155px;
+        height: 290px;
+    }
 
-  .member-photo {
-    height: 165px;
-  }
+    .member-photo {
+        height: 155px;
+    }
 
-  .member-name {
-    font-size: 0.72rem;
-    line-height: 0.85rem;
-  }
+    .member-info {
+        min-height: 135px;
+    }
+
+    .member-name {
+        font-size: 0.76rem;
+    }
+
+    .member-role {
+        font-size: 0.68rem;
+    }
+
+    .member-card-back p {
+        font-size: 0.68rem;
+        line-height: 0.85rem;
+    }
 
   .team-arrow {
     min-width: 20px;
