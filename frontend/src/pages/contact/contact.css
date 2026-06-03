@@ -207,8 +207,243 @@ main {
 }
 
 
-/* Sección aside: Tonantzin/
 
+
+/* Sección aside: Tonantzin */
+/* Contenedor externo para reducir y centrar la tarjeta en la página */
+/* 1. EL CONTROL REMOTO GLOBAL */
+/* 1. Corrección de clase del contenedor padre */
+/* Contenedor principal de la tarjeta */
+/* =====================================================
+   CONTENEDOR GENERAL
+   ===================================================== */
+
+.contact-img-card{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:stretch;
+}
+
+/* =====================================================
+   CARD
+   ===================================================== */
+
+.card{
+    position:relative;
+
+    width:min(100%, 680px);
+
+    /*
+      Evita que se haga demasiado pequeña
+      cuando la ventana se reduce.
+    */
+    min-height:750px;
+
+    /*
+      Mantiene proporción similar
+      a la imagen original.
+    */
+    aspect-ratio: 679 / 1064;
+
+    border:none;
+    overflow:hidden;
+    border-radius:12px;
+    background:none;
+}
+
+/* =====================================================
+   IMAGEN
+   ===================================================== */
+
+.img-fluid{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* =====================================================
+   OVERLAY
+   ===================================================== */
+
+.card-img-overlay{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:0;
+
+    color:var(--texto-principal-cafe-oscuro);
+}
+
+/* =====================================================
+   CONTENIDO CENTRAL
+   ===================================================== */
+
+.contact-content{
+
+    /*
+      PASILLO CENTRAL
+      ENTRE LOS LIBROS
+    */
+
+    width:42%;
+
+    /*
+      El texto queda un poco más arriba,
+      similar al diseño de referencia.
+    */
+
+    transform:translateY(-5%);
+
+    display:flex;
+    flex-direction:column;
+
+    gap:2rem;
+
+    text-align:center;
+}
+
+/* =====================================================
+   TITULO
+   ===================================================== */
+
+.card-title{
+
+    margin:0;
+
+    font-family:"Cormorant Garamond", serif;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    line-height:1.15;
+
+    /*
+      Mucho más grande
+      pero adaptable.
+    */
+
+    font-size:clamp(2rem, 3vw, 3.4rem);
+
+    word-break:normal;
+}
+
+/* =====================================================
+   TEXTO
+   ===================================================== */
+
+.card-text{
+
+    margin:0;
+
+    font-family:"Cormorant Garamond", serif;
+
+    line-height:1.55;
+
+    font-size:clamp(1.1rem, 1.6vw, 1.55rem);
+
+    text-align:center;
+}
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width:1200px){
+
+    .contact-content{
+        width:44%;
+    }
+
+    .contact-card{
+        min-height:700px;
+    }
+}
+
+/* =====================================================
+   TABLET VERTICAL
+   ===================================================== */
+
+@media (max-width:992px){
+
+    .contact-content{
+        width:40%;
+    }
+
+    .contact-card{
+        min-height:650px;
+    }
+
+    .contact-card .card-title{
+        font-size:clamp(1.8rem, 3vw, 2.8rem);
+    }
+
+    .contact-card .card-text{
+        font-size:1.1rem;
+    }
+}
+
+/* =====================================================
+   CELULAR
+   ===================================================== */
+
+@media (max-width:768px){
+
+    .contact-card{
+
+        width:100%;
+
+        min-height:600px;
+    }
+
+    .contact-content{
+
+        width:38%;
+
+        gap:1.2rem;
+
+        transform:translateY(-4%);
+    }
+
+    .contact-card .card-title{
+        font-size:1.6rem;
+        line-height:1.15;
+    }
+
+    .contact-card .card-text{
+        font-size:.95rem;
+        line-height:1.4;
+    }
+}
+
+/* =====================================================
+   CELULARES PEQUEÑOS
+   ===================================================== */
+
+@media (max-width:480px){
+
+    .contact-card{
+        min-height:520px;
+    }
+
+    .contact-content{
+        width:36%;
+    }
+
+    .contact-card .card-title{
+        font-size:1.3rem;
+    }
+
+    .contact-card .card-text{
+        font-size:.8rem;
+    }
+}
 
 
 
