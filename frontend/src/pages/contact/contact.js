@@ -1,4 +1,4 @@
-//? Israel: Validación de datos de entrada
+//? Israel: Validación de datos de entrada del formulario
 // 1.
 document.addEventListener("DOMContentLoaded", () => {
   const contactForm = document.querySelector("#contactForm");
