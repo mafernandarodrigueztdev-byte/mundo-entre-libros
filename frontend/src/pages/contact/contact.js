@@ -1,5 +1,5 @@
 //? Israel: Validación de datos de entrada
-//1.
+// 1.
 document.addEventListener("DOMContentLoaded", () => {
   const contactForm = document.querySelector("#contactForm");
   if (!contactForm) return;
