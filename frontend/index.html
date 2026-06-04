@@ -1,105 +1,77 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mundo Entre Libros - Home</title>
     <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./src/style.css">
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg sticky-top" aria-label="Navegación principal">
             <div class="container">
-        
+
                 <a class="navbar-brand fw-bold" href="/">
-                <img
-                    src="/src/assets/icons/logo-mel.png"
-                    alt="Logo Mundo Entre Libros"
-                    class="navbar-logo"
-                    loading="lazy"
-                />
+                    <img src="/src/assets/icons/logo-mel.png" alt="Logo Mundo Entre Libros" class="navbar-logo"
+                        loading="lazy" />
                 </a>
 
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Abrir menú"
-                >
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir menú">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav mx-auto">
+                    <ul class="navbar-nav mx-auto">
                         <li class="nav-item active">
                             <a class="nav-link active" href="/"> Inicio </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/catalog/catalog.html">
-                            Catálogo
+                                Catálogo
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/forums/forums.html">
-                            Foros
+                                Foros
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a
-                            class="nav-link"
-                            aria-current="page"
-                            href="/aboutUs/aboutUs.html"
-                            >
-                            Nosotros
+                            <a class="nav-link" aria-current="page" href="/aboutUs/aboutUs.html">
+                                Nosotros
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/contact/contact.html">
-                            Contacto
+                                Contacto
                             </a>
                         </li>
                         <li class="nav-item">
-            <a class="nav-link" href="/account/account.html">
-                <img
-                src="/src/assets/icons/icono-cuenta-navbar.png"
-                alt="Mi Cuenta"
-                class="navbar-icon"
-                loading="lazy"
-                />
-            </a>
-            </li>
+                            <a class="nav-link" href="/account/account.html">
+                                <img src="/src/assets/icons/icono-cuenta-navbar.png" alt="Mi Cuenta" class="navbar-icon"
+                                    loading="lazy" />
+                            </a>
+                        </li>
 
-            <li class="nav-item">
-            <a
-                class="nav-link"
-                href="/shoppingCart/shopping.html"
-            >
-                <img
-                src="/src/assets/icons/icono-carrito-navbar.png"
-                alt="Carrito"
-                class="navbar-icon"
-                loading="lazy"
-                />
-            </a>
-            </li>
-                        </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/shoppingCart/shopping.html">
+                                <img src="/src/assets/icons/icono-carrito-navbar.png" alt="Carrito" class="navbar-icon"
+                                    loading="lazy" />
+                            </a>
+                        </li>
+                    </ul>
 
-                        <form class="search-form d-flex" role="search">
-                        <input
-                            class="form-control me-2"
-                            type="search"
-                            placeholder="Buscar libros..."
-                            aria-label="Buscar libros"
-                        />
+                    <form class="search-form d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Buscar libros..."
+                            aria-label="Buscar libros" />
                         <button class="btn btn-outline-light" type="submit">
                             Buscar
                         </button>
-                        </form>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -110,29 +82,80 @@
         </header>
         <main>
             <!--? Sección foros: Miguel-->
-            <section>
-            <section class="foros-contenedor">
-            <h2 class="titulo-foros">FOROS</h2>
+                <section class="foros-contenedor">
+                    <h2 class="titulo-foros">FOROS</h2>
 
-            <div id="foros-populares" class="foros-lista"></div>
+                    <div id="foros-populares" class="foros-lista"></div>
 
-            <a href="/forums/forums.html" class="btn-ver-mas">
-                Ver más →
-            </a>
-            </section>
-                <!--Escribe tu código aquí-->
-            </section>
+                    <a href="/forums/forums.html" class="btn-ver-mas">
+                        Ver más →
+                    </a>
+                </section>
+             
             <!--? Sección libros destacados: Adri-->
-            <section>
-                <!--Escribe tu código aquí-->
-            </section>
+    
+                <section class="libros-destacados">
+                    <h2>LIBROS DESTACADOS</h2>
+                    <div class="libros-carousel">
+                        <button class="flecha-libros" id="btnLibroPrev">←</button>
+                        <div class="libros-ventana">
+                            <div class="libros-track" id="librosTrack">
+                                <div class="libro-card">
+                                    <img src="/src/assets/libros/HP_Piedra_Filosofal.webp" alt="Harry Potter"
+                                        class="libro-img">
+                                    <div class="libro-info">
+                                        <h4>Harry Potter</h4>
+                                        <p>J. K. Rowling</p>
+                                        <div class="libro-precio">$300.00</div>
+                                    </div>
+                                    <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                </div>
+
+                                <div class="libro-card">
+                                    <img src="./src/assets/libros/9788419599216.jpg"  alt="Orgullo y prejuicio"
+                                        class="libro-img">
+                                    <div class="libro-info">
+                                        <h4>Orgullo y prejuicio</h4>
+                                        <p>Jane Austen</p>
+                                        <div class="libro-precio">$599.00</div>
+                                    </div>
+                                    <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                </div>
+
+                                <div class="libro-card">
+                                    <img src="./src/assets/libros/It.webp" alt="1984" class="libro-img">
+                                    <div class="libro-info">
+                                        <h4>It (Eso)</h4>
+                                        <p>Stephen King</p>
+                                        <div class="libro-precio">659.00</div>
+                                    </div>
+                                    <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                </div>
+
+                                <div class="libro-card">
+                                    <img src="./src/assets/libros/Dune.jpg" alt="El principito" class="libro-img">
+                                    <div class="libro-info">
+                                        <h4>Dune</h4>
+                                        <p>Frank Herbert</p>
+                                        <div class="libro-precio">$400.00</div>
+                                    </div>
+                                    <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <button class="flecha-libros" id="btnLibroNext">→</button>
+                    </div>
+                </section>
         </main>
         <!--? Footer: Rodrigo-->
         <footer class="main-footer">
             <div class="footer-container">
-                
+
                 <div class="footer-section logo-section">
-                    <img src="/src/assets/icons/logo-mel-horizontal.png" alt="Mundo Entre Libros" class="img-fluid footer-logo">
+                    <img src="/src/assets/icons/logo-mel-horizontal.png" alt="Mundo Entre Libros"
+                        class="img-fluid footer-logo">
                 </div>
 
                 <div class="footer-section links-section">
@@ -151,77 +174,51 @@
                     <p class="pixel-interaction-title">¡Pasa a saludarnos!</p>
                     <div class="pixel-team">
                         <!--Mafer-->
-                        <a 
-                            href="https://github.com/mafernandarodrigueztdev-byte" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="pixel-member pixel-mafer" 
+                        <a href="https://github.com/mafernandarodrigueztdev-byte" target="_blank"
+                            rel="noopener noreferrer" class="pixel-member pixel-mafer"
                             title="GitHub de María Fernanda Rodríguez Trinidad"
                             aria-label="Ir al perfil de GitHub de María Fernanda Rodríguez Trinidad">
                         </a>
 
                         <!--Adri-->
-                        <a 
-                            href="https://github.com/iladricg14-lab" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="pixel-member pixel-ilse" 
-                            title="GitHub de Ilse Adriana Careo Galicia"
+                        <a href="https://github.com/iladricg14-lab" target="_blank" rel="noopener noreferrer"
+                            class="pixel-member pixel-ilse" title="GitHub de Ilse Adriana Careo Galicia"
                             aria-label="Ir al perfil de GitHub de Ilse Adriana Careo Galicia">
                         </a>
 
                         <!--Rodrigo-->
-                        <a 
-                            href="https://github.com/Rock2612" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="pixel-member pixel-rodrigo" 
-                            title="GitHub de Rodrigo González Pastrana"
+                        <a href="https://github.com/Rock2612" target="_blank" rel="noopener noreferrer"
+                            class="pixel-member pixel-rodrigo" title="GitHub de Rodrigo González Pastrana"
                             aria-label="Ir al perfil de GitHub de Rodrigo González Pastrana">
                         </a>
 
                         <!--Israel-->
-                        <a 
-                            href="https://github.com/IsraelMRQ" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="pixel-member pixel-israel" 
-                            title="GitHub de José Israel Manrique Roque"
+                        <a href="https://github.com/IsraelMRQ" target="_blank" rel="noopener noreferrer"
+                            class="pixel-member pixel-israel" title="GitHub de José Israel Manrique Roque"
                             aria-label="Ir al perfil de GitHub de José Israel Manrique Roque">
                         </a>
 
                         <!--Miguel-->
-                        <a 
-                            href="https://github.com/Miguel02mg" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="pixel-member pixel-miguel" 
-                            title="GitHub de Miguel Ángel Martínez Garduño"
+                        <a href="https://github.com/Miguel02mg" target="_blank" rel="noopener noreferrer"
+                            class="pixel-member pixel-miguel" title="GitHub de Miguel Ángel Martínez Garduño"
                             aria-label="Ir al perfil de GitHub de Miguel Ángel Martínez Garduño">
                         </a>
 
                         <!--Carlos-->
-                        <a 
-                            href="https://github.com/Carlos-Software-Engineer-1999" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="pixel-member pixel-carlos" 
+                        <a href="https://github.com/Carlos-Software-Engineer-1999" target="_blank"
+                            rel="noopener noreferrer" class="pixel-member pixel-carlos"
                             title="GitHub de Carlos Navarrete Tapia"
                             aria-label="Ir al perfil de GitHub de Carlos Navarrete Tapia">
                         </a>
 
                         <!--Tonantzin-->
-                        <a 
-                            href="https://github.com/Tonantzinap" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="pixel-member pixel-tonantzin" 
-                            title="GitHub de Tonantzin Alquisira Palma"
+                        <a href="https://github.com/Tonantzinap" target="_blank" rel="noopener noreferrer"
+                            class="pixel-member pixel-tonantzin" title="GitHub de Tonantzin Alquisira Palma"
                             aria-label="Ir al perfil de GitHub de Tonantzin Alquisira Palma">
                         </a>
                     </div>
                 </div>
-                
+
             </div>
 
             <div class="footer-bottom">
@@ -232,4 +229,5 @@
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -55,3 +55,69 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error cargando foros:", error);
   }
 });
+
+/*Libros destacados */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const trackLibros = document.getElementById("librosTrack");
+    const btnLibroPrev = document.getElementById("btnLibroPrev");
+    const btnLibroNext = document.getElementById("btnLibroNext");
+    const ventanaLibros = document.querySelector(".libros-ventana");
+
+    if (!trackLibros || !btnLibroPrev || !btnLibroNext || !ventanaLibros) return;
+
+    let posicionLibro = 0;
+
+    function obtenerMedidas() {
+        const card = document.querySelector(".libro-card");
+        const gap = 14;
+
+        const anchoCard = card.offsetWidth + gap;
+
+        // Máximo desplazamiento real permitido
+        const maxScroll = trackLibros.scrollWidth - ventanaLibros.clientWidth;
+
+        return { anchoCard, maxScroll };
+    }
+
+    function moverLibros() {
+        const { anchoCard, maxScroll } = obtenerMedidas();
+
+        let desplazamiento = posicionLibro * anchoCard;
+
+        // Evita que se pase y deje espacio vacío
+        if (desplazamiento > maxScroll) {
+            desplazamiento = maxScroll;
+        }
+
+        trackLibros.style.transform = `translateX(-${desplazamiento}px)`;
+    }
+
+    btnLibroPrev.addEventListener("click", () => {
+        if (posicionLibro > 0) {
+            posicionLibro--;
+            moverLibros();
+        }
+    });
+
+    btnLibroNext.addEventListener("click", () => {
+        const { anchoCard, maxScroll } = obtenerMedidas();
+
+        const siguienteMovimiento = (posicionLibro + 1) * anchoCard;
+
+        if (siguienteMovimiento <= maxScroll) {
+            posicionLibro++;
+            moverLibros();
+        } else if (posicionLibro * anchoCard < maxScroll) {
+            posicionLibro++;
+            moverLibros();
+        } else {
+            window.location.href = "/catalog/catalog.html";
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        posicionLibro = 0;
+        moverLibros();
+    });
+});
