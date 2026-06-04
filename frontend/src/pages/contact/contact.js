@@ -1,7 +1,5 @@
 //? Israel: Validación de datos de entrada
 
-
-
 //? Rodrigo: Formspree
 // 1. Se define la función de envío asíncrono hacia tu Endpoint de Formspree
 async function enviarAFormspree(form) {
