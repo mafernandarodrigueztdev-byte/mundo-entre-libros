@@ -194,9 +194,13 @@ main {
   width: 100%;
   min-height: 70vh;
   display: grid;
+
+  justify-content: center;
+  justify-content: center;
+
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 3rem;
+  gap: 1rem;
   padding: 4rem 6rem;
   background-color: var(--fondo-principal-crema);
 }
@@ -210,240 +214,66 @@ main {
 
 
 /* Sección aside: Tonantzin */
-/* Contenedor externo para reducir y centrar la tarjeta en la página */
-/* 1. EL CONTROL REMOTO GLOBAL */
-/* 1. Corrección de clase del contenedor padre */
-/* Contenedor principal de la tarjeta */
-/* =====================================================
-   CONTENEDOR GENERAL
-   ===================================================== */
 
-.contact-img-card{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:stretch;
+.container-img{
+  justify-content: flex-start;
+  width: min(100%, 620px);
 }
-
-/* =====================================================
-   CARD
-   ===================================================== */
 
 .card{
-    position:relative;
-
-    width:min(100%, 680px);
-
-    /*
-      Evita que se haga demasiado pequeña
-      cuando la ventana se reduce.
-    */
-    min-height:750px;
-
-    /*
-      Mantiene proporción similar
-      a la imagen original.
-    */
-    aspect-ratio: 679 / 1064;
-
-    border:none;
-    overflow:hidden;
-    border-radius:12px;
-    background:none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid var(--cafe-medio);
+  border-radius: 14px;
+  width: 100%;
+  padding-bottom: 5px; padding-top: 5px;  padding-left: 5px; padding-right: 5px;
 }
-
-/* =====================================================
-   IMAGEN
-   ===================================================== */
-
-.img-fluid{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-
-/* =====================================================
-   OVERLAY
-   ===================================================== */
-
-.card-img-overlay{
-    position:absolute;
-    inset:0;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:0;
-
-    color:var(--texto-principal-cafe-oscuro);
-}
-
-/* =====================================================
-   CONTENIDO CENTRAL
-   ===================================================== */
-
-.contact-content{
-
-    /*
-      PASILLO CENTRAL
-      ENTRE LOS LIBROS
-    */
-
-    width:42%;
-
-    /*
-      El texto queda un poco más arriba,
-      similar al diseño de referencia.
-    */
-
-    transform:translateY(-5%);
-
-    display:flex;
-    flex-direction:column;
-
-    gap:2rem;
-
-    text-align:center;
-}
-
-/* =====================================================
-   TITULO
-   ===================================================== */
 
 .card-title{
+  color: var(--boton-principal-acento-fuerte);
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  text-shadow: 0 10px 10px rgba(160, 101, 61, 1);
+  padding-top: 10px;
 
-    margin:0;
-
-    font-family:"Cormorant Garamond", serif;
-
-    font-weight:700;
-
-    text-transform:uppercase;
-
-    line-height:1.15;
-
-    /*
-      Mucho más grande
-      pero adaptable.
-    */
-
-    font-size:clamp(2rem, 3vw, 3.4rem);
-
-    word-break:normal;
 }
-
-/* =====================================================
-   TEXTO
-   ===================================================== */
 
 .card-text{
-
-    margin:0;
-
-    font-family:"Cormorant Garamond", serif;
-
-    line-height:1.55;
-
-    font-size:clamp(1.1rem, 1.6vw, 1.55rem);
-
-    text-align:center;
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: 650;
+  padding-left: 20px; padding-right: 20px;
+  /* text-shadow: 0 1px 1px rgba(160, 101, 61, 1); */
+  padding-top: 5px;
+  line-height: 37px;
 }
 
-/* =====================================================
-   TABLET
-   ===================================================== */
-
-@media (max-width:1200px){
-
-    .contact-content{
-        width:44%;
-    }
-
-    .contact-card{
-        min-height:700px;
-    }
+.aside-img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
 }
 
-/* =====================================================
-   TABLET VERTICAL
-   ===================================================== */
 
-@media (max-width:992px){
-
-    .contact-content{
-        width:40%;
-    }
-
-    .contact-card{
-        min-height:650px;
-    }
-
-    .contact-card .card-title{
-        font-size:clamp(1.8rem, 3vw, 2.8rem);
-    }
-
-    .contact-card .card-text{
-        font-size:1.1rem;
-    }
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+  .contact-img-card {
+    padding: 0;           
+  }
+  
+  .card {
+    max-width: 420px;      
+    border-radius: 18px;   
+  }
 }
 
-/* =====================================================
-   CELULAR
-   ===================================================== */
 
-@media (max-width:768px){
-
-    .contact-card{
-
-        width:100%;
-
-        min-height:600px;
-    }
-
-    .contact-content{
-
-        width:38%;
-
-        gap:1.2rem;
-
-        transform:translateY(-4%);
-    }
-
-    .contact-card .card-title{
-        font-size:1.6rem;
-        line-height:1.15;
-    }
-
-    .contact-card .card-text{
-        font-size:.95rem;
-        line-height:1.4;
-    }
-}
-
-/* =====================================================
-   CELULARES PEQUEÑOS
-   ===================================================== */
-
-@media (max-width:480px){
-
-    .contact-card{
-        min-height:520px;
-    }
-
-    .contact-content{
-        width:36%;
-    }
-
-    .contact-card .card-title{
-        font-size:1.3rem;
-    }
-
-    .contact-card .card-text{
-        font-size:.8rem;
-    }
-}
 
 
 
