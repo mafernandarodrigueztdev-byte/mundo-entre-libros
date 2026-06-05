@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const res = await fetch("/src/pages/forums/forums.json");
+    const res = await fetch("/data/forums.json");
     const foros = await res.json();
 
     contenedor.innerHTML = "";

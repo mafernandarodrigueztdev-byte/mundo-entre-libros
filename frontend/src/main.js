@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // 🔥 Cargar JSON
-    const res = await fetch("/src/pages/forums/forums.json");
+    const res = await fetch("/data/forums.json");
 
     if (!res.ok) {
       throw new Error("Error al cargar JSON: " + res.status);
