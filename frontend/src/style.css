@@ -278,9 +278,10 @@ main {
 /* --- COLUMNA 2: EXPLORA (NAVEGACIÓN) --- */
 .footer-section h3 {
   color: #4a3319;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 900;
-  margin-bottom: 5px;
+ margin-bottom: 10px;
+  margin-left: 30px;
 }
 
 .footer-section h3::after {
@@ -298,12 +299,32 @@ main {
 .footer-section ul li a {
   color: var(--texto-principal-cafe-oscuro);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.05rem;
   transition: color 0.4s ease;
 }
 
 .footer-section ul li a:hover {
   color: var(--cafe-medio);
+}
+
+/* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
+.spacer-section {
+  display: block;
+}
+
+/* --- PARTE INFERIOR: SECCIÓN DE COPYRIGHT --- */
+.footer-bottom {
+  text-align: center;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(74, 51, 25, 0.1); /* Línea divisoria sutil */
+  width: 100%;
+}
+
+.footer-bottom p {
+  color: #4a3319;
+  font-size: 1.2rem;
+  margin: 0;
 }
 
 /* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
