@@ -1,0 +1,632 @@
+/* ==========================================================================
+   IMPORTACIÓN DE FUENTES (API de Google Fonts)
+   ========================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+
+/* ==========================================================================
+   RESET, CONFIGURACIÓN GLOBAL Y VARIABLES
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Cormorant Garamond", serif;
+}
+
+:root {
+  --fondo-principal-crema: #f1f0e5;
+  --fondo-blanco-calido: #f6ebd9;
+  --texto-principal-cafe-oscuro: #521f12;
+  --boton-principal-acento-fuerte: #4b1d13;
+  --beige-calido-degradado: #f8e1c1;
+  --crema-secundario: #f6ebd9;
+  --cafe-medio: #a0653d;
+  --beige-grisaceo: #d9cdc1;
+  /* Nota: Asegúrate de tener definida esta variable en tu proyecto si la vas a usar */
+  --color-verde-acento: #2e5a44;
+}
+
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--fondo-principal-crema);
+  overflow-x: hidden;
+}
+
+/* Comportamiento Flexbox para el contenedor de Bootstrap */
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* El elemento <main> se expande para empujar el footer al fondo */
+main {
+  flex: 1;
+}
+
+/* ==========================================================================
+   NAVBAR
+   ========================================================================== */
+
+.navbar {
+  background-color: var(--beige-calido-degradado);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 0.5rem 0;
+  box-shadow: var(--sombra);
+}
+
+/* Contenedor interno de Bootstrap */
+.navbar .container {
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+}
+
+/* Marca / logo */
+.navbar-brand {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Logo */
+.navbar-logo {
+  width: 90px;
+  max-width: 90px;
+  height: auto;
+  object-fit: contain;
+  transform: none;
+}
+
+/* Links */
+.nav-link {
+  position: relative;
+  color: var(--texto-principal-cafe-oscuro) !important;
+  padding: 0.5rem 1rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--cafe-medio) !important;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Línea decorativa inferior */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0.2rem;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--cafe-medio);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 60%;
+}
+
+/* Iconos de cuenta y carrito */
+.navbar-icon {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+/* Buscador */
+.search-form input {
+  font-size: 1rem;
+}
+
+.search-form .btn {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border: none;
+  font-size: 1rem;
+  padding: 0.45rem 1rem;
+}
+
+.search-form .btn:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
+}
+
+/* ==========================================================================
+   ICONOS NAVBAR
+   ========================================================================== */
+
+.navbar-icon {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  transition: transform var(--transicion);
+}
+
+/* Hover sobre iconos */
+.nav-link:hover .navbar-icon {
+  transform: scale(1.1);
+  transform: translateY(-2px);
+}
+
+/* Separación entre los elementos del menú */
+.navbar-nav {
+  align-items: center;
+  gap: 10px;
+}
+
+/* Más espacio antes del icono de usuario */
+.nav-item:nth-last-child(2) {
+  margin-left: 20px;
+}
+
+/* Espacio entre usuario y carrito */
+.nav-item:last-child {
+  margin-left: 10px;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.btn {
+  background-color: var(--boton-principal-acento-fuerte);
+  font-weight: 800;
+  transition: 0.1s ease;
+}
+
+
+
+
+
+/* ==========================================================================
+   SECCIÓN: ESTILOS DEL FOOTER
+   ========================================================================== */
+.main-footer {
+  background-color: #f8e1c1; /* Color crema base */
+  padding: 15px 0 10px 0;
+  width: 100%;
+  margin-top: auto; /* Refuerzo de posicionamiento */
+}
+
+/* Distribución en 3 columnas alineadas verticalmente al centro */
+.footer-container {
+  max-width: 1800px;
+  margin: 3px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  padding: 0 20px;
+  align-items: center;
+}
+
+/* --- COLUMNA 1: LOGO E ICONOS DE INTEGRANTES --- */
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea logo e imágenes a la izquierda */
+  gap: 3px;
+  margin-left: 20px;
+}
+
+.footer-logo {
+  max-width: 290px;
+  height: auto;
+  object-fit: contain;
+}
+
+.team-github-icons {
+  display: flex;
+  gap: 15px; /* Separación horizontal entre cada imagen */
+  margin-top: 5px;
+}
+
+/* Estilos para los iconos de fuente de Bootstrap */
+.member-icon {
+  font-size: 2rem;
+  color: #4a3319;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+  display: inline-block;
+}
+
+/* Efecto al pasar el cursor encima de un icono */
+.team-github-icons a:hover .member-icon {
+  transform: translateY(-3px);
+  color: black;
+}
+
+/* Ajuste de columnas desktop*/
+.footer-container {
+  max-width: 1800px;
+  margin: 3px auto;
+  display: grid;
+  grid-template-columns: 1fr 0.55fr 1.7fr;
+  gap: 24px;
+  padding: 0 40px;
+  align-items: center;
+}
+
+/* --- COLUMNA 2: EXPLORA (NAVEGACIÓN) --- */
+.footer-section h3 {
+  color: #4a3319;
+  font-size: 1.3rem;
+  font-weight: 900;
+ margin-bottom: 10px;
+  margin-left: 30px;
+}
+
+.footer-section h3::after {
+  display: none;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.5px;
+}
+
+.footer-section ul li a {
+  color: var(--texto-principal-cafe-oscuro);
+  text-decoration: none;
+  font-size: 1.05rem;
+  transition: color 0.4s ease;
+}
+
+.footer-section ul li a:hover {
+  color: var(--cafe-medio);
+}
+
+/* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
+.spacer-section {
+  display: block;
+}
+
+/* --- PARTE INFERIOR: SECCIÓN DE COPYRIGHT --- */
+.footer-bottom {
+  text-align: center;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(74, 51, 25, 0.1); /* Línea divisoria sutil */
+  width: 100%;
+}
+
+.footer-bottom p {
+  color: #4a3319;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* ==========================================================================
+   FOOTER - SPRITES 8 BIT DEL EQUIPO
+   ========================================================================== */
+
+.pixel-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    padding-right: 0;
+}
+
+.pixel-interaction-title {
+    width: 100%;
+    text-align: center;
+    color: var(--texto-principal-cafe-oscuro);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin: 0 0 2px 0;
+    letter-spacing: 0.5px;
+}
+
+.pixel-interaction-title::after {
+    content: "";
+    display: block;
+    width: 95px;
+    height: 2px;
+    background-color: var(--cafe-medio);
+    margin: 4px auto 0;
+    border-radius: 999px;
+}
+
+   .pixel-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0;
+}
+
+.pixel-message {
+  text-align: right;
+  color: var(--texto-principal-cafe-oscuro);
+  display: none; /* Para que los sprites usen todo el espacio */
+}
+
+.pixel-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--cafe-medio);
+  margin: 0;
+}
+
+.pixel-description {
+  font-size: 0.95rem;
+  color: var(--texto-principal-cafe-oscuro);
+  margin: 0;
+  max-width: 360px;
+  line-height: 1.1rem;
+}
+
+.pixel-team {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: nowrap; /* CLAVE: evita que se bajen */
+}
+
+/* Base de cada sprite */
+.pixel-member {
+  --sprite-size: clamp(58px, 4vw, 82px);
+
+  width: var(--sprite-size);
+  height: var(--sprite-size);
+  background-image: var(--sprite);
+  background-repeat: no-repeat;
+  background-size: calc(var(--sprite-size) * var(--frames)) var(--sprite-size);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  animation: pixel-animation var(--speed, 1s) steps(var(--frames)) infinite;
+  transform-origin: bottom center;
+  transition: transform 0.25s ease;
+  flex: 0 0 var(--sprite-size);
+}
+
+.pixel-member:hover {
+  transform: translateY(-6px) scale(1.08);
+}
+
+@keyframes pixel-animation {
+  from {
+    background-position-x: 0;
+  }
+
+  to {
+    background-position-x: calc(var(--sprite-size) * var(--frames) * -1);
+  }
+}
+
+/*Ajuste de cada integrante*/
+.pixel-mafer {
+  --sprite: url("../../assets/sprites/maf1-9.png.png");
+  --frame-width: 96px;
+  --frame-height: 96px;
+  --sheet-width: 864px;
+  --frames: 9;
+  --speed: 1s;
+}
+
+.pixel-ilse {
+  --sprite: url("../../assets/sprites/adr1.png");
+  --frame-width: 96px;
+  --frame-height: 96px;
+  --sheet-width: 864px;
+  --frames: 9;
+  --speed: 1.05s;
+}
+
+.pixel-rodrigo {
+  --sprite: url("../../assets/sprites/rod1.png");
+  --frame-width: 96px;
+  --frame-height: 96px;
+  --sheet-width: 864px;
+  --frames: 9;
+  --speed: 0.95s;
+}
+
+.pixel-israel {
+  --sprite: url("../../assets/sprites/isr1.png");
+  --frame-width: 96px;
+  --frame-height: 96px;
+  --sheet-width: 864px;
+  --frames: 9;
+  --speed: 1.1s;
+}
+
+.pixel-miguel {
+  --sprite: url("../../assets/sprites/mig1.png");
+  --frame-width: 96px;
+  --frame-height: 96px;
+  --sheet-width: 864px;
+  --frames: 9;
+  --speed: 1s;
+}
+
+.pixel-carlos {
+  --sprite: url("../../assets/sprites/car1.png");
+  --frame-width: 96px;
+  --frame-height: 96px;
+  --sheet-width: 864px;
+  --frames: 9;
+  --speed: 0.98s;
+}
+
+.pixel-tonantzin {
+  --sprite: url("../../assets/sprites/ton1.png");
+  --frame-width: 96px;
+  --frame-height: 96px;
+  --sheet-width: 864px;
+  --frames: 9;
+  --speed: 1.08s;
+}
+
+
+
+
+
+
+
+/* ==========================================================================
+   AJUSTES RESPONSIVOS (Pantallas Móviles)
+   ========================================================================== */
+
+@media (max-width: 1030px) {
+  .navbar {
+    padding: 8px 0;
+  }
+
+  .navbar-logo {
+    width: 95px;
+    max-width: 95px;
+  }
+
+  .nav-link {
+    font-size: 1.4rem;
+  }
+}
+
+
+@media (max-width: 991px) {
+  .navbar {
+    padding: 0.4rem 1rem;
+  }
+
+  .navbar .container {
+    min-height: 90px;
+    max-width: 100%;
+  }
+
+  .navbar-logo {
+    width: 95px;
+    max-width: 95px;
+  }
+
+  .navbar-toggler {
+    border: none;
+    padding: 0.25rem;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  .navbar-collapse {
+    background-color: var(--beige-calido-degradado);
+    padding: 1rem 0;
+    text-align: center;
+  }
+
+  .navbar-nav {
+    gap: 0.4rem;
+  }
+
+  .nav-link {
+    font-size: 1.4rem;
+    padding: 0.4rem 0;
+  }
+
+  .nav-link:hover {
+    transform: none;
+  }
+
+  .navbar-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+
+
+  .footer-container {
+    grid-template-columns: 1fr; /* Cambia a una sola columna vertical */
+    text-align: center;
+    gap: 25px;
+  }
+
+  /* Centra contenidos en celulares y remueve el margen izquierdo */
+  .logo-section {
+    align-items: center;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  /*Responsive de los 8bit*/
+  
+  .pixel-section {
+        align-items: center;
+        gap: 8px;
+    }
+
+    .pixel-interaction-title {
+        font-size: 1.25rem;
+        margin-bottom: 4px;
+    }
+
+    .pixel-interaction-title::after {
+        width: 75px;
+    }
+    
+  .pixel-section {
+    align-items: center;
+    text-align: center;
+    padding-right: 0;
+    gap: 10px;
+  }
+
+  .pixel-message {
+    text-align: center;
+  }
+
+  .pixel-description {
+    max-width: 280px;
+    font-size: 0.85rem;
+  }
+
+  .pixel-team {
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .pixel-member {
+    transform: scale(0.75);
+    margin: -10px;
+  }
+
+  .pixel-member:hover {
+    transform: scale(0.8) translateY(-4px);
+  }
+}
+
+
+@media (max-width: 576px) {
+  .navbar .container {
+    min-height: 78px;
+  }
+
+  .navbar-logo {
+    width: 78px;
+    max-width: 78px;
+  }
+}
