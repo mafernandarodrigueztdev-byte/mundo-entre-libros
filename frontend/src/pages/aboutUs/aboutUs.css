@@ -388,15 +388,22 @@ main {
 }
 
 .line-divider::after {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--cafe-medio);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--cafe-medio);
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap');#521F12
+
+.body {
+    font-family:  'Cormorant Garamond';
+}
+
+.header-caption-custom{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .about-card p {
@@ -1000,352 +1007,22 @@ main {
     .member.is-next .member-card-back {
         display: none;
     }
-
-    .member.is-prev,
-    .member.is-next {
-        filter: opacity(0.85);
-    }
-
-    .member-photo {
-        height: 215px;
-    }
-
-    .member-info {
-        min-height: 155px;
-    }
-
-    .member-card-back {
-        padding: 22px 18px;
-    }
-
-    .member-card-back h3 {
-        font-size: 1.35rem;
-        line-height: 1.35rem;
-    }
-
-    .member-card-back p {
-        font-size: 0.76rem;
-        line-height: 1.02rem;
-    }
-
-    .member-card-back a {
-        font-size: 0.78rem;
-        padding: 8px 18px;
-    }
-
-    .team-arrow {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 5;
-        width: 38px;
-        height: 38px;
-        border: none;
-        border-radius: 50%;
-        background-color: var(--beige-calido-degradado);
-        color: var(--texto-principal-cafe-oscuro);
-        font-size: 1.8rem;
-        font-weight: 700;
-        cursor: pointer;
-        box-shadow: 0 6px 14px rgba(82, 31, 18, 0.14);
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .team-arrow:hover {
-        background-color: var(--texto-principal-cafe-oscuro);
-        color: var(--fondo-principal-crema);
-        transform: translateY(-50%) scale(1.08);
-    }
-
-    .team-arrow-left {
-        left: 16px;
-    }
-
-    .team-arrow-right {
-        right: 16px;
-    }
 }
 
-@media (max-width: 991px) {
-  .navbar {
-    padding: 0.4rem 1rem;
-  }
-
-  .navbar .container {
-    min-height: 90px;
-    max-width: 100%;
-  }
-
-  .navbar-logo {
-    width: 95px;
-    max-width: 95px;
-  }
-
-  .navbar-toggler {
-    border: none;
-    padding: 0.25rem;
-  }
-
-  .navbar-toggler:focus {
-    box-shadow: none;
-  }
-
-  .navbar-collapse {
-    background-color: var(--beige-calido-degradado);
-    padding: 1rem 0;
     text-align: center;
-  }
+    z-index: 10;
+    width: 80%;
+}
 
-  .navbar-nav {
-    gap: 0.4rem;
-  }
+.header-caption-custom h1{
+    font-family: 'Cormorant Garamond', serif !important;
+    color: #4a1f13; /* café oscuro */
+    font-size: 6rem;
+    margin-bottom: 1rem;
+}
 
-  .nav-link {
-    font-size: 1.4rem;
-    padding: 0.4rem 0;
-  }
-
-  .nav-link:hover {
-    transform: none;
-  }
-
-  .navbar-icon {
-    width: 36px;
-    height: 36px;
-  }
-
-  .search-form {
-    width: 90%;
-    margin: 1rem auto 0;
-    justify-content: center;
-  }
-  
-  .header-caption-custom {
-    justify-content: center;
-    padding: 0.5rem 1rem;
-  }
-
-  .header-caption-custom h1 {
+.header-caption-custom p{
+    font-family: 'Cormorant Garamond', serif !important;
+    color: #4a1f13;
     font-size: 2rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .header-caption-custom p {
-    font-size: 0.72rem;
-    line-height: 1.05;
-    max-width: 230px;
-  }
-
-  .about-section {
-    padding-top: 45px;
-  }
-
-  /* Oculta la columna espaciadora en celulares */
-  .spacer-section {
-    display: none;
-  }
-
-  .team {
-        padding: 45px 0;
-    }
-
-    .team h2 {
-        font-size: 2rem;
-        margin-bottom: 24px;
-    }
-
-    .team-carousel {
-        min-height: 360px;
-        padding: 0 34px;
-    }
-
-    .team-carousel-window {
-        height: 360px;
-    }
-
-    .member {
-        width: 170px;
-        height: 310px;
-    }
-
-    .member.is-prev {
-        transform: translate(calc(-50% - 145px), -50%) scale(0.72);
-    }
-
-    .member.is-active {
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    .member.is-next {
-        transform: translate(calc(-50% + 145px), -50%) scale(0.72);
-    }
-
-    .member-photo {
-        height: 160px;
-    }
-
-    .member-info {
-        min-height: 150px;
-        padding: 10px 8px;
-    }
-
-    .member-name {
-        font-size: 0.8rem;
-        line-height: 0.95rem;
-    }
-
-    .member-role {
-        font-size: 0.68rem;
-        line-height: 0.8rem;
-    }
-
-    .member-card-back {
-        padding: 16px 12px;
-    }
-
-    .member-card-back h3 {
-        font-size: 1.1rem;
-        line-height: 1.15rem;
-        margin-bottom: 8px;
-    }
-
-    .member-card-back p {
-        font-size: 0.63rem;
-        line-height: 0.78rem;
-    }
-
-    .member-card-back a {
-        font-size: 0.64rem;
-        padding: 7px 12px;
-        margin-top: 10px;
-    }
-
-    .team-arrow {
-        width: 30px;
-        height: 30px;
-        font-size: 1.4rem;
-    }
-
-    .team-arrow-left {
-        left: 6px;
-    }
-
-    .team-arrow-right {
-        right: 6px;
-    }
-
-  .footer-container {
-    grid-template-columns: 1fr; /* Cambia a una sola columna vertical */
-    text-align: center;
-    gap: 25px;
-  }
-
-  /* Centra contenidos en celulares y remueve el margen izquierdo */
-  .logo-section {
-    align-items: center;
-    justify-content: center;
-    margin-left: 0;
-  }
-
-  /*Responsive de los 8bit*/
-  .pixel-section {
-        align-items: center;
-        gap: 8px;
-    }
-
-    .pixel-interaction-title {
-        font-size: 1.25rem;
-        margin-bottom: 4px;
-    }
-
-    .pixel-interaction-title::after {
-        width: 75px;
-    }
-  
-  .pixel-section {
-    align-items: center;
-    text-align: center;
-    padding-right: 0;
-    gap: 10px;
-  }
-
-  .pixel-message {
-    text-align: center;
-  }
-
-  .pixel-description {
-    max-width: 280px;
-    font-size: 0.85rem;
-  }
-
-  .pixel-team {
-    justify-content: center;
-    gap: 4px;
-  }
-
-  .pixel-member {
-    transform: scale(0.75);
-    margin: -10px;
-  }
-
-  .pixel-member:hover {
-    transform: scale(0.8) translateY(-4px);
-  }
-}
-
-@media (max-width: 576px) {
-  .navbar .container {
-    min-height: 78px;
-  }
-
-  .navbar-logo {
-    width: 78px;
-    max-width: 78px;
-  }
-}
-
-/* Celulares pequeños */
-@media (max-width: 430px) {
-  .team h2 {
-    font-size: 1.8rem;
-  }
-
-  .team-carousel {
-    gap: 4px;
-    padding: 0 8px;
-  }
-
-  .member {
-        flex: 0 0 155px;
-        height: 290px;
-    }
-
-    .member-photo {
-        height: 155px;
-    }
-
-    .member-info {
-        min-height: 135px;
-    }
-
-    .member-name {
-        font-size: 0.76rem;
-    }
-
-    .member-role {
-        font-size: 0.68rem;
-    }
-
-    .member-card-back p {
-        font-size: 0.68rem;
-        line-height: 0.85rem;
-    }
-
-  .team-arrow {
-    min-width: 20px;
-    font-size: 1.5rem;
-  }
 }
