@@ -686,9 +686,10 @@ main {
 /* --- COLUMNA 2: EXPLORA (NAVEGACIÓN) --- */
 .footer-section h3 {
   color: #4a3319;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 900;
-  margin-bottom: 5px;
+ margin-bottom: 10px;
+  margin-left: 30px;
 }
 
 .footer-section h3::after {
@@ -706,7 +707,7 @@ main {
 .footer-section ul li a {
   color: var(--texto-principal-cafe-oscuro);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.05rem;
   transition: color 0.4s ease;
 }
 

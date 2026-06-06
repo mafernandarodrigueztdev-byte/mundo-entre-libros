@@ -266,9 +266,10 @@ main {
 /* --- COLUMNA 2: EXPLORA (NAVEGACIÓN) --- */
 .footer-section h3 {
   color: #4a3319;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 900;
-  margin-bottom: 5px;
+ margin-bottom: 10px;
+  margin-left: 30px;
 }
 
 .footer-section h3::after {
@@ -286,7 +287,7 @@ main {
 .footer-section ul li a {
   color: var(--texto-principal-cafe-oscuro);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.05rem;
   transition: color 0.4s ease;
 }
 
@@ -627,4 +628,100 @@ main {
     width: 78px;
     max-width: 78px;
   }
+}
+/*Cards foros*/
+
+/* =========================
+   GRID DE FOROS
+========================= */
+#foros-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+/* =========================
+   CARD
+========================= */
+.foro-card {
+  background: var(--crema-secundario);
+  border: 1px solid var(--beige-grisaceo);
+  border-radius: 14px;
+
+  padding: 16px;
+  color: var(--texto-principal-cafe-oscuro);
+
+  box-shadow: 0 6px 18px rgba(82, 31, 18, 0.12);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.foro-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(82, 31, 18, 0.18);
+}
+
+/* =========================
+   TÍTULO
+========================= */
+.foro-card h3 {
+  font-size: 18px;
+  margin: 0;
+  color: var(--texto-principal-cafe-oscuro);
+}
+
+/* =========================
+   DESCRIPCIÓN
+========================= */
+.foro-card p {
+  font-size: 13px;
+  opacity: 0.85;
+  margin: 0;
+  line-height: 1.4;
+  color: var(--texto-principal-cafe-oscuro);
+}
+
+/* =========================
+   STATS
+========================= */
+.foro-card small {
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--cafe-medio);
+  opacity: 0.9;
+}
+
+/* =========================
+   BOTÓN UNIRME
+========================= */
+.btn-unirme {
+  margin-top: 12px;
+  padding: 8px 12px;
+
+  border: 1px solid var(--boton-principal-acento-fuerte);
+  border-radius: 8px;
+
+  background-color: transparent;
+  color: var(--boton-principal-acento-fuerte);
+
+  font-size: 13px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.btn-unirme:hover {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  transform: scale(1.05);
+}
+
+.btn-unirme:active {
+  transform: scale(0.97);
 }

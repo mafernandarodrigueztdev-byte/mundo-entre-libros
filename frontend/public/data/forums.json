@@ -1,0 +1,51 @@
+[
+  {
+    "nombre": "Fantasía",
+    "icono": "🐉",
+    "descripcion": "Mundos mágicos, dragones, hechizos y aventuras épicas.",
+    "miembros": 1245,
+    "publicaciones": 320
+  },
+  {
+    "nombre": "Terror",
+    "icono": "👻",
+    "descripcion": "Historias escalofriantes, creepypastas y relatos oscuros.",
+    "miembros": 987,
+    "publicaciones": 280
+  },
+  {
+    "nombre": "Misterio",
+    "icono": "🕵️",
+    "descripcion": "Enigmas, crímenes y teorías sin resolver.",
+    "miembros": 842,
+    "publicaciones": 210
+  },
+  {
+    "nombre": "Ciencia Ficción",
+    "icono": "🚀",
+    "descripcion": "Tecnología futura, viajes espaciales y universos alternos.",
+    "miembros": 756,
+    "publicaciones": 190
+  },
+  {
+    "nombre": "Romance",
+    "icono": "❤️",
+    "descripcion": "Historias de amor, relaciones y novelas románticas.",
+    "miembros": 521,
+    "publicaciones": 120
+  },
+  {
+    "nombre": "Aventura",
+    "icono": "🗺️",
+    "descripcion": "Exploraciones, viajes y acción sin límites.",
+    "miembros": 1690,
+    "publicaciones": 1275
+  },
+  {
+    "nombre": "Filosofía",
+    "icono": "🧠",
+    "descripcion": "Debates sobre la vida, la mente y la existencia.",
+    "miembros": 1830,
+    "publicaciones": 195
+  }
+]
