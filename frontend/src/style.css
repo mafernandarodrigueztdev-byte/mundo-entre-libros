@@ -22,25 +22,42 @@
   --crema-secundario: #f6ebd9;
   --cafe-medio: #a0653d;
   --beige-grisaceo: #d9cdc1;
-  /* Nota: Asegúrate de tener definida esta variable en tu proyecto si la vas a usar */
   --color-verde-acento: #2e5a44;
+
+  --sombra-suave: 0 8px 20px rgba(82, 31, 18, 0.08);
+  --sombra-media: 0 12px 26px rgba(82, 31, 18, 0.12);
+  --transicion: 0.3s ease;
 }
 
+html,
 body {
   width: 100%;
   min-height: 100%;
-  margin: 0;
-  padding: 0;
   background-color: var(--fondo-principal-crema);
   overflow-x: hidden;
 }
 
+body {
+  color: var(--texto-principal-cafe-oscuro);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input {
+  font-family: "Cormorant Garamond", serif;
+}
+
 /* Comportamiento Flexbox para el contenedor de Bootstrap */
 .container-fluid {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
   min-height: 100vh;
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 /* El elemento <main> se expande para empujar el footer al fondo */
@@ -51,14 +68,12 @@ main {
 /* ==========================================================================
    NAVBAR
    ========================================================================== */
-
 .navbar {
   background-color: var(--beige-calido-degradado);
-  font-family: "Cormorant Garamond", serif;
   font-size: 1.6rem;
   font-weight: 700;
   padding: 0.5rem 0;
-  box-shadow: var(--sombra);
+  box-shadow: var(--sombra-suave);
 }
 
 /* Contenedor interno de Bootstrap */
@@ -85,12 +100,18 @@ main {
   transform: none;
 }
 
+/* Separación entre elementos del menú */
+.navbar-nav {
+  align-items: center;
+  gap: 10px;
+}
+
 /* Links */
 .nav-link {
   position: relative;
   color: var(--texto-principal-cafe-oscuro) !important;
   padding: 0.5rem 1rem;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: color var(--transicion), transform var(--transicion);
 }
 
 .nav-link:hover,
@@ -110,7 +131,7 @@ main {
   height: 2px;
   background-color: var(--cafe-medio);
   transform: translateX(-50%);
-  transition: width 0.3s ease;
+  transition: width var(--transicion);
 }
 
 .nav-link:hover::after,
@@ -123,47 +144,12 @@ main {
   width: 42px;
   height: 42px;
   object-fit: contain;
-}
-
-/* Buscador */
-.search-form input {
-  font-size: 1rem;
-}
-
-.search-form .btn {
-  background-color: var(--boton-principal-acento-fuerte);
-  color: var(--fondo-principal-crema);
-  border: none;
-  font-size: 1rem;
-  padding: 0.45rem 1rem;
-}
-
-.search-form .btn:hover {
-  background-color: var(--texto-principal-cafe-oscuro);
-  color: var(--fondo-principal-crema);
-}
-
-/* ==========================================================================
-   ICONOS NAVBAR
-   ========================================================================== */
-
-.navbar-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
   transition: transform var(--transicion);
 }
 
 /* Hover sobre iconos */
 .nav-link:hover .navbar-icon {
-  transform: scale(1.1);
-  transform: translateY(-2px);
-}
-
-/* Separación entre los elementos del menú */
-.navbar-nav {
-  align-items: center;
-  gap: 10px;
+  transform: translateY(-2px) scale(1.08);
 }
 
 /* Más espacio antes del icono de usuario */
@@ -184,46 +170,609 @@ main {
   box-shadow: none;
 }
 
-.btn {
-  background-color: var(--boton-principal-acento-fuerte);
-  font-weight: 800;
-  transition: 0.1s ease;
+/* Buscador */
+.search-form input {
+  font-size: 1rem;
 }
 
+.search-form .btn,
+.btn {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border: none;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 0.45rem 1rem;
+  transition: background-color var(--transicion), transform var(--transicion);
+}
 
+.search-form .btn:hover,
+.btn:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
+}
 
-/*Sección carrusel header: Carlos/
+/* ==========================================================================
+   SECCIÓN CARRUSEL HEADER: MAFER
+   ========================================================================== */
 
+/* Contenedor general del header */
+.home-header {
+  width: 100%;
+  background-color: var(--fondo-principal-crema);
+  padding: 0 32px 28px;
+}
 
+/* Carrusel principal */
+.home-hero-carousel {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 18px 18px;
+  box-shadow: var(--sombra-suave);
+}
 
+/* Cada slide del carrusel */
+.home-hero-slide {
+  min-height: 430px;
+  padding: 56px 90px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 48px;
+  overflow: hidden;
+}
 
-/*Sección foros destacados: Miguel/
+/* Imagen de fondo de cada slide */
+.home-hero-bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
 
+/* Capa suave encima de la imagen para que el texto se lea */
+.home-hero-slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(246, 235, 217, 0.92),
+      rgba(246, 235, 217, 0.62),
+      rgba(241, 240, 229, 0.35)
+    );
+  z-index: 1;
+}
 
+/* Contenido textual del slide */
+.home-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+  color: var(--texto-principal-cafe-oscuro);
+  background-color: rgba(246, 235, 217, 0.76);
+  border: 1px solid rgba(82, 31, 18, 0.12);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 10px 24px rgba(82, 31, 18, 0.12);
+}
 
+/* Etiqueta superior */
+.home-hero-label {
+  display: inline-block;
+  color: var(--cafe-medio);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
 
-/*Sección libros destacados: Adri/
+/* Título principal */
+.home-hero-content h1 {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: clamp(3rem, 5vw, 5.2rem);
+  font-weight: 700;
+  line-height: 0.95;
+  margin-bottom: 1.2rem;
+}
 
+/* Títulos secundarios */
+.home-hero-content h2 {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: clamp(2.7rem, 4.5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 1.2rem;
+}
 
+/* Descripción */
+.home-hero-content p {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.3rem;
+  line-height: 1.5;
+  margin-bottom: 1.8rem;
+}
+
+/* Botones del carrusel */
+.home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.home-hero-btn {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 0.75rem 1.6rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background-color var(--transicion),
+    color var(--transicion),
+    transform var(--transicion);
+}
+
+.home-hero-btn.primary {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+}
+
+.home-hero-btn.secondary {
+  background-color: transparent;
+  color: var(--texto-principal-cafe-oscuro);
+  border: 1px solid rgba(82, 31, 18, 0.35);
+}
+
+.home-hero-btn:hover {
+  transform: translateY(-3px);
+}
+
+.home-hero-btn.primary:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
+}
+
+.home-hero-btn.secondary:hover {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+}
+
+/* Slide 2: portadas de libros destacados */
+.home-hero-books-preview {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.home-hero-books-preview img {
+  width: 150px;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--beige-grisaceo);
+  box-shadow: 0 10px 20px rgba(82, 31, 18, 0.22);
+  background-color: var(--crema-secundario);
+  transition: transform var(--transicion);
+}
+
+.home-hero-books-preview img:nth-child(2) {
+  width: 175px;
+  height: 260px;
+  transform: translateY(-12px);
+}
+
+/* Slide 3: etiquetas de foros */
+.home-hero-forum-tags {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.home-hero-forum-tags span {
+  background-color: rgba(246, 235, 217, 0.86);
+  color: var(--texto-principal-cafe-oscuro);
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  border-radius: 999px;
+  padding: 0.8rem 1.2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  box-shadow: 0 6px 14px rgba(82, 31, 18, 0.12);
+}
+
+/* Flechas laterales del carrusel */
+.home-hero-control {
+  width: 70px;
+  opacity: 1;
+  z-index: 3;
+}
+
+.home-hero-control .carousel-control-prev-icon,
+.home-hero-control .carousel-control-next-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  background-size: 100% 100%;
+  filter: invert(15%) sepia(32%) saturate(1311%) hue-rotate(341deg)
+    brightness(87%) contrast(96%);
+}
+
+/* Indicadores inferiores */
+.home-hero-carousel .carousel-indicators {
+  margin-bottom: 18px;
+  z-index: 3;
+}
+
+.home-hero-carousel .carousel-indicators [data-bs-target] {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--texto-principal-cafe-oscuro);
+  opacity: 0.35;
+}
+
+.home-hero-carousel .carousel-indicators .active {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   CONTENEDOR GENERAL DE FOROS Y LIBROS
+   ========================================================================== */
+
+main {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: stretch;
+  padding: 28px 32px 48px;
+}
+
+/* Estilo base compartido por ambas secciones */
+.foros-contenedor,
+.libros-destacados {
+  width: 100%;
+  height: 620px;
+  background-color: var(--fondo-principal-crema);
+  border: 1px solid var(--beige-grisaceo);
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow: var(--sombra-suave);
+  overflow: hidden;
+}
+
+/* Ambas secciones se estructuran verticalmente */
+.foros-contenedor,
+.libros-destacados {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Títulos compartidos */
+.titulo-foros,
+.libros-destacados h2 {
+  text-align: center;
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0 0 24px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   SECCIÓN FOROS DESTACADOS: MIGUEL
+   ========================================================================== */
+
+/* Lista de foros con scroll interno */
+#foros-populares {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Scroll interno de foros */
+#foros-populares::-webkit-scrollbar {
+  width: 7px;
+}
+
+#foros-populares::-webkit-scrollbar-track {
+  background-color: rgba(82, 31, 18, 0.06);
+  border-radius: 999px;
+}
+
+#foros-populares::-webkit-scrollbar-thumb {
+  background-color: rgba(82, 31, 18, 0.35);
+  border-radius: 999px;
+}
+
+/* Compatibilidad con cards renderizadas como .foro-card-mini */
+.foro-card-mini,
+.home-forum-card {
+  width: 100%;
+  min-height: 155px;
+  background-color: var(--fondo-blanco-calido);
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  box-shadow: 0 6px 14px rgba(82, 31, 18, 0.06);
+  transition: transform var(--transicion), box-shadow var(--transicion);
+  flex-shrink: 0;
+}
+
+.foro-card-mini:hover,
+.home-forum-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-media);
+}
+
+/* Icono del foro */
+.foro-icono,
+.home-forum-icon {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background-color: var(--fondo-principal-crema);
+  border: 1px solid rgba(82, 31, 18, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  text-align: center;
+}
+
+/* Contenido del foro */
+.foro-content,
+.home-forum-content {
+  width: 100%;
+  min-width: 0;
+}
+
+.foro-content h4,
+.home-forum-content h3 {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.foro-content p,
+.home-forum-content p {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.02rem;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+/* Estadísticas del foro */
+.foro-stats,
+.home-forum-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--cafe-medio);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.9rem;
+}
+
+/* Botón entrar al foro */
+.home-forum-button,
+.foro-card-mini button,
+.foro-card-mini a:not(.btn-ver-mas) {
+  width: fit-content;
+  min-width: 150px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color var(--transicion), transform var(--transicion);
+}
+
+.home-forum-button:hover,
+.foro-card-mini button:hover,
+.foro-card-mini a:not(.btn-ver-mas):hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
+  transform: translateY(-2px);
+}
+
+/* Botón Ver más */
+.btn-ver-mas {
+  width: fit-content;
+  display: block;
+  align-self: center;
+  margin: 18px auto 0;
+  padding: 0.65rem 1.4rem;
+  border: 1px solid rgba(82, 31, 18, 0.35);
+  border-radius: 10px;
+  background-color: transparent;
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background-color var(--transicion),
+    color var(--transicion),
+    transform var(--transicion);
+  flex-shrink: 0;
+}
+
+.btn-ver-mas:hover {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   SECCIÓN LIBROS DESTACADOS: ADRI
+   ========================================================================== */
+
+/* Carrusel de libros */
+.libros-carousel {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Ventana visible del carrusel */
+.libros-ventana {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Track horizontal */
+.libros-track {
+  display: flex;
+  gap: 18px;
+  transition: transform 0.4s ease;
+}
+
+/* Card de libro */
+.libro-card {
+  flex: 0 0 calc((100% - 36px) / 2.5);
+  max-width: calc((100% - 36px) / 2.5);
+  min-width: calc((100% - 36px) / 2.5);
+  height: 430px;
+  background-color: var(--crema-secundario);
+  border: 1px solid var(--beige-grisaceo);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 5px 12px rgba(82, 31, 18, 0.06);
+}
+
+/* Imagen del libro */
+.libro-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid var(--beige-grisaceo);
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* Información del libro */
+.libro-info {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  align-items: start;
+}
+
+.libro-info h4 {
+  margin: 0;
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.libro-info p {
+  margin: 0;
+  color: var(--cafe-medio);
+  font-size: 0.9rem;
+}
+
+.libro-precio {
+  display: inline-block;
+  margin: 8px 0;
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* Botón agregar carrito */
+.btn-agregar-carrito {
+  width: 100%;
+  margin-top: auto;
+  padding: 0.65rem 1rem;
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transicion), transform var(--transicion);
+}
+
+.btn-agregar-carrito:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  transform: translateY(-2px);
+}
+
+/* Flechas del carrusel */
+.flecha-libros {
+  flex: 0 0 auto;
+  background-color: transparent;
+  border: none;
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  transition: transform var(--transicion), color var(--transicion);
+}
+
+.flecha-libros:hover {
+  color: var(--cafe-medio);
+  transform: scale(1.12);
+}
 
 /* ==========================================================================
    SECCIÓN: ESTILOS DEL FOOTER
    ========================================================================== */
 .main-footer {
-  background-color: #f8e1c1; /* Color crema base */
-  padding: 15px 0 10px 0;
   width: 100%;
-  margin-top: auto; /* Refuerzo de posicionamiento */
+  background-color: var(--beige-calido-degradado);
+  padding: 18px 0 12px;
+  margin-top: auto;
 }
 
 /* Distribución en 3 columnas alineadas verticalmente al centro */
 .footer-container {
+  width: 100%;
   max-width: 1800px;
-  margin: 3px auto;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 10px;
-  padding: 0 20px;
+  grid-template-columns: 1fr 0.55fr 1.7fr;
+  gap: 24px;
+  padding: 0 40px;
   align-items: center;
 }
 
@@ -231,9 +780,8 @@ main {
 .logo-section {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinea logo e imágenes a la izquierda */
-  gap: 3px;
-  margin-left: 20px;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .footer-logo {
@@ -244,35 +792,20 @@ main {
 
 .team-github-icons {
   display: flex;
-  gap: 15px; /* Separación horizontal entre cada imagen */
+  gap: 15px;
   margin-top: 5px;
 }
 
-/* Estilos para los iconos de fuente de Bootstrap */
 .member-icon {
   font-size: 2rem;
   color: #4a3319;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
+  transition: transform var(--transicion), color var(--transicion);
   display: inline-block;
 }
 
-/* Efecto al pasar el cursor encima de un icono */
 .team-github-icons a:hover .member-icon {
   transform: translateY(-3px);
   color: black;
-}
-
-/* Ajuste de columnas desktop*/
-.footer-container {
-  max-width: 1800px;
-  margin: 3px auto;
-  display: grid;
-  grid-template-columns: 1fr 0.55fr 1.7fr;
-  gap: 24px;
-  padding: 0 40px;
-  align-items: center;
 }
 
 /* --- COLUMNA 2: EXPLORA (NAVEGACIÓN) --- */
@@ -280,8 +813,7 @@ main {
   color: #4a3319;
   font-size: 1.3rem;
   font-weight: 900;
- margin-bottom: 10px;
-  margin-left: 30px;
+  margin-bottom: 10px;
 }
 
 .footer-section h3::after {
@@ -290,55 +822,32 @@ main {
 
 .footer-section ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-section ul li {
-  margin-bottom: 0.5px;
+  margin-bottom: 2px;
 }
 
 .footer-section ul li a {
   color: var(--texto-principal-cafe-oscuro);
   text-decoration: none;
   font-size: 1.05rem;
-  transition: color 0.4s ease;
+  transition: color var(--transicion);
 }
 
 .footer-section ul li a:hover {
   color: var(--cafe-medio);
 }
 
-/* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
-.spacer-section {
-  display: block;
-}
-
 /* --- PARTE INFERIOR: SECCIÓN DE COPYRIGHT --- */
 .footer-bottom {
+  width: 100%;
   text-align: center;
   margin-top: 15px;
   padding-top: 10px;
-  border-top: 1px solid rgba(74, 51, 25, 0.1); /* Línea divisoria sutil */
-  width: 100%;
-}
-
-.footer-bottom p {
-  color: #4a3319;
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-/* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
-.spacer-section {
-  display: block;
-}
-
-/* --- PARTE INFERIOR: SECCIÓN DE COPYRIGHT --- */
-.footer-bottom {
-  text-align: center;
-  margin-top: 15px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(74, 51, 25, 0.1); /* Línea divisoria sutil */
-  width: 100%;
+  border-top: 1px solid rgba(74, 51, 25, 0.1);
 }
 
 .footer-bottom p {
@@ -350,65 +859,39 @@ main {
 /* ==========================================================================
    FOOTER - SPRITES 8 BIT DEL EQUIPO
    ========================================================================== */
-
-.pixel-section {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 4px;
-    padding-right: 0;
-}
-
-.pixel-interaction-title {
-    width: 100%;
-    text-align: center;
-    color: var(--texto-principal-cafe-oscuro);
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.45rem;
-    font-weight: 700;
-    margin: 0 0 2px 0;
-    letter-spacing: 0.5px;
-}
-
-.pixel-interaction-title::after {
-    content: "";
-    display: block;
-    width: 95px;
-    height: 2px;
-    background-color: var(--cafe-medio);
-    margin: 4px auto 0;
-    border-radius: 999px;
-}
-
 .pixel-section {
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  padding-right: 0;
+  justify-content: center;
+  gap: 8px;
 }
 
-.pixel-message {
-  text-align: right;
+.pixel-interaction-title {
+  width: 100%;
+  text-align: center;
   color: var(--texto-principal-cafe-oscuro);
-  display: none; /* Para que los sprites usen todo el espacio */
-}
-
-.pixel-title {
-  font-size: 1.25rem;
+  font-size: 1.45rem;
   font-weight: 700;
-  color: var(--cafe-medio);
   margin: 0;
+  letter-spacing: 0.5px;
 }
 
+.pixel-interaction-title::after {
+  content: "";
+  display: block;
+  width: 95px;
+  height: 2px;
+  background-color: var(--cafe-medio);
+  margin: 4px auto 0;
+  border-radius: 999px;
+}
+
+.pixel-message,
+.pixel-title,
 .pixel-description {
-  font-size: 0.95rem;
-  color: var(--texto-principal-cafe-oscuro);
-  margin: 0;
-  max-width: 360px;
-  line-height: 1.1rem;
+  display: none;
 }
 
 .pixel-team {
@@ -417,7 +900,7 @@ main {
   align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
-  flex-wrap: nowrap; /* CLAVE: evita que se bajen */
+  flex-wrap: nowrap;
 }
 
 /* Base de cada sprite */
@@ -433,7 +916,7 @@ main {
   image-rendering: crisp-edges;
   animation: pixel-animation var(--speed, 1s) steps(var(--frames)) infinite;
   transform-origin: bottom center;
-  transition: transform 0.25s ease;
+  transition: transform var(--transicion);
   flex: 0 0 var(--sprite-size);
 }
 
@@ -451,94 +934,278 @@ main {
   }
 }
 
-/*Ajuste de cada integrante*/
+/* Ajuste de cada integrante */
 .pixel-mafer {
   --sprite: url("/src/assets/sprites/maf1-9.png.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1s;
 }
 
 .pixel-ilse {
   --sprite: url("/src/assets/sprites/adr1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1.05s;
 }
 
 .pixel-rodrigo {
   --sprite: url("/src/assets/sprites/rod1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 0.95s;
 }
 
 .pixel-israel {
   --sprite: url("/src/assets/sprites/isr1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1.1s;
 }
 
 .pixel-miguel {
   --sprite: url("/src/assets/sprites/mig1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1s;
 }
 
 .pixel-carlos {
   --sprite: url("/src/assets/sprites/car1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 0.98s;
 }
 
 .pixel-tonantzin {
   --sprite: url("/src/assets/sprites/ton1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1.08s;
 }
 
-
-
-
-
-
 /* ==========================================================================
-   AJUSTES RESPONSIVOS (Pantallas Móviles)
+   AJUSTES RESPONSIVOS - TABLET
    ========================================================================== */
-
-@media (max-width: 1030px) {
-  .navbar {
-    padding: 8px 0;
+@media (max-width: 1100px) {
+  main {
+    grid-template-columns: 1fr;
+    padding: 24px;
   }
 
-  .navbar-logo {
-    width: 95px;
-    max-width: 95px;
+  .foros-contenedor,
+  .libros-destacados {
+    width: 100%;
+    max-width: 950px;
+    height: auto;
+    min-height: 560px;
+    margin: 0 auto;
   }
 
-  .nav-link {
-    font-size: 1.4rem;
+  #foros-populares {
+    max-height: 500px;
+  }
+
+  .libro-card {
+    flex-basis: calc((100% - 18px) / 2);
+    min-width: calc((100% - 18px) / 2);
+    max-width: calc((100% - 18px) / 2);
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 28px;
+  }
+
+  .logo-section {
+    align-items: center;
+  }
+
+  .team-github-icons {
+    justify-content: center;
+  }
+
+  .pixel-team {
+    justify-content: center;
+    gap: 8px;
   }
 }
 
+/* ==========================================================================
+   AJUSTES RESPONSIVOS - NAVBAR Y HEADER
+   ========================================================================== */
+
+/* ==========================================================================
+   AJUSTES RESPONSIVOS - TABLET / 1024px a 1100px
+   ========================================================================== */
+@media (max-width: 1100px) {
+  /* --------------------------------------------------------------------------
+     Navbar
+     -------------------------------------------------------------------------- */
+  .navbar {
+    padding: 0.45rem 1rem;
+  }
+
+  .navbar .container {
+    max-width: 100%;
+    min-height: 82px;
+  }
+
+  .navbar-logo {
+    width: 82px;
+    max-width: 82px;
+  }
+
+  .nav-link {
+    font-size: 1.35rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .navbar-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .search-form input {
+    max-width: 180px;
+  }
+
+  /* --------------------------------------------------------------------------
+     Carrusel header: Mafer
+     -------------------------------------------------------------------------- */
+  .home-header {
+    padding: 0 24px 26px;
+  }
+
+  .home-hero-carousel {
+    max-width: 100%;
+  }
+
+  .home-hero-slide {
+    min-height: 430px;
+    padding: 48px 64px;
+    grid-template-columns: 1fr 0.85fr;
+    gap: 32px;
+  }
+
+  .home-hero-content {
+    max-width: 560px;
+    padding: 24px;
+  }
+
+  .home-hero-content h1 {
+    font-size: clamp(2.7rem, 5vw, 4.4rem);
+  }
+
+  .home-hero-content h2 {
+    font-size: clamp(2.4rem, 4.5vw, 4rem);
+  }
+
+  .home-hero-content p {
+    font-size: 1.15rem;
+  }
+
+  .home-hero-books-preview {
+    gap: 12px;
+  }
+
+  .home-hero-books-preview img {
+    width: 120px;
+    height: 185px;
+  }
+
+  .home-hero-books-preview img:nth-child(2) {
+    width: 140px;
+    height: 215px;
+  }
+
+  .home-hero-forum-tags {
+    gap: 10px;
+  }
+
+  .home-hero-forum-tags span {
+    font-size: 1rem;
+    padding: 0.65rem 1rem;
+  }
+
+  .home-hero-control {
+    width: 54px;
+  }
+
+  /* --------------------------------------------------------------------------
+     Contenedor general: Foros + Libros
+     -------------------------------------------------------------------------- */
+  main {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .foros-contenedor,
+  .libros-destacados {
+    width: 100%;
+    max-width: 950px;
+    height: auto;
+    min-height: 560px;
+    margin: 0 auto;
+  }
+
+  /* --------------------------------------------------------------------------
+     Foros destacados: Miguel
+     -------------------------------------------------------------------------- */
+  #foros-populares {
+    max-height: 470px;
+  }
+
+  .foro-card-mini,
+  .home-forum-card {
+    min-height: 145px;
+  }
+
+  .foro-content h4,
+  .home-forum-content h3 {
+    font-size: 1.35rem;
+  }
+
+  .foro-content p,
+  .home-forum-content p {
+    font-size: 1rem;
+  }
+
+  /* --------------------------------------------------------------------------
+     Libros destacados: Adri
+     -------------------------------------------------------------------------- */
+  .libros-carousel {
+    gap: 12px;
+  }
+
+  .libro-card {
+    flex-basis: calc((100% - 18px) / 2);
+    min-width: calc((100% - 18px) / 2);
+    max-width: calc((100% - 18px) / 2);
+    height: 430px;
+  }
+
+  .libro-img {
+    height: 260px;
+  }
+
+  /* --------------------------------------------------------------------------
+     Footer
+     -------------------------------------------------------------------------- */
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 28px;
+  }
+
+  .logo-section {
+    align-items: center;
+  }
+
+  .team-github-icons {
+    justify-content: center;
+  }
+
+  .pixel-team {
+    justify-content: center;
+    gap: 8px;
+  }
+}
 
 @media (max-width: 991px) {
   .navbar {
@@ -546,22 +1213,13 @@ main {
   }
 
   .navbar .container {
-    min-height: 90px;
+    min-height: 78px;
     max-width: 100%;
   }
 
   .navbar-logo {
-    width: 95px;
-    max-width: 95px;
-  }
-
-  .navbar-toggler {
-    border: none;
-    padding: 0.25rem;
-  }
-
-  .navbar-toggler:focus {
-    box-shadow: none;
+    width: 78px;
+    max-width: 78px;
   }
 
   .navbar-collapse {
@@ -575,7 +1233,7 @@ main {
   }
 
   .nav-link {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     padding: 0.4rem 0;
   }
 
@@ -588,389 +1246,291 @@ main {
     height: 36px;
   }
 
-
-
-  .footer-container {
-    grid-template-columns: 1fr; /* Cambia a una sola columna vertical */
-    text-align: center;
-    gap: 25px;
-  }
-
-  /* Centra contenidos en celulares y remueve el margen izquierdo */
-  .logo-section {
-    align-items: center;
+  .search-form {
     justify-content: center;
-    margin-left: 0;
+    margin-top: 0.8rem;
   }
 
-  /*Responsive de los 8bit*/
-  .pixel-section {
-        align-items: center;
-        gap: 8px;
-    }
+  .home-header {
+    padding: 0 20px 24px;
+  }
 
-    .pixel-interaction-title {
-        font-size: 1.25rem;
-        margin-bottom: 4px;
-    }
-
-    .pixel-interaction-title::after {
-        width: 75px;
-    }
-  
-  .pixel-section {
-    align-items: center;
+  .home-hero-slide {
+    min-height: 470px;
+    padding: 48px 56px;
+    grid-template-columns: 1fr;
     text-align: center;
-    padding-right: 0;
+    gap: 28px;
+  }
+
+  .home-hero-content {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .home-hero-actions {
+    justify-content: center;
+  }
+
+  .home-hero-books-preview img {
+    width: 120px;
+    height: 190px;
+  }
+
+  .home-hero-books-preview img:nth-child(2) {
+    width: 140px;
+    height: 215px;
+  }
+
+  .home-hero-control {
+    width: 52px;
+  }
+}
+
+/* ==========================================================================
+   AJUSTES RESPONSIVOS - MÓVIL
+   ========================================================================== */
+@media (max-width: 768px) {
+  .home-header {
+    padding: 0 12px 22px;
+  }
+
+  .home-hero-carousel {
+    border-radius: 0 0 14px 14px;
+  }
+
+  .home-hero-slide {
+    min-height: 520px;
+    padding: 44px 34px 58px;
+  }
+
+  .home-hero-content {
+    padding: 22px;
+  }
+
+  .home-hero-content h1,
+  .home-hero-content h2 {
+    font-size: 2.7rem;
+  }
+
+  .home-hero-content p {
+    font-size: 1.1rem;
+  }
+
+  .home-hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-hero-btn {
+    width: 100%;
+    max-width: 260px;
+    text-align: center;
+  }
+
+  .home-hero-books-preview {
     gap: 10px;
   }
 
-  .pixel-message {
-    text-align: center;
+  .home-hero-books-preview img {
+    width: 88px;
+    height: 140px;
   }
 
-  .pixel-description {
-    max-width: 280px;
-    font-size: 0.85rem;
+  .home-hero-books-preview img:nth-child(2) {
+    width: 105px;
+    height: 165px;
+    transform: translateY(-8px);
+  }
+
+  .home-hero-forum-tags span {
+    font-size: 1rem;
+    padding: 0.65rem 1rem;
+  }
+
+  .home-hero-control {
+    width: 42px;
+  }
+
+  .home-hero-control .carousel-control-prev-icon,
+  .home-hero-control .carousel-control-next-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  main {
+    padding: 20px 14px 36px;
+    gap: 22px;
+  }
+
+  .foros-contenedor,
+  .libros-destacados {
+    padding: 20px 16px;
+    border-radius: 16px;
+    min-height: auto;
+    height: auto;
+  }
+
+  #foros-populares {
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
+  }
+
+  .titulo-foros,
+  .libros-destacados h2 {
+    font-size: 1.55rem;
+    margin-bottom: 18px;
+  }
+
+  .foro-card-mini,
+  .home-forum-card {
+    grid-template-columns: 56px 1fr;
+    gap: 14px;
+    padding: 16px;
+    align-items: start;
+    min-height: auto;
+  }
+
+  .foro-icono,
+  .home-forum-icon {
+    width: 52px;
+    height: 52px;
+    font-size: 1.55rem;
+  }
+
+  .foro-content h4,
+  .home-forum-content h3 {
+    font-size: 1.28rem;
+  }
+
+  .foro-content p,
+  .home-forum-content p {
+    font-size: 0.95rem;
+  }
+
+  .foro-stats,
+  .home-forum-stats {
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+
+  .home-forum-button,
+  .foro-card-mini button,
+  .foro-card-mini a:not(.btn-ver-mas) {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .libro-card {
+    flex-basis: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .libro-img {
+    height: 240px;
+  }
+
+  .footer-container {
+    padding: 0 20px;
+  }
+
+  .footer-logo {
+    max-width: 240px;
+  }
+
+  .pixel-interaction-title {
+    font-size: 1.25rem;
   }
 
   .pixel-team {
     justify-content: center;
-    gap: 4px;
+    gap: 2px;
   }
 
   .pixel-member {
-    transform: scale(0.75);
-    margin: -10px;
+    --sprite-size: 56px;
+    margin: 0 -6px;
   }
 
   .pixel-member:hover {
-    transform: scale(0.8) translateY(-4px);
+    transform: translateY(-4px) scale(1.04);
   }
 }
 
-
-@media (max-width: 576px) {
+/* ==========================================================================
+   AJUSTES RESPONSIVOS - MÓVIL CHICO
+   ========================================================================== */
+@media (max-width: 430px) {
   .navbar .container {
-    min-height: 78px;
+    min-height: 72px;
   }
 
   .navbar-logo {
-    width: 78px;
-    max-width: 78px;
+    width: 70px;
+    max-width: 70px;
   }
-}
-/*Cards foros*/
 
-/* =========================
-   FUENTE GENERAL DEL BLOQUE
-========================= */
-.foros-contenedor {
-  font-family: "Cormorant Garamond", serif;
+  .home-hero-slide {
+    min-height: 540px;
+    padding: 38px 26px 58px;
+  }
 
-  width: 50%;
-  background: var(--fondo-principal-crema);
-  border: 1px solid var(--beige-grisaceo);
-  border-radius: 16px;
+  .home-hero-content h1,
+  .home-hero-content h2 {
+    font-size: 2.25rem;
+  }
 
-  padding: 18px;
+  .home-hero-content p {
+    font-size: 1rem;
+  }
 
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  .home-hero-books-preview img {
+    width: 75px;
+    height: 120px;
+  }
 
-  box-shadow: 0 8px 20px rgba(82, 31, 18, 0.08);
-}
+  .home-hero-books-preview img:nth-child(2) {
+    width: 88px;
+    height: 140px;
+  }
 
-/* =========================
-   TÍTULO
-========================= */
-.titulo-foros {
-  text-align: center;
-  margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--texto-principal-cafe-oscuro);
-}
+  main {
+    padding: 16px 10px 32px;
+  }
 
-/* =========================
-   LISTA
-========================= */
-#foros-populares {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* =========================
-   CARD FORO
-========================= */
-.foro-card-mini {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-
-  padding: 14px;
-  border-radius: 12px;
-
-  border: 1px solid var(--beige-grisaceo);
-
-  transition: 0.2s ease;
-}
-
-/* alternado elegante */
-.foro-card-mini:nth-child(odd) {
-  background: var(--crema-secundario);
-}
-
-.foro-card-mini:nth-child(even) {
-  background: var(--beige-calido-degradado);
-}
-
-.foro-card-mini:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(82, 31, 18, 0.12);
-}
-
-/* =========================
-   ICONO GRANDE
-========================= */
-.foro-icono {
-  font-size: 36px;
-  min-width: 50px;
-  text-align: center;
-}
-
-/* =========================
-   CONTENIDO
-========================= */
-.foro-content {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.foro-content h4 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--texto-principal-cafe-oscuro);
-}
-
-.foro-content p {
-  margin: 0;
-  font-size: 13px;
-  opacity: 0.8;
-}
-
-.foro-stats {
-  font-size: 12px;
-  color: var(--cafe-medio);
-}
-
-/* =========================
-   BOTÓN VER MÁS
-========================= */
-.btn-ver-mas {
-  align-self: center;
-
-  margin-top: 8px;
-  padding: 8px 14px;
-
-  background: transparent;
-  border: 1px solid var(--boton-principal-acento-fuerte);
-  color: var(--boton-principal-acento-fuerte);
-
-  border-radius: 10px;
-
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-
-  transition: 0.25s ease;
-}
-
-.btn-ver-mas:hover {
-  background: var(--boton-principal-acento-fuerte);
-  color: var(--fondo-principal-crema);
-}
-
-/*Libros destacados */
-
-/* Contenedor general de foros + libros */
-main {
-    display: flex;
-    gap: 14px;
-    align-items: stretch;
-    padding: 0 6px;
-}
-
-/* Asegura que foros quede a la izquierda */
-main > section {
-    width: 50%;
-}
-
-/* Libros destacados */
-
-.libros-destacados{
-    flex-basis: 50%;
-    max-width: 50%;
-
-    background: var(--fondo-principal-crema);
-    border: 1px solid var(--beige-grisaceo);
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 8px 20px rgba(82, 31, 18, 0.08);
-}
-
-.libros-destacados h2 {
+  .foro-card-mini,
+  .home-forum-card {
+    grid-template-columns: 1fr;
     text-align: center;
-    margin: 0 0 16px;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--texto-principal-cafe-oscuro);
-}
+  }
 
-.libros-carousel {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+  .foro-icono,
+  .home-forum-icon {
+    margin: 0 auto;
+  }
 
-.libros-ventana {
-    overflow: hidden;
-    width: 100%;
-}
+  .foro-stats,
+  .home-forum-stats {
+    justify-content: center;
+  }
 
-.libros-track {
-    display: flex;
-    gap: 14px;
-    transition: transform 0.4s ease;
-}
+  .libro-img {
+    height: 220px;
+  }
 
-.libro-card {
-    min-width: calc((100% - 28px) / 2.5);
-    max-width: calc((100% - 28px) / 2.5);
-    background: var(--crema-secundario);
-    border: 1px solid var(--beige-grisaceo);
-    border-radius: 12px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-}
+  .footer-logo {
+    max-width: 220px;
+  }
 
-.libro-img {
-    width: 100%;
-    height: 210px;
-    object-fit: cover;
-    object-position: center;
-    border: 1px solid var(--beige-grisaceo);
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
+  .pixel-member {
+    --sprite-size: 48px;
+    margin: 0 -7px;
+  }
 
-.libro-info {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 4px;
-    align-items: start;
-}
-
-.libro-info h4 {
-    margin: 0;
-    font-size: 16px;
-    color: var(--texto-principal-cafe-oscuro);
-}
-
-.libro-info p {
-    margin: 0;
-    font-size: 13px;
-    color: var(--cafe-medio);
-}
-
-.libro-precio {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--texto-principal-cafe-oscuro);
-}
-
-.btn-agregar-carrito {
-    margin-top: auto;
-    padding: 8px;
-    background: var(--boton-principal-acento-fuerte);
-    color: var(--fondo-principal-crema);
-    border: none;
-    border-radius: 6px;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.btn-agregar-carrito:hover {
-    opacity: 0.9;
-}
-
-.flecha-libros {
-    background: transparent;
-    border: none;
-    color: var(--texto-principal-cafe-oscuro);
-    font-size: 28px;
-    cursor: pointer;
-    padding: 6px;
-}
-
-.flecha-libros:hover {
-    transform: scale(1.1);
-}
-
-/*Contenedores*/
-
-main{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.foros-contenedor,
-.libros-destacados{
-    flex-basis: 50%;
-    max-width: 50%;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    main {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    }
-
-     .foros-contenedor,
-    .libros-destacados {
-        width: 90%;
-        max-width: 420px;
-        margin: 0 auto;
-    }
-
-    .libro-card {
-        flex: 0 0 100%;
-        min-width: 100%;
-        max-width: 100%;
-    }
-
-    .libro-img {
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
-        object-position: center;
-    }
-    
-    .libros-track {
-        gap: 14px;
-    }
+  .footer-bottom p {
+    font-size: 1rem;
+  }
 }

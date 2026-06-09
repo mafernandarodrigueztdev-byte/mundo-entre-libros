@@ -75,10 +75,180 @@
                 </div>
             </div>
         </nav>
-        <h1>Prueba: Título Home</h1>
-        <!--? Header / Carrusel: Carlos-->
-        <header>
-            <!--Escribe tu código aquí-->
+        <!--? Header / Carrusel: Mafer -->
+        <header class="home-header" aria-label="Carrusel principal de Mundo Entre Libros">
+        <div
+            id="homeHeroCarousel"
+            class="carousel slide home-hero-carousel"
+            data-bs-ride="carousel"
+            data-bs-interval="5000"
+        >
+            <!-- Indicadores inferiores -->
+            <div class="carousel-indicators">
+            <button
+                type="button"
+                data-bs-target="#homeHeroCarousel"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Bienvenida"
+            ></button>
+
+            <button
+                type="button"
+                data-bs-target="#homeHeroCarousel"
+                data-bs-slide-to="1"
+                aria-label="Libros más vendidos"
+            ></button>
+
+            <button
+                type="button"
+                data-bs-target="#homeHeroCarousel"
+                data-bs-slide-to="2"
+                aria-label="Foros de lectores"
+            ></button>
+            </div>
+
+            <div class="carousel-inner">
+
+            <!-- Slide 1: Bienvenida -->
+            <div class="carousel-item active">
+                <section class="home-hero-slide">
+                <img
+                    src="/src/assets/img/BackHeader.png"
+                    alt="Espacio cálido de lectura"
+                    class="home-hero-bg"
+                />
+
+                <div class="home-hero-content">
+                    <span class="home-hero-label">Librería digital</span>
+
+                    <h1>Bienvenido a Mundo Entre Libros</h1>
+
+                    <p>
+                    Descubre historias, autores y comunidades lectoras creadas para acompañarte
+                    en cada nueva aventura literaria.
+                    </p>
+
+                    <div class="home-hero-actions">
+                    <a href="/catalog/catalog.html" class="home-hero-btn primary">
+                        Explorar catálogo
+                    </a>
+
+                    <a href="/aboutUs/aboutUs.html" class="home-hero-btn secondary">
+                        Conócenos
+                    </a>
+                    </div>
+                </div>
+                </section>
+            </div>
+
+            <!-- Slide 2: Libros más vendidos -->
+            <div class="carousel-item">
+                <section class="home-hero-slide">
+                <img
+                    src="/src/assets/img/home-libros-vendidos.jpg"
+                    alt="Libros destacados y más vendidos"
+                    class="home-hero-bg"
+                />
+
+                <div class="home-hero-content">
+                    <span class="home-hero-label">Más vendidos</span>
+
+                    <h2>Historias que todos están leyendo</h2>
+
+                    <p>
+                    Explora nuestros libros destacados y encuentra tu próxima lectura favorita.
+                    </p>
+
+                    <div class="home-hero-actions">
+                    <a href="/catalog/catalog.html" class="home-hero-btn primary">
+                        Ver libros
+                    </a>
+                    </div>
+                </div>
+
+                <div class="home-hero-books-preview" aria-label="Libros destacados">
+                    <img
+                    src="/src/assets/libros/HP_Piedra_Filosofal.webp"
+                    alt="Harry Potter y la piedra filosofal"
+                    loading="lazy"
+                    />
+
+                    <img
+                    src="/src/assets/libros/9788419599216.jpg"
+                    alt="Orgullo y prejuicio"
+                    loading="lazy"
+                    />
+
+                    <img
+                    src="/src/assets/libros/It.webp"
+                    alt="It"
+                    loading="lazy"
+                    />
+                </div>
+                </section>
+            </div>
+
+            <!-- Slide 3: Foros -->
+            <div class="carousel-item">
+                <section class="home-hero-slide">
+                <img
+                    src="/src/assets/img/home-foros.jpg"
+                    alt="Biblioteca cálida para comunidad lectora"
+                    class="home-hero-bg"
+                />
+
+                <div class="home-hero-content">
+                    <span class="home-hero-label">Comunidad lectora</span>
+
+                    <h2>Comparte tus lecturas en nuestros foros</h2>
+
+                    <p>
+                    Únete a conversaciones por género, recomienda libros y conecta con otros
+                    lectores que comparten tus gustos.
+                    </p>
+
+                    <div class="home-hero-actions">
+                    <a href="/forums/forums.html" class="home-hero-btn primary">
+                        Ir a foros
+                    </a>
+                    </div>
+                </div>
+
+                <div class="home-hero-forum-tags" aria-label="Géneros de foros">
+                    <span>📚 Novela Juvenil</span>
+                    <span>🐉 Fantasía</span>
+                    <span>👻 Terror</span>
+                    <span>🚀 Ciencia Ficción</span>
+                    <span>🧠 Psicología</span>
+                </div>
+                </section>
+            </div>
+            </div>
+
+            <!-- Flecha izquierda -->
+            <button
+            class="carousel-control-prev home-hero-control"
+            type="button"
+            data-bs-target="#homeHeroCarousel"
+            data-bs-slide="prev"
+            aria-label="Slide anterior"
+            >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+
+            <!-- Flecha derecha -->
+            <button
+            class="carousel-control-next home-hero-control"
+            type="button"
+            data-bs-target="#homeHeroCarousel"
+            data-bs-slide="next"
+            aria-label="Siguiente slide"
+            >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
         </header>
         <main>
             <!--? Sección foros: Miguel-->
