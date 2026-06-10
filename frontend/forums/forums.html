@@ -103,49 +103,291 @@
                 </div>
             </div>
         </nav>
-        <h1>Prueba: Título Foros</h1>
-        <main>
-            <!--? Página principal-->
-            <!--* Header-->
-            <section>
-                <!--Escribe tu código aquí-->
+        
+        <!-- MAIN -->
+        <main class="forums-page">
+
+        <!-- VISTA PRINCIPAL DE FOROS -->
+        <section class="forums-home-view" id="forumsHomeView">
+            <header class="forums-hero">
+            <span class="forums-eyebrow">Comunidad lectora</span>
+
+            <h1>Foros y comunidades</h1>
+
+            <p>
+                Explora nuestros foros por género y únete a conversaciones con lectores
+                que comparten tu pasión por los libros.
+            </p>
+            </header>
+
+            <section class="forums-list-section" aria-labelledby="forumsListTitle">
+            <h2 id="forumsListTitle">Elige un género literario</h2>
+
+            <div id="foros-lista" class="forums-grid">
+                <!-- Aquí se renderizan las cards desde forums.json -->
+            </div>
             </section>
-            <!--* Cards de acceso a los foros-->
-            <section>
-                 <div id="foros-lista"></div>
-                <!--Escribe tu código aquí ESCRITORIO-->
+        </section>
+
+        <!-- VISTA INTERNA DEL FORO -->
+        <section class="forum-detail-view is-hidden" id="forumDetailView">
+
+            <!-- SIDEBAR IZQUIERDO -->
+            <aside class="forum-sidebar" aria-label="Géneros disponibles">
+            <div class="forum-sidebar-card">
+                <h2>Géneros</h2>
+
+                <div id="genreMenu" class="genre-menu">
+                <!-- Aquí se renderizan los géneros desde JSON -->
+                </div>
+            </div>
+
+            <div class="community-card">
+                <span>👥</span>
+                <h3>Únete a la comunidad</h3>
+                <p>Conoce lectores que comparten tu pasión por los libros.</p>
+            </div>
+            </aside>
+
+            <!-- CONTENIDO CENTRAL -->
+            <section class="forum-content">
+            <button class="back-to-forums" id="backToForumsBtn" type="button">
+                ← Volver a foros
+            </button>
+
+            <header class="forum-detail-header">
+                <div class="forum-detail-icon" id="forumDetailIcon">📚</div>
+
+                <div>
+                <h1 id="forumDetailTitle">Foro de género</h1>
+                <p id="forumDetailDescription">
+                    Descripción del foro seleccionado.
+                </p>
+                </div>
+            </header>
+
+            <!-- CREAR PUBLICACIÓN -->
+            <section class="create-post-card" aria-labelledby="createPostTitle">
+                <h2 id="createPostTitle">Crear publicación</h2>
+
+                <form class="forum-post-form" id="forumPostForm">
+                <input
+                    type="text"
+                    id="postTitle"
+                    name="postTitle"
+                    placeholder="Título"
+                />
+
+                <div
+                    id="postCommentEditor"
+                    class="rich-editor"
+                    contenteditable="true"
+                    role="textbox"
+                    aria-label="Escribe tu comentario"
+                    data-placeholder="Escribe tu comentario..."
+                ></div>
+
+                <div class="post-form-toolbar">
+                    <div class="editor-toolbar" data-editor-target="postCommentEditor">
+                    <button type="button" data-command="bold" aria-label="Negritas">
+                        <strong>B</strong>
+                    </button>
+
+                    <button type="button" data-command="italic" aria-label="Cursiva">
+                        <em>I</em>
+                    </button>
+
+                    <button type="button" data-command="underline" aria-label="Subrayado">
+                        <u>U</u>
+                    </button>
+
+                    <button type="button" data-command="insertUnorderedList">
+                        • Lista
+                    </button>
+
+                    <button type="button" data-command="insertOrderedList">
+                        1. Lista
+                    </button>
+
+                    <button type="button" data-command="createLink" aria-label="Agregar enlace">
+                        🔗
+                    </button>
+
+                    <button
+                        type="button"
+                        data-command="insertImage"
+                        data-input-id="postImageInput"
+                        aria-label="Agregar imagen"
+                    >
+                        🖼️
+                    </button>
+                    </div>
+
+                    <input
+                    type="file"
+                    id="postImageInput"
+                    accept="image/*"
+                    hidden
+                    />
+
+                    <button type="submit" class="publish-button">
+                    Publicar
+                    </button>
+                </div>
+                </form>
             </section>
-            <!--? Páginas interactivas-->
-            <!-- Esto se va a reciclar para todos los géneros -->
-            <!--* Panel de navegación-->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
+
+            <!-- PUBLICACIONES RECIENTES -->
+            <section class="recent-posts-section" aria-labelledby="recentPostsTitle">
+                <h2 id="recentPostsTitle">Publicaciones recientes</h2>
+
+                <div id="recentPostsList" class="recent-posts-list">
+                <!-- Aquí se renderizan las publicaciones -->
+                </div>
+
+                <button class="load-more-posts" type="button">
+                Ver más publicaciones ↓
+                </button>
             </section>
-            <!--* Header-->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
+
+            <!-- PANEL COMPLETO DE PUBLICACIÓN Y RESPUESTAS -->
+            <section class="post-detail-panel is-hidden" id="postDetailPanel">
+                <button class="back-to-posts" id="backToPostsBtn" type="button">
+                ← Volver a publicaciones
+                </button>
+
+                <article class="post-detail-card">
+                <div class="post-detail-header">
+                    <div class="post-avatar" id="postDetailAvatar">📚</div>
+
+                    <div>
+                    <h2 id="postDetailTitle">Título de la publicación</h2>
+                    <p id="postDetailMeta">Autor · Fecha</p>
+                    </div>
+                </div>
+
+                <div class="post-detail-body" id="postDetailBody">
+                    <!-- Aquí se carga la publicación completa -->
+                </div>
+                </article>
+
+                <section class="replies-section">
+                <h2>Respuestas</h2>
+
+                <div class="replies-list" id="repliesList">
+                    <!-- Aquí se renderizan las respuestas -->
+                </div>
+                </section>
+
+                <section class="reply-form-card">
+                <h2>Responder publicación</h2>
+
+                <form id="replyForm" class="reply-form">
+                    <div
+                    id="replyEditor"
+                    class="rich-editor"
+                    contenteditable="true"
+                    role="textbox"
+                    aria-label="Escribe tu respuesta"
+                    data-placeholder="Escribe tu respuesta..."
+                    ></div>
+
+                    <div class="post-form-toolbar">
+                    <div class="editor-toolbar" data-editor-target="replyEditor">
+                        <button type="button" data-command="bold" aria-label="Negritas">
+                        <strong>B</strong>
+                        </button>
+
+                        <button type="button" data-command="italic" aria-label="Cursiva">
+                        <em>I</em>
+                        </button>
+
+                        <button type="button" data-command="underline" aria-label="Subrayado">
+                        <u>U</u>
+                        </button>
+
+                        <button type="button" data-command="insertUnorderedList">
+                        • Lista
+                        </button>
+
+                        <button type="button" data-command="insertOrderedList">
+                        1. Lista
+                        </button>
+
+                        <button type="button" data-command="createLink" aria-label="Agregar enlace">
+                        🔗
+                        </button>
+
+                        <button
+                        type="button"
+                        data-command="insertImage"
+                        data-input-id="replyImageInput"
+                        aria-label="Agregar imagen"
+                        >
+                        🖼️
+                        </button>
+                    </div>
+
+                    <input
+                        type="file"
+                        id="replyImageInput"
+                        accept="image/*"
+                        hidden
+                    />
+
+                    <button type="submit" class="publish-button">
+                        Responder
+                    </button>
+                    </div>
+                </form>
+                </section>
             </section>
-            <!--* Formulario para crear publicación-->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
             </section>
-            <!--* Resumen del foro card -->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
+
+            <!-- PANEL DERECHO -->
+            <aside class="forum-info-panel">
+            <section class="forum-summary-card">
+                <h2>Resumen del foro</h2>
+
+                <button class="subscribe-forum-button" id="subscribeForumBtn" type="button">
+                Suscribirme al foro
+                </button>
+
+                <div class="summary-row">
+                <span>👥 Miembros activos</span>
+                <strong id="summaryMembers">0</strong>
+                </div>
+
+                <div class="summary-row">
+                <span>💬 Temas</span>
+                <strong id="summaryTopics">0</strong>
+                </div>
+
+                <div class="summary-row">
+                <span>⭐ Mis puntos en este foro</span>
+                <strong id="summaryPoints">0</strong>
+                </div>
             </section>
-            <!--* Card de puntos-->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
+
+            <section class="points-card">
+                <h2>🏆 Gana puntos</h2>
+
+                <div class="summary-row">
+                <span>Crear publicación</span>
+                <strong>+10</strong>
+                </div>
+
+                <div class="summary-row">
+                <span>Responder publicación</span>
+                <strong>+5</strong>
+                </div>
+
+                <p>Debes estar suscrita al foro para acumular puntos.</p>
             </section>
-            <!--* Publicaciones recientes-->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
-            </section>
-            <!--* Acceder y responder a publicaciones -->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
-            </section>
+            </aside>
+        </section>
         </main>
+
         <!--? Footer: Rodrigo-->
         <footer class="main-footer">
             <div class="footer-container">
@@ -246,6 +488,7 @@
             </div>
         </footer>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="../src/pages/forums/forums.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
