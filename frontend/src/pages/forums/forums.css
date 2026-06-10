@@ -1,10 +1,10 @@
 /* ==========================================================================
-   IMPORTACIÓN DE FUENTES (API de Google Fonts)
+   IMPORTACIÓN DE FUENTES
    ========================================================================== */
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
 
 /* ==========================================================================
-   RESET, CONFIGURACIÓN GLOBAL Y VARIABLES
+   RESET, VARIABLES Y CONFIGURACIÓN GLOBAL
    ========================================================================== */
 * {
   margin: 0;
@@ -22,53 +22,67 @@
   --crema-secundario: #f6ebd9;
   --cafe-medio: #a0653d;
   --beige-grisaceo: #d9cdc1;
-  /* Nota: Asegúrate de tener definida esta variable en tu proyecto si la vas a usar */
   --color-verde-acento: #2e5a44;
+
+  --sombra-suave: 0 8px 18px rgba(82, 31, 18, 0.08);
+  --sombra-media: 0 14px 28px rgba(82, 31, 18, 0.14);
+  --transicion: 0.3s ease;
 }
 
+html,
 body {
   width: 100%;
   min-height: 100%;
-  margin: 0;
-  padding: 0;
   background-color: var(--fondo-principal-crema);
   overflow-x: hidden;
 }
 
-/* Comportamiento Flexbox para el contenedor de Bootstrap */
-.container-fluid {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding: 0;
+body {
+  color: var(--texto-principal-cafe-oscuro);
 }
 
-/* El elemento <main> se expande para empujar el footer al fondo */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+textarea {
+  font-family: "Cormorant Garamond", serif;
+}
+
+.container-fluid {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 main {
+  width: 100%;
   flex: 1;
 }
 
 /* ==========================================================================
    NAVBAR
    ========================================================================== */
-
 .navbar {
+  width: 100%;
   background-color: var(--beige-calido-degradado);
-  font-family: "Cormorant Garamond", serif;
   font-size: 1.6rem;
   font-weight: 700;
   padding: 0.5rem 0;
-  box-shadow: var(--sombra);
+  box-shadow: var(--sombra-suave);
 }
 
-/* Contenedor interno de Bootstrap */
 .navbar .container {
   min-height: 90px;
   display: flex;
   align-items: center;
 }
 
-/* Marca / logo */
 .navbar-brand {
   padding: 0;
   margin: 0;
@@ -76,21 +90,23 @@ main {
   align-items: center;
 }
 
-/* Logo */
 .navbar-logo {
   width: 90px;
   max-width: 90px;
   height: auto;
   object-fit: contain;
-  transform: none;
 }
 
-/* Links */
+.navbar-nav {
+  align-items: center;
+  gap: 10px;
+}
+
 .nav-link {
   position: relative;
   color: var(--texto-principal-cafe-oscuro) !important;
   padding: 0.5rem 1rem;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: transform var(--transicion), color var(--transicion);
 }
 
 .nav-link:hover,
@@ -100,7 +116,6 @@ main {
   text-decoration: none;
 }
 
-/* Línea decorativa inferior */
 .nav-link::after {
   content: "";
   position: absolute;
@@ -110,42 +125,13 @@ main {
   height: 2px;
   background-color: var(--cafe-medio);
   transform: translateX(-50%);
-  transition: width 0.3s ease;
+  transition: width var(--transicion);
 }
 
 .nav-link:hover::after,
 .nav-link.active::after {
   width: 60%;
 }
-
-/* Iconos de cuenta y carrito */
-.navbar-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-/* Buscador */
-.search-form input {
-  font-size: 1rem;
-}
-
-.search-form .btn {
-  background-color: var(--boton-principal-acento-fuerte);
-  color: var(--fondo-principal-crema);
-  border: none;
-  font-size: 1rem;
-  padding: 0.45rem 1rem;
-}
-
-.search-form .btn:hover {
-  background-color: var(--texto-principal-cafe-oscuro);
-  color: var(--fondo-principal-crema);
-}
-
-/* ==========================================================================
-   ICONOS NAVBAR
-   ========================================================================== */
 
 .navbar-icon {
   width: 42px;
@@ -154,26 +140,8 @@ main {
   transition: transform var(--transicion);
 }
 
-/* Hover sobre iconos */
 .nav-link:hover .navbar-icon {
-  transform: scale(1.1);
-  transform: translateY(-2px);
-}
-
-/* Separación entre los elementos del menú */
-.navbar-nav {
-  align-items: center;
-  gap: 10px;
-}
-
-/* Más espacio antes del icono de usuario */
-.nav-item:nth-last-child(2) {
-  margin-left: 20px;
-}
-
-/* Espacio entre usuario y carrito */
-.nav-item:last-child {
-  margin-left: 10px;
+  transform: translateY(-2px) scale(1.08);
 }
 
 .navbar-toggler {
@@ -184,44 +152,645 @@ main {
   box-shadow: none;
 }
 
+.search-form input {
+  font-size: 1rem;
+}
+
+.search-form .btn,
 .btn {
   background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border: none;
+  font-size: 1rem;
   font-weight: 800;
-  transition: 0.1s ease;
+  padding: 0.45rem 1rem;
+  transition: background-color var(--transicion), transform var(--transicion);
 }
 
-
-
-
+.search-form .btn:hover,
+.btn:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
+}
 
 /* ==========================================================================
-   SECCIÓN: ESTILOS DEL FOOTER
+   PÁGINA DE FOROS
    ========================================================================== */
-.main-footer {
-  background-color: #f8e1c1; /* Color crema base */
-  padding: 15px 0 10px 0;
+.forums-page {
   width: 100%;
-  margin-top: auto; /* Refuerzo de posicionamiento */
+  background-color: var(--fondo-principal-crema);
+  color: var(--texto-principal-cafe-oscuro);
+  padding: 3rem 5rem;
 }
 
-/* Distribución en 3 columnas alineadas verticalmente al centro */
-.footer-container {
-  max-width: 1800px;
-  margin: 3px auto;
+.is-hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   VISTA PRINCIPAL
+   ========================================================================== */
+.forums-hero {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto 3rem;
+  background-color: var(--fondo-blanco-calido);
+  border: 1px solid rgba(82, 31, 18, 0.12);
+  border-radius: 18px;
+  padding: 3rem;
+  box-shadow: var(--sombra-suave);
+}
+
+.forums-eyebrow {
+  display: inline-block;
+  color: var(--cafe-medio);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.forums-hero h1 {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.forums-hero p {
+  max-width: 650px;
+  font-size: 1.35rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.forums-list-section {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.forums-list-section h2 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.forums-grid {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 10px;
-  padding: 0 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+}
+
+.forum-card {
+  background-color: var(--fondo-blanco-calido);
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  border-radius: 18px;
+  padding: 1.6rem;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 1.2rem;
+  align-items: start;
+  box-shadow: var(--sombra-suave);
+  transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+.forum-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-media);
+}
+
+.forum-card-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: var(--crema-secundario);
+  border: 1px solid rgba(82, 31, 18, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+}
+
+.forum-card-content h3 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.forum-card-content p {
+  font-size: 1.05rem;
+  line-height: 1.35;
+  margin-bottom: 1rem;
+}
+
+.forum-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: var(--cafe-medio);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   BOTONES GENERALES
+   ========================================================================== */
+.forum-enter-button,
+.publish-button,
+.back-to-forums,
+.back-to-posts,
+.post-actions button,
+.load-more-posts,
+.subscribe-forum-button,
+.cancel-edit-button,
+.post-management-actions button,
+.reply-card-actions button {
+  border: none;
+  border-radius: 8px;
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--transicion), background-color var(--transicion);
+}
+
+.forum-enter-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1.05rem;
+}
+
+.back-to-forums,
+.back-to-posts {
+  padding: 0.65rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.publish-button {
+  padding: 0.75rem 1.6rem;
+  font-size: 1.05rem;
+}
+
+.subscribe-forum-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.subscribe-forum-button.is-subscribed {
+  background-color: var(--cafe-medio);
+}
+
+.cancel-edit-button {
+  background-color: var(--cafe-medio);
+  padding: 0.75rem 1.2rem;
+}
+
+.forum-enter-button:hover,
+.publish-button:hover,
+.back-to-forums:hover,
+.back-to-posts:hover,
+.post-actions button:hover,
+.load-more-posts:hover,
+.subscribe-forum-button:hover,
+.cancel-edit-button:hover,
+.post-management-actions button:hover,
+.reply-card-actions button:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   VISTA INTERNA DEL FORO
+   ========================================================================== */
+.forum-detail-view {
+  width: 100%;
+  max-width: 1450px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 280px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.forum-sidebar-card,
+.community-card,
+.create-post-card,
+.forum-summary-card,
+.points-card,
+.recent-post-card,
+.post-detail-card,
+.reply-form-card,
+.reply-card {
+  background-color: var(--fondo-blanco-calido);
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  box-shadow: var(--sombra-suave);
+}
+
+.forum-sidebar-card,
+.community-card,
+.create-post-card,
+.forum-summary-card,
+.points-card,
+.post-detail-card,
+.reply-form-card,
+.reply-card {
+  border-radius: 16px;
+  padding: 1.4rem;
+}
+
+.forum-sidebar-card h2,
+.create-post-card h2,
+.recent-posts-section h2,
+.forum-summary-card h2,
+.points-card h2,
+.replies-section h2,
+.reply-form-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Sidebar */
+.genre-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.genre-menu-button {
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  border-radius: 12px;
+  background-color: var(--fondo-principal-crema);
+  color: var(--texto-principal-cafe-oscuro);
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transicion), transform var(--transicion);
+}
+
+.genre-menu-button span {
+  margin-right: 0.5rem;
+}
+
+.genre-menu-button:hover,
+.genre-menu-button.is-active {
+  background-color: var(--beige-calido-degradado);
+  transform: translateX(4px);
+}
+
+.community-card {
+  margin-top: 1.5rem;
+}
+
+.community-card span {
+  display: inline-block;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.community-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.community-card p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Header foro */
+.forum-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.forum-detail-icon,
+.post-avatar {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background-color: var(--fondo-blanco-calido);
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  flex: 0 0 auto;
+}
+
+.forum-detail-header h1 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 700;
+  margin: 0;
+}
+
+.forum-detail-header p {
+  font-size: 1.2rem;
+  margin: 0.3rem 0 0;
+}
+
+/* ==========================================================================
+   FORMULARIOS Y EDITOR
+   ========================================================================== */
+.forum-post-form,
+.reply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.forum-post-form input {
+  width: 100%;
+  border: 1px solid rgba(82, 31, 18, 0.18);
+  background-color: var(--fondo-principal-crema);
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.1rem;
+  padding: 0.9rem 1rem;
+  outline: none;
+}
+
+.forum-post-form input:focus,
+.rich-editor:focus {
+  border-color: var(--texto-principal-cafe-oscuro);
+  box-shadow: 0 0 0 3px rgba(82, 31, 18, 0.08);
+}
+
+.rich-editor {
+  width: 100%;
+  min-height: 160px;
+  border: 1px solid rgba(82, 31, 18, 0.18);
+  background-color: var(--fondo-principal-crema);
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.1rem;
+  padding: 0.9rem 1rem;
+  outline: none;
+  overflow-y: auto;
+  line-height: 1.5;
+}
+
+.rich-editor:empty::before {
+  content: attr(data-placeholder);
+  color: rgba(82, 31, 18, 0.35);
+}
+
+.rich-editor img,
+.post-detail-body img,
+.reply-card-body img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 0.75rem 0;
+}
+
+.post-form-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.editor-toolbar button {
+  border: 1px solid rgba(82, 31, 18, 0.18);
+  background-color: var(--fondo-principal-crema);
+  color: var(--cafe-medio);
+  border-radius: 6px;
+  font-weight: 700;
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+}
+
+.editor-toolbar button:hover {
+  background-color: var(--beige-calido-degradado);
+}
+
+/* ==========================================================================
+   PUBLICACIONES
+   ========================================================================== */
+.recent-posts-section {
+  margin-top: 2rem;
+}
+
+.recent-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recent-post-card {
+  border-radius: 14px;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 1rem;
   align-items: center;
 }
 
-/* --- COLUMNA 1: LOGO E ICONOS DE INTEGRANTES --- */
+.recent-post-card .post-avatar {
+  width: 50px;
+  height: 50px;
+  font-size: 1.6rem;
+}
+
+.post-content h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.post-content p {
+  margin: 0.2rem 0 0;
+  color: var(--cafe-medio);
+  font-size: 0.95rem;
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.post-actions span {
+  color: var(--cafe-medio);
+  font-weight: 700;
+}
+
+.post-actions button {
+  padding: 0.55rem 1rem;
+}
+
+.load-more-posts {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.7rem 1.3rem;
+  background-color: transparent;
+  color: var(--texto-principal-cafe-oscuro);
+  border: 1px solid rgba(82, 31, 18, 0.3);
+}
+
+.load-more-posts:hover {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   PANEL DE PUBLICACIÓN COMPLETA
+   ========================================================================== */
+.post-detail-panel {
+  margin-top: 2rem;
+}
+
+.post-detail-header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.post-detail-header h2 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.post-detail-header p {
+  margin: 0.2rem 0 0;
+  color: var(--cafe-medio);
+}
+
+.post-detail-body {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--texto-principal-cafe-oscuro);
+}
+
+.post-management-actions,
+.reply-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.post-management-actions button,
+.reply-card-actions button {
+  padding: 0.6rem 1rem;
+}
+
+.replies-section {
+  margin-top: 2rem;
+}
+
+.replies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reply-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reply-card-header {
+  color: var(--cafe-medio);
+  font-weight: 700;
+}
+
+.reply-card-body {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.reply-form-card {
+  margin-top: 2rem;
+}
+
+.empty-replies-message,
+.empty-posts-message,
+.forums-error {
+  background-color: var(--fondo-blanco-calido);
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  border-radius: 14px;
+  padding: 1rem;
+  color: var(--cafe-medio);
+}
+
+/* ==========================================================================
+   PANEL DERECHO
+   ========================================================================== */
+.forum-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(82, 31, 18, 0.12);
+  font-size: 1rem;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+.points-card {
+  background-color: var(--beige-calido-degradado);
+}
+
+.points-card p {
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.main-footer {
+  width: 100%;
+  background-color: var(--beige-calido-degradado);
+  padding: 18px 0 12px;
+  margin-top: auto;
+}
+
+.footer-container {
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 0.55fr 1.7fr;
+  gap: 24px;
+  padding: 0 40px;
+  align-items: center;
+}
+
 .logo-section {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinea logo e imágenes a la izquierda */
-  gap: 3px;
-  margin-left: 20px;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .footer-logo {
@@ -232,81 +801,56 @@ main {
 
 .team-github-icons {
   display: flex;
-  gap: 15px; /* Separación horizontal entre cada imagen */
+  gap: 15px;
   margin-top: 5px;
 }
 
-/* Estilos para los iconos de fuente de Bootstrap */
 .member-icon {
   font-size: 2rem;
   color: #4a3319;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
+  transition: transform var(--transicion), color var(--transicion);
   display: inline-block;
 }
 
-/* Efecto al pasar el cursor encima de un icono */
 .team-github-icons a:hover .member-icon {
   transform: translateY(-3px);
   color: black;
 }
 
-/* Ajuste de columnas desktop*/
-.footer-container {
-  max-width: 1800px;
-  margin: 3px auto;
-  display: grid;
-  grid-template-columns: 1fr 0.55fr 1.7fr;
-  gap: 24px;
-  padding: 0 40px;
-  align-items: center;
-}
-
-/* --- COLUMNA 2: EXPLORA (NAVEGACIÓN) --- */
 .footer-section h3 {
   color: #4a3319;
   font-size: 1.3rem;
   font-weight: 900;
- margin-bottom: 10px;
-  margin-left: 30px;
-}
-
-.footer-section h3::after {
-  display: none;
+  margin-bottom: 10px;
 }
 
 .footer-section ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-section ul li {
-  margin-bottom: 0.5px;
+  margin-bottom: 2px;
 }
 
 .footer-section ul li a {
   color: var(--texto-principal-cafe-oscuro);
   text-decoration: none;
   font-size: 1.05rem;
-  transition: color 0.4s ease;
+  transition: color var(--transicion);
 }
 
 .footer-section ul li a:hover {
   color: var(--cafe-medio);
 }
 
-/* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
-.spacer-section {
-  display: block;
-}
-
-/* --- PARTE INFERIOR: SECCIÓN DE COPYRIGHT --- */
 .footer-bottom {
+  width: 100%;
   text-align: center;
   margin-top: 15px;
   padding-top: 10px;
-  border-top: 1px solid rgba(74, 51, 25, 0.1); /* Línea divisoria sutil */
-  width: 100%;
+  border-top: 1px solid rgba(74, 51, 25, 0.1);
 }
 
 .footer-bottom p {
@@ -316,67 +860,35 @@ main {
 }
 
 /* ==========================================================================
-   FOOTER - SPRITES 8 BIT DEL EQUIPO
+   FOOTER - SPRITES 8 BIT
    ========================================================================== */
-
 .pixel-section {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 4px;
-    padding-right: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .pixel-interaction-title {
-    width: 100%;
-    text-align: center;
-    color: var(--texto-principal-cafe-oscuro);
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.45rem;
-    font-weight: 700;
-    margin: 0 0 2px 0;
-    letter-spacing: 0.5px;
+  width: 100%;
+  text-align: center;
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
 }
 
 .pixel-interaction-title::after {
-    content: "";
-    display: block;
-    width: 95px;
-    height: 2px;
-    background-color: var(--cafe-medio);
-    margin: 4px auto 0;
-    border-radius: 999px;
-}
-
-   .pixel-section {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 0;
-}
-
-.pixel-message {
-  text-align: right;
-  color: var(--texto-principal-cafe-oscuro);
-  display: none; /* Para que los sprites usen todo el espacio */
-}
-
-.pixel-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--cafe-medio);
-  margin: 0;
-}
-
-.pixel-description {
-  font-size: 0.95rem;
-  color: var(--texto-principal-cafe-oscuro);
-  margin: 0;
-  max-width: 360px;
-  line-height: 1.1rem;
+  content: "";
+  display: block;
+  width: 95px;
+  height: 2px;
+  background-color: var(--cafe-medio);
+  margin: 4px auto 0;
+  border-radius: 999px;
 }
 
 .pixel-team {
@@ -385,10 +897,9 @@ main {
   align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
-  flex-wrap: nowrap; /* CLAVE: evita que se bajen */
+  flex-wrap: nowrap;
 }
 
-/* Base de cada sprite */
 .pixel-member {
   --sprite-size: clamp(58px, 4vw, 82px);
 
@@ -401,7 +912,7 @@ main {
   image-rendering: crisp-edges;
   animation: pixel-animation var(--speed, 1s) steps(var(--frames)) infinite;
   transform-origin: bottom center;
-  transition: transform 0.25s ease;
+  transition: transform var(--transicion);
   flex: 0 0 var(--sprite-size);
 }
 
@@ -419,118 +930,102 @@ main {
   }
 }
 
-/*Ajuste de cada integrante*/
 .pixel-mafer {
-  --sprite: url("../../assets/sprites/maf1-9.png.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
+  --sprite: url("/src/assets/sprites/maf1-9.png.png");
   --frames: 9;
   --speed: 1s;
 }
 
 .pixel-ilse {
-  --sprite: url("../../assets/sprites/adr1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
+  --sprite: url("/src/assets/sprites/adr1.png");
   --frames: 9;
   --speed: 1.05s;
 }
 
 .pixel-rodrigo {
-  --sprite: url("../../assets/sprites/rod1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
+  --sprite: url("/src/assets/sprites/rod1.png");
   --frames: 9;
   --speed: 0.95s;
 }
 
 .pixel-israel {
-  --sprite: url("../../assets/sprites/isr1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
+  --sprite: url("/src/assets/sprites/isr1.png");
   --frames: 9;
   --speed: 1.1s;
 }
 
 .pixel-miguel {
-  --sprite: url("../../assets/sprites/mig1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
+  --sprite: url("/src/assets/sprites/mig1.png");
   --frames: 9;
   --speed: 1s;
 }
 
 .pixel-carlos {
-  --sprite: url("../../assets/sprites/car1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
+  --sprite: url("/src/assets/sprites/car1.png");
   --frames: 9;
   --speed: 0.98s;
 }
 
 .pixel-tonantzin {
-  --sprite: url("../../assets/sprites/ton1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
+  --sprite: url("/src/assets/sprites/ton1.png");
   --frames: 9;
   --speed: 1.08s;
 }
 
-
-
-
-
-
-
 /* ==========================================================================
-   AJUSTES RESPONSIVOS (Pantallas Móviles)
+   RESPONSIVE TABLET
    ========================================================================== */
-
-@media (max-width: 1030px) {
-  .navbar {
-    padding: 8px 0;
+@media (max-width: 1100px) {
+  .forums-page {
+    padding: 2rem;
   }
 
-  .navbar-logo {
-    width: 95px;
-    max-width: 95px;
+  .forums-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .nav-link {
-    font-size: 1.4rem;
+  .forum-detail-view {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .forum-info-panel {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 28px;
+  }
+
+  .logo-section {
+    align-items: center;
+  }
+
+  .pixel-team {
+    justify-content: center;
+    gap: 8px;
   }
 }
 
-
+/* ==========================================================================
+   RESPONSIVE NAVBAR
+   ========================================================================== */
 @media (max-width: 991px) {
   .navbar {
     padding: 0.4rem 1rem;
   }
 
   .navbar .container {
-    min-height: 90px;
+    min-height: 78px;
     max-width: 100%;
   }
 
   .navbar-logo {
-    width: 95px;
-    max-width: 95px;
-  }
-
-  .navbar-toggler {
-    border: none;
-    padding: 0.25rem;
-  }
-
-  .navbar-toggler:focus {
-    box-shadow: none;
+    width: 78px;
+    max-width: 78px;
   }
 
   .navbar-collapse {
@@ -544,7 +1039,7 @@ main {
   }
 
   .nav-link {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     padding: 0.4rem 0;
   }
 
@@ -557,171 +1052,283 @@ main {
     height: 36px;
   }
 
+  .search-form {
+    justify-content: center;
+    margin-top: 0.8rem;
+  }
+}
 
+/* ==========================================================================
+   RESPONSIVE MÓVIL
+   ========================================================================== */
+@media (max-width: 768px) {
+  .forums-page {
+    padding: 1.4rem 0.8rem;
+  }
+
+  .forums-hero {
+    padding: 2rem 1.4rem;
+    margin-bottom: 2rem;
+  }
+
+  .forums-hero h1 {
+    font-size: 2.4rem;
+    text-align: center;
+  }
+
+  .forums-hero p,
+  .forums-eyebrow {
+    text-align: center;
+    display: block;
+  }
+
+  .forums-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .forum-card {
+    grid-template-columns: 64px 1fr;
+    padding: 1.2rem;
+  }
+
+  .forum-card-icon {
+    width: 58px;
+    height: 58px;
+    font-size: 1.8rem;
+  }
+
+  .forum-detail-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .forum-content {
+    order: 1;
+    width: 100%;
+  }
+
+  .forum-sidebar {
+    order: 2;
+    width: 100%;
+  }
+
+  .forum-info-panel {
+    order: 3;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .forum-detail-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .forum-detail-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+  }
+
+  .forum-detail-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .forum-detail-header p {
+    font-size: 1rem;
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
+  .create-post-card,
+  .forum-sidebar-card,
+  .community-card,
+  .forum-summary-card,
+  .points-card,
+  .post-detail-card,
+  .reply-form-card,
+  .reply-card {
+    padding: 1rem;
+  }
+
+  .post-form-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .editor-toolbar {
+    justify-content: center;
+  }
+
+  .publish-button {
+    width: 100%;
+  }
+
+  .recent-post-card {
+    grid-template-columns: 46px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .recent-post-card .post-avatar {
+    width: 42px;
+    height: 42px;
+    font-size: 1.4rem;
+  }
+
+  .post-content h3 {
+    font-size: 1rem;
+  }
+
+  .post-content p {
+    font-size: 0.85rem;
+  }
+
+  .post-actions {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .post-actions button {
+    padding: 0.5rem 0.9rem;
+  }
+
+  .genre-menu {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.6rem;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x proximity;
+  }
+
+  .genre-menu-button {
+    min-width: max-content;
+    white-space: nowrap;
+    font-size: 0.95rem;
+    scroll-snap-align: start;
+  }
+
+  .genre-menu-button:hover,
+  .genre-menu-button.is-active {
+    transform: none;
+  }
+
+  .post-detail-header {
+    flex-direction: column;
+    text-align: center;
+  }
 
   .footer-container {
-    grid-template-columns: 1fr; /* Cambia a una sola columna vertical */
-    text-align: center;
-    gap: 25px;
+    padding: 0 20px;
   }
 
-  /* Centra contenidos en celulares y remueve el margen izquierdo */
-  .logo-section {
-    align-items: center;
+  .footer-logo {
+    max-width: 240px;
+  }
+
+  .team-github-icons {
     justify-content: center;
-    margin-left: 0;
+    flex-wrap: wrap;
   }
 
-  /*Responsive de los 8bit*/
-  .pixel-section {
-        align-items: center;
-        gap: 8px;
-    }
-
-    .pixel-interaction-title {
-        font-size: 1.25rem;
-        margin-bottom: 4px;
-    }
-
-    .pixel-interaction-title::after {
-        width: 75px;
-    }
-  
-  .pixel-section {
-    align-items: center;
-    text-align: center;
-    padding-right: 0;
-    gap: 10px;
-  }
-
-  .pixel-message {
-    text-align: center;
-  }
-
-  .pixel-description {
-    max-width: 280px;
-    font-size: 0.85rem;
+  .pixel-interaction-title {
+    font-size: 1.25rem;
   }
 
   .pixel-team {
     justify-content: center;
-    gap: 4px;
+    gap: 2px;
   }
 
   .pixel-member {
-    transform: scale(0.75);
-    margin: -10px;
+    --sprite-size: 56px;
+    margin: 0 -6px;
   }
 
   .pixel-member:hover {
-    transform: scale(0.8) translateY(-4px);
+    transform: translateY(-4px) scale(1.04);
   }
 }
 
-
-@media (max-width: 576px) {
+/* ==========================================================================
+   RESPONSIVE MÓVIL CHICO
+   ========================================================================== */
+@media (max-width: 430px) {
   .navbar .container {
-    min-height: 78px;
+    min-height: 72px;
   }
 
   .navbar-logo {
-    width: 78px;
-    max-width: 78px;
+    width: 70px;
+    max-width: 70px;
   }
-}
-/*Cards foros*/
 
-/* =========================
-   GRID DE FOROS
-========================= */
-#foros-lista {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
-  margin-top: 20px;
-  padding: 10px;
-}
+  .forums-page {
+    padding: 1rem 0.7rem;
+  }
 
-/* =========================
-   CARD
-========================= */
-.foro-card {
-  background: var(--crema-secundario);
-  border: 1px solid var(--beige-grisaceo);
-  border-radius: 14px;
+  .forums-list-section h2 {
+    font-size: 1.8rem;
+  }
 
-  padding: 16px;
-  color: var(--texto-principal-cafe-oscuro);
+  .forum-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
 
-  box-shadow: 0 6px 18px rgba(82, 31, 18, 0.12);
+  .forum-card-icon {
+    margin: 0 auto;
+  }
 
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  .forum-card-stats {
+    justify-content: center;
+  }
 
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  .forum-detail-header h1 {
+    font-size: 2rem;
+  }
 
-.foro-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(82, 31, 18, 0.18);
-}
+  .create-post-card h2,
+  .recent-posts-section h2,
+  .forum-sidebar-card h2,
+  .forum-summary-card h2,
+  .points-card h2,
+  .replies-section h2,
+  .reply-form-card h2 {
+    font-size: 1.35rem;
+  }
 
-/* =========================
-   TÍTULO
-========================= */
-.foro-card h3 {
-  font-size: 18px;
-  margin: 0;
-  color: var(--texto-principal-cafe-oscuro);
-}
+  .forum-post-form input,
+  .rich-editor {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
 
-/* =========================
-   DESCRIPCIÓN
-========================= */
-.foro-card p {
-  font-size: 13px;
-  opacity: 0.85;
-  margin: 0;
-  line-height: 1.4;
-  color: var(--texto-principal-cafe-oscuro);
-}
+  .recent-post-card {
+    padding: 0.9rem;
+  }
 
-/* =========================
-   STATS
-========================= */
-.foro-card small {
-  margin-top: auto;
-  font-size: 12px;
-  color: var(--cafe-medio);
-  opacity: 0.9;
-}
+  .post-actions {
+    align-items: center;
+  }
 
-/* =========================
-   BOTÓN UNIRME
-========================= */
-.btn-unirme {
-  margin-top: 12px;
-  padding: 8px 12px;
+  .post-actions button {
+    font-size: 0.9rem;
+  }
 
-  border: 1px solid var(--boton-principal-acento-fuerte);
-  border-radius: 8px;
+  .footer-logo {
+    max-width: 220px;
+  }
 
-  background-color: transparent;
-  color: var(--boton-principal-acento-fuerte);
+  .pixel-member {
+    --sprite-size: 48px;
+    margin: 0 -7px;
+  }
 
-  font-size: 13px;
-  cursor: pointer;
-
-  transition: all 0.2s ease;
-}
-
-.btn-unirme:hover {
-  background-color: var(--boton-principal-acento-fuerte);
-  color: var(--fondo-principal-crema);
-  transform: scale(1.05);
-}
-
-.btn-unirme:active {
-  transform: scale(0.97);
+  .footer-bottom p {
+    font-size: 1rem;
+  }
 }

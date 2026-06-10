@@ -1,51 +1,51 @@
 [
   {
+    "id": "novela-juvenil",
+    "nombre": "Novela Juvenil",
+    "descripcion": "Comparte historias, sagas y personajes que conectan con lectores jóvenes.",
+    "icono": "📚",
+    "posts": []
+  },
+  {
+    "id": "fantasia",
     "nombre": "Fantasía",
+    "descripcion": "Comparte recomendaciones y opiniones sobre mundos mágicos, héroes y criaturas.",
     "icono": "🐉",
-    "descripcion": "Mundos mágicos, dragones, hechizos y aventuras épicas.",
-    "miembros": 1245,
-    "publicaciones": 320
+    "posts": []
   },
   {
+    "id": "terror",
     "nombre": "Terror",
+    "descripcion": "Comparte historias escalofriantes y libros que te quitaron el sueño.",
     "icono": "👻",
-    "descripcion": "Historias escalofriantes, creepypastas y relatos oscuros.",
-    "miembros": 987,
-    "publicaciones": 280
+    "posts": []
   },
   {
-    "nombre": "Misterio",
-    "icono": "🕵️",
-    "descripcion": "Enigmas, crímenes y teorías sin resolver.",
-    "miembros": 842,
-    "publicaciones": 210
+    "id": "desarrollo-personal",
+    "nombre": "Desarrollo personal",
+    "descripcion": "Conversa sobre libros que inspiran hábitos, crecimiento y bienestar.",
+    "icono": "🌱",
+    "posts": []
   },
   {
+    "id": "ciencia-ficcion",
     "nombre": "Ciencia Ficción",
+    "descripcion": "Explora futuros posibles, tecnología, viajes espaciales y mundos alternativos.",
     "icono": "🚀",
-    "descripcion": "Tecnología futura, viajes espaciales y universos alternos.",
-    "miembros": 756,
-    "publicaciones": 190
+    "posts": []
   },
   {
-    "nombre": "Romance",
-    "icono": "❤️",
-    "descripcion": "Historias de amor, relaciones y novelas románticas.",
-    "miembros": 521,
-    "publicaciones": 120
+    "id": "educacion-financiera",
+    "nombre": "Educación financiera",
+    "descripcion": "Comparte lecturas sobre dinero, ahorro, inversión y hábitos financieros.",
+    "icono": "💰",
+    "posts": []
   },
   {
-    "nombre": "Aventura",
-    "icono": "🗺️",
-    "descripcion": "Exploraciones, viajes y acción sin límites.",
-    "miembros": 1690,
-    "publicaciones": 1275
-  },
-  {
-    "nombre": "Filosofía",
+    "id": "psicologia",
+    "nombre": "Psicología",
+    "descripcion": "Habla sobre libros relacionados con mente, emociones, conducta y autoconocimiento.",
     "icono": "🧠",
-    "descripcion": "Debates sobre la vida, la mente y la existencia.",
-    "miembros": 1830,
-    "publicaciones": 195
+    "posts": []
   }
 ]
