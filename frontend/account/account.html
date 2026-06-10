@@ -74,19 +74,16 @@
             </a>
             </li>
 
-            <li class="nav-item">
-            <a
-                class="nav-link"
-                href="/shoppingCart/shopping.html"
-            >
-                <img
-                src="/src/assets/icons/icono-carrito-navbar.png"
-                alt="Carrito"
-                class="navbar-icon"
-                loading="lazy"
-                />
-            </a>
-            </li>
+            <li class="nav-item contenedor-carrito-offcanvas">
+    <a class="nav-link" href="/shoppingCart/shopping.html" 
+       data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito" aria-controls="offcanvasCarrito">
+        
+        <div class="caja-icono-carrito">
+            <img src="/src/assets/icons/icono-carrito-navbar.png" alt="Carrito" class="navbar-icon" loading="lazy" />
+        </div>
+
+    </a>
+</li>
                         </ul>
 
                         <form class="search-form d-flex" role="search">
@@ -234,7 +231,30 @@
             </div>
         </footer>
     </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasCarritoLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold" id="offcanvasCarritoLabel">Tu Carrito</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <div class="offcanvas-body d-flex flex-column justify-content-between">
+            <div class="carrito-productos-lista">
+                <p class="text-muted text-center my-5">Tu carrito está vacío actualmente.</p>
+            </div>
+            
+            <div class="carrito-offcanvas-footer border-top pt-3">
+                <div class="d-flex justify-content-between mb-3 fw-bold fs-5">
+                    <span>Total:</span>
+                    <span>$0.00</span>
+                </div>
+                <a href="/shoppingCart/shopping.html" class="btn w-100 py-2 fw-bold">Ver Carrito Completo</a>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/src/pages/account/account.js"></script>
+    <script src="/src/carrito.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

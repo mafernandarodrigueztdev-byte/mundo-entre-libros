@@ -192,6 +192,46 @@ main {
   color: var(--fondo-principal-crema);
 }
 
+  /* ==========================================================================
+   OFFCANVAS: PANEL LATERAL DEL CARRITO
+   ========================================================================== */
+
+/* Contenedor principal del panel */
+#offcanvasCarrito {
+  background-color: var(--fondo-principal-crema);
+  border-left: 2px solid var(--texto-principal-cafe-oscuro);
+  width: 380px; /* Ancho ideal para portadas y títulos de libros */
+}
+
+/* Título superior "Tu Carrito" */
+#offcanvasCarrito .offcanvas-title {
+  color: var(--texto-principal-cafe-oscuro);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.6rem;
+}
+
+/* Remueve el contorno azul por defecto de Bootstrap al cerrar */
+#offcanvasCarrito .btn-close:focus {
+  box-shadow: none;
+}
+
+/* Botón inferior de "Ver Carrito Completo" */
+#offcanvasCarrito .carrito-offcanvas-footer .btn {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border: none;
+  transition: background-color var(--transicion);
+}
+
+#offcanvasCarrito .carrito-offcanvas-footer .btn:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+}
+
+/* Suavizar la animación de transición del Offcanvas */
+#offcanvasCarrito.offcanvas {
+  transition: transform 0.4s ease-in-out !important;
+}
+
 /* ==========================================================================
    SECCIÓN CARRUSEL HEADER: MAFER
    ========================================================================== */
