@@ -6,6 +6,7 @@
     <title>Mundo Entre Libros - Carrito</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/src/pages/shoppingCart/shopping.css">
+
 </head>
 <body>
     <div class="container-fluid">
@@ -103,21 +104,48 @@
                 </div>
             </div>
         </nav>
-        <h1>Prueba: Título Carrito</h1>
+        <br>
+        
         <main>
-            <!--? Carrito-->
-            <section>
-                <!--Escribe tu código aquí-->
-            </section>
-            <!--? Resumen del pedido -->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
-            </section>
-            <!--? Terminar compra -->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
-            </section>
-        </main>
+        <!--? Carrito-->
+        <h1 class="cart-title">Carrito de Compras</h1>
+            <br>
+            <div class="container-cart">
+            <!-- Columna Izquierda: Productos del usuario -->
+            <div class="cart-products">
+                <h2>Mi carrito</h2>
+                    <ul id="lista-carrito">
+                        <li class="carrito-vacio" id="mensaje-vacio">Carrito vacío</li>
+                    </ul>
+                <button class="cartbtn"> Encontrar más libros</button>
+            </div>
+
+
+            <!--Resumen columna derecha-->
+
+
+        <aside class="resumen-container">
+            <h2>Resumen de tu pedido</h2>
+            <div class="resumen-fila">
+        <span>Productos</span>
+        <span>$00.00</span>
+            </div>
+        <div class="resumen-fila">
+            <span>Subtotal</span>
+            <span>$00.00</span>
+        </div>
+        <div class="resumen-total">
+                <span>Total</span>
+                <span>$00.00</span>
+            </div>
+            <button class="resumenbtn">Realizar pedido</button>
+        </aside>
+        </div>
+    </div>
+
+
+
+    </main>
         <!--? Footer: Rodrigo-->
         <footer class="main-footer">
             <div class="footer-container">
