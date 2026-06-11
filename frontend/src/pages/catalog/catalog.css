@@ -670,3 +670,643 @@ main {
     max-width: 78px;
   }
 }
+/* ===================================== */
+/* ================================= */
+/* SECCIONES */
+/* ================================= */
+
+.categoria{
+    margin-bottom: 60px;
+}
+
+.categoria-titulo{
+    font-family: "Cormorant Garamond";
+    color: var(--texto-principal-cafe-oscuro);
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+}
+
+/* ================================= */
+/* CARRUSEL */
+/* ================================= */
+
+.carrusel-libros{
+
+    display:flex;
+
+    align-items:stretch;
+
+    gap:20px;
+
+    overflow-x:auto;
+
+    scroll-behavior:smooth;
+
+    padding-bottom:10px;
+
+}
+
+.carrusel-libros::-webkit-scrollbar{
+    height:8px;
+}
+
+.carrusel-libros::-webkit-scrollbar-thumb{
+    background:var(--cafe-medio);
+    border-radius:10px;
+}
+/* ================================= */
+/* CARD LIBRO */
+/* ================================= */
+
+.card-libro{
+
+    min-width:250px;
+    max-width:250px;
+
+    height:480px;
+
+    border:none;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    background:var(--fondo-blanco-calido);
+
+    box-shadow:var(--sombra-suave);
+
+    transition:var(--transicion);
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.card-libro:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:var(--sombra-media);
+
+}
+
+.card-libro img{
+
+    width:100%;
+
+    height:200px;
+
+    object-fit:contain;
+
+    background:white;
+
+    padding:10px;
+
+}
+
+/* BODY CARD */
+
+.card-libro .card-body{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:15px;
+
+}
+
+/* TITULO */
+
+.card-title{
+
+    min-height:60px;
+
+    display:flex;
+
+    align-items:center;
+
+    color:var(--texto-principal-cafe-oscuro);
+
+    font-family:"Cormorant Garamond";
+
+    font-size:1.25rem;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+/* DATOS */
+
+.dato-libro{
+
+    margin-bottom:8px;
+
+    color:var(--cafe-medio);
+
+    font-size:.9rem;
+
+    line-height:1.4;
+
+}
+
+/* PRECIO */
+
+.precio-container{
+
+    margin-top:10px;
+
+    margin-bottom:15px;
+
+}
+
+.texto-precio{
+
+    display:block;
+
+    font-size:.85rem;
+
+    color:var(--cafe-medio);
+
+}
+
+.precio{
+
+    font-size:1.8rem;
+
+    font-weight:700;
+
+    color:var(--color-verde-acento);
+
+    margin:0;
+
+}
+
+/* BOTON */
+
+.btn-libro{
+
+    margin-top:auto;
+
+    background:var(--boton-principal-acento-fuerte);
+
+    color:white;
+
+    border:none;
+
+}
+
+.btn-libro:hover{
+
+    background:var(--cafe-medio);
+
+    color:white;
+
+}
+.btn-sagas{
+
+    margin-top:auto;
+
+    background:var(--boton-principal-acento-fuerte);
+
+    color:white;
+
+    border:none;
+
+}
+
+.btn-sagas:hover{
+
+    background:var(--cafe-medio);
+
+    color:white;
+
+}
+
+
+/* ================================= */
+/* CARD SAGA */
+/* ================================= */
+
+.card-saga{
+
+   min-width:250px;
+    max-width:250px;
+
+    height:480px;
+}
+
+.card-saga img{
+
+  width:100%;
+
+    height:200px;
+
+    object-fit:contain;
+
+    background:white;
+
+    padding:10px;
+
+}
+/* ================================= */
+/* DATOS DEL LIBRO */
+/* ================================= */
+
+.dato-libro{
+
+    margin-bottom:6px;
+
+    color:var(--cafe-medio);
+
+    font-size:.9rem;
+
+    line-height:1.3;
+
+}
+
+.precio-container{
+
+    margin-top:10px;
+
+    margin-bottom:15px;
+
+}
+
+.texto-precio{
+
+    display:block;
+
+    font-size:.85rem;
+
+    color:var(--cafe-medio);
+
+}
+
+.precio{
+
+    font-size:1.8rem;
+
+    font-weight:700;
+
+    color:var(--color-verde-acento);
+
+    margin:0;
+
+}
+/* ================================= */
+/* MODAL LIBRO PREMIUM */
+/* ================================= */
+
+.modal-dialog{
+
+    max-width:950px;
+
+}
+
+.modal-content{
+
+    border:none;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    background:var(--fondo-blanco-calido);
+
+    box-shadow:var(--sombra-media);
+
+}
+
+/* ================================= */
+/* HEADER */
+/* ================================= */
+
+.modal-header{
+
+    position:relative;
+
+    justify-content:center;
+
+    padding:25px 40px;
+
+    border-bottom:1px solid var(--beige-grisaceo);
+
+}
+
+.modal-header .btn-close{
+
+    position:absolute;
+
+    right:30px;
+
+}
+
+.modal-title{
+
+    width:100%;
+
+    text-align:center;
+
+    font-family:"Cormorant Garamond";
+
+    font-size:2.8rem;
+
+    font-weight:700;
+
+    color:var(--texto-principal-cafe-oscuro);
+
+}
+
+/* ================================= */
+/* BODY */
+/* ================================= */
+
+.modal-body{
+
+    padding:18px 22px;
+
+}
+
+/* ================================= */
+/* CONTENEDOR PRINCIPAL */
+/* ================================= */
+
+.contenedor-info-libro{
+    background:#fdfbf8;
+    border:2px solid #e7d9ca;
+    border-radius:24px;
+    padding:20px;
+    margin-bottom:15px;
+
+}
+
+/* ================================= */
+/* PORTADA */
+/* ================================= */
+
+.portada-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+#imagenModal{
+
+    width:190px;
+
+    max-width:100%;
+
+    max-height:280px;
+
+    object-fit:cover;
+
+    border-radius:16px;
+
+    box-shadow:0 15px 30px rgba(0,0,0,.12);
+
+    transition:.3s ease;
+
+}
+
+#imagenModal:hover{
+
+    transform:scale(1.03);
+
+}
+
+/* ================================= */
+/* GRID DATOS */
+/* ================================= */
+
+.datos-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+    height:100%;
+
+    align-content:center;
+
+}
+
+/* ================================= */
+/* TARJETAS DATOS */
+/* ================================= */
+
+.dato-card{
+
+    padding:15px 10px;
+
+    border-bottom:1px solid #ece1d7;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+.dato-label{
+
+    font-family:"Cormorant Garamond";
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    color:var(--texto-principal-cafe-oscuro);
+
+    margin-bottom:6px;
+
+}
+
+.dato-valor{
+
+    font-size:1.05rem;
+
+    color:var(--cafe-medio);
+
+}
+
+/* ================================= */
+/* PRECIO */
+/* ================================= */
+
+.precio-card{
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+}
+
+.precio-texto{
+
+    font-size:1.1rem;
+
+    color:var(--cafe-medio);
+
+    margin-bottom:5px;
+
+}
+
+.precio-modal{
+
+    font-size:2.2rem;
+
+    font-weight:800;
+
+    color:var(--color-verde-acento);
+
+    margin:0;
+
+    padding:0;
+
+    border:none;
+
+}
+
+/* ================================= */
+/* SINOPSIS */
+/* ================================= */
+
+.titulo-sinopsis{
+
+    font-family:"Cormorant Garamond";
+
+    font-size:2.2rem;
+
+    color:var(--texto-principal-cafe-oscuro);
+
+    margin-bottom:15px;
+
+}
+
+#sinopsisModal{
+    background:#fdfbf8;
+    border:2px solid #e7d9ca;
+    border-radius:20px;
+    padding:18px;
+    line-height:1.6;
+    text-align:justify;
+    line-height:1.9;
+    font-size:1.08rem;
+    color:var(--texto-principal-cafe-oscuro);
+
+}
+
+/* ================================= */
+/* FOOTER */
+/* ================================= */
+
+.modal-footer{
+
+    justify-content:center;
+
+    gap:20px;
+
+    padding:25px;
+
+    border-top:1px solid var(--beige-grisaceo);
+
+}
+
+.btn-carrito{
+
+    background:var(--color-verde-acento);
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px 28px;
+
+    font-weight:600;
+
+}
+
+.btn-carrito:hover{
+
+    opacity:.9;
+
+    color:white;
+
+}
+
+/* ================================= */
+/* RESPONSIVE */
+/* ================================= */
+
+@media(max-width:768px){
+
+    .modal-title{
+
+        font-size:2.2rem;
+
+    }
+
+    .datos-grid{
+
+        grid-template-columns:1fr;
+
+        margin-top:25px;
+
+    }
+
+    .dato-label{
+
+        font-size:1.3rem;
+
+    }
+
+    .precio-modal{
+
+        font-size:2.4rem;
+
+    }
+
+    #imagenModal{
+
+        width:200px;
+
+    }
+
+}
+/*Modal sagas*/ 
+#imagenSagaModal{
+
+    width:220px;
+
+    max-height:320px;
+
+    object-fit:cover;
+
+    border-radius:16px;
+
+    box-shadow:var(--sombra-media);
+
+}
+
+#librosSagaModal{
+
+    margin-top:20px;
+
+}

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mundo Entre Libros - Catálogo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/src/pages/catalog/catalog.css">
+    <link rel="stylesheet" href="../src/pages/catalog/catalog.css">
   </head>
   <body>
     <div class="container-fluid">
@@ -100,21 +100,154 @@
                 </div>
             </div>
         </nav>
-        <h1>Prueba: Título Catálogo</h1>
-        <main>
-            <!--? Sección de género 1-->
-            <section>
-                <!--Escribe tu código aquí-->
-            </section>
-            <!--? sección de género 2-->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
-            </section>
-             <!--? sección de género 3-->
-            <section>
-                <!--Escribe tu código aquí ESCRITORIO-->
-            </section>
-        </main>
+    <body>
+        
+                <!-- categorias contenedor -->
+                <main class="container py-4">
+                    <div id="contenedor-categorias">
+                    </div>
+                </main>
+
+                <!-- MODAL LIBRO -->
+
+                <div class="modal fade" id="modalLibro" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="tituloModal"></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                <div class="row align-items-center g-5 contenedor-info-libro">
+    <!-- PORTADA -->
+                <div class="col-md-4 text-center portada-container">
+                    <img id="imagenModal" class="img-fluid rounded" alt="">
+                </div>
+    <!-- DATOS -->
+                <div class="col-md-8">
+                    <div class="datos-grid">
+                        <div class="dato-card">
+                            <span class="dato-label">
+                                    Autor
+                            </span>
+                            <span
+                                class="dato-valor"
+                                id="autorModal"
+                            ></span>
+                        </div>
+                <div class="dato-card">
+                    <span class="dato-label">
+                        Numero de libros
+                    </span>
+                    <span class="dato-valor"id="cantidadModal">
+                    </span>
+                </div>
+                <div class="dato-card">
+                    <span class="dato-label">
+                        Editorial
+                    </span>
+                    <span class="dato-valor" id="editorialModal">
+                    </span>
+                </div>
+                <div class="dato-card">
+                    <span class="dato-label">
+                        Edición
+                    </span>
+                    <span
+                        class="dato-valor"
+                        id="edicionModal">
+                    </span>
+                </div>
+                <div class="dato-card">
+                    <span class="dato-label">
+                        ISBN
+                    </span>
+                    <span class="dato-valor" id="isbnModal">
+                    </span>
+                </div>
+                <div class="dato-card precio-card">
+                    <span class="precio-texto">
+                        Precio
+                    </span>
+                <div class="precio-modal">
+                    $
+                <span id="precioModal"></span>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <hr>
+        <h4 class="titulo-sinopsis">Sinopsis</h4>
+                    <p id="sinopsisModal"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-carrito" id="btnCarrito">
+                        Agregar al carrito
+                    </button>
+                    <button class="btn btn-secondary"data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+            </div>
+        </div>
+     </div>
+</div>
+
+<!-- MODAL SAGAS -->
+
+<div class="modal fade" id="modalSagas" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="tituloModals"></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- INFO SAGA -->
+                <div class="row align-items-center g-4">
+                    <div class="col-md-4 text-center">
+                        <img id="imagenModals" class="img-fluid rounded" alt="">
+                    </div>
+                    <div class="col-md-8">
+                        <p id="descripcionModals"></p>
+                        <div class="datos-grid">
+                            <div class="dato-card">
+                                <span class="dato-label">Nombre de la saga</span>
+                                <span class="dato-valor" id="nombreSagaModal"></span>
+                            </div>
+                            <div class="dato-card">
+                                <span class="dato-label">ISBN</span>
+                                <span class="dato-valor" id="isbnModals"></span>
+                            </div>
+                            <div class="dato-card precio-card">
+                                <span class="precio-texto">Precio</span>
+                                <div class="precio-modal">
+                                    $<span id="precioModals"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!-- CARRUSEL DE LIBROS DE LA SAGA -->
+                <h4 class="titulo-sinopsis">Libros de la saga</h4>
+                <div id="carruselSaga" class="carrusel-libros">
+                    <!-- aquí se insertan las cards de libros -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-carrito" id="btnAgregarSagaCarrito">
+                 Agregar saga al carrito
+                </button>
+                <button class="btn btn-secondary"data-bs-dismiss="modal">
+                        Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+        </body>
         <!--? Footer: Rodrigo-->
         <footer class="main-footer">
             <div class="footer-container">
@@ -215,6 +348,7 @@
             </div>
         </footer>
     </div>
+<<<<<<< HEAD
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasCarritoLabel">
         <div class="offcanvas-header border-bottom">
@@ -241,6 +375,9 @@
 
     <script type="module" src="/src/pages/catalog/catalog.js"></script>
     <script src="/src/carrito.js" defer></script>
+=======
+    <script type="module" src="../src/pages/catalog/catalog.js"></script>
+>>>>>>> f94c88e172f354890a2dcab94646887c0d08f5a3
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
