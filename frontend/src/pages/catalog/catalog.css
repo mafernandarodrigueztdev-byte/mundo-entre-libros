@@ -520,10 +520,7 @@ main {
     width: 36px;
     height: 36px;
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> 60c83235424d3d9eda1cb2e7013eb1c38e533283
   .footer-container {
     grid-template-columns: 1fr;
     text-align: center;
@@ -538,25 +535,16 @@ main {
     align-items: center;
     gap: 8px;
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> 60c83235424d3d9eda1cb2e7013eb1c38e533283
   .pixel-interaction-title {
     font-size: 1.25rem;
     margin-bottom: 4px;
   }
-<<<<<<< HEAD
-  .pixel-interaction-title::after {
-    width: 75px;
-  }
-=======
 
   .pixel-interaction-title::after {
     width: 75px;
   }
 
->>>>>>> 60c83235424d3d9eda1cb2e7013eb1c38e533283
   .pixel-section {
     align-items: center;
     text-align: center;
@@ -1100,11 +1088,6 @@ main {
   border-radius: 16px;
   box-shadow: var(--sombra-media);
 }
-<<<<<<< HEAD
-#librosSagaModal {
-  margin-top: 20px;
-}
-=======
 
 .carrusel-libros::-webkit-scrollbar{
     height:8px;
@@ -1710,4 +1693,3 @@ main {
     margin-top:20px;
 
 }
->>>>>>> 60c83235424d3d9eda1cb2e7013eb1c38e533283
