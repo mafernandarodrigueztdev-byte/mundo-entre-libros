@@ -1,3 +1,5 @@
+// carrito.js - con redirección automática al carrito después de agregar
+
 document.addEventListener("DOMContentLoaded", () => {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -44,6 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             agregarProducto(producto);
+            
+            // ✅ Redirigir al carrito, pero no si ya estamos en esa página
+            if (window.location.pathname !== "/shoppingCart/shopping.html") {
+                window.location.href = "/shoppingCart/shopping.html";
+            }
+            return;
         }
 
         const botonSaga = e.target.closest(".btn-carrito-saga");
@@ -71,6 +79,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
             });
+            
+            // ✅ Redirigir al carrito después de agregar la saga
+            if (window.location.pathname !== "/shoppingCart/shopping.html") {
+                window.location.href = "/shoppingCart/shopping.html";
+            }
+            return;
         }
 
         const botonEliminar = e.target.closest(".btn-eliminar-producto");
