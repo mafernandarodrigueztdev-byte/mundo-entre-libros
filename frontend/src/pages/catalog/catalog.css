@@ -22,7 +22,6 @@
   --crema-secundario: #f6ebd9;
   --cafe-medio: #a0653d;
   --beige-grisaceo: #d9cdc1;
-  /* Nota: Asegúrate de tener definida esta variable en tu proyecto si la vas a usar */
   --color-verde-acento: #2e5a44;
 }
 
@@ -35,7 +34,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Comportamiento Flexbox para el contenedor de Bootstrap */
 .container-fluid {
   display: flex;
   flex-direction: column;
@@ -43,7 +41,6 @@ body {
   padding: 0;
 }
 
-/* El elemento <main> se expande para empujar el footer al fondo */
 main {
   flex: 1;
 }
@@ -61,14 +58,12 @@ main {
   box-shadow: var(--sombra);
 }
 
-/* Contenedor interno de Bootstrap */
 .navbar .container {
   min-height: 90px;
   display: flex;
   align-items: center;
 }
 
-/* Marca / logo */
 .navbar-brand {
   padding: 0;
   margin: 0;
@@ -76,7 +71,6 @@ main {
   align-items: center;
 }
 
-/* Logo */
 .navbar-logo {
   width: 90px;
   max-width: 90px;
@@ -85,7 +79,6 @@ main {
   transform: none;
 }
 
-/* Links */
 .nav-link {
   position: relative;
   color: var(--texto-principal-cafe-oscuro) !important;
@@ -100,7 +93,6 @@ main {
   text-decoration: none;
 }
 
-/* Línea decorativa inferior */
 .nav-link::after {
   content: "";
   position: absolute;
@@ -118,14 +110,12 @@ main {
   width: 60%;
 }
 
-/* Iconos de cuenta y carrito */
 .navbar-icon {
   width: 42px;
   height: 42px;
   object-fit: contain;
 }
 
-/* Buscador */
 .search-form input {
   font-size: 1rem;
 }
@@ -144,6 +134,41 @@ main {
 }
 
 /* ==========================================================================
+   OFFCANVAS CARRITO
+   ========================================================================== */
+
+#offcanvasCarrito {
+  background-color: var(--fondo-principal-crema);
+  border-left: 2px solid var(--texto-principal-cafe-oscuro);
+  width: 380px;
+}
+
+#offcanvasCarrito .offcanvas-title {
+  color: var(--texto-principal-cafe-oscuro);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.6rem;
+}
+
+#offcanvasCarrito .btn-close:focus {
+  box-shadow: none;
+}
+
+#offcanvasCarrito .carrito-offcanvas-footer .btn {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border: none;
+  transition: background-color var(--transicion);
+}
+
+#offcanvasCarrito .carrito-offcanvas-footer .btn:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+}
+
+#offcanvasCarrito.offcanvas {
+  transition: transform 0.4s ease-in-out !important;
+}
+
+/* ==========================================================================
    ICONOS NAVBAR
    ========================================================================== */
 
@@ -154,24 +179,20 @@ main {
   transition: transform var(--transicion);
 }
 
-/* Hover sobre iconos */
 .nav-link:hover .navbar-icon {
   transform: scale(1.1);
   transform: translateY(-2px);
 }
 
-/* Separación entre los elementos del menú */
 .navbar-nav {
   align-items: center;
   gap: 10px;
 }
 
-/* Más espacio antes del icono de usuario */
 .nav-item:nth-last-child(2) {
   margin-left: 20px;
 }
 
-/* Espacio entre usuario y carrito */
 .nav-item:last-child {
   margin-left: 10px;
 }
@@ -190,21 +211,17 @@ main {
   transition: 0.1s ease;
 }
 
-
-
-
-
 /* ==========================================================================
-   SECCIÓN: ESTILOS DEL FOOTER
+   FOOTER
    ========================================================================== */
+
 .main-footer {
-  background-color: #f8e1c1; /* Color crema base */
+  background-color: #f8e1c1;
   padding: 15px 0 10px 0;
   width: 100%;
-  margin-top: auto; /* Refuerzo de posicionamiento */
+  margin-top: auto;
 }
 
-/* Distribución en 3 columnas alineadas verticalmente al centro */
 .footer-container {
   max-width: 1800px;
   margin: 3px auto;
@@ -215,11 +232,10 @@ main {
   align-items: center;
 }
 
-/* --- COLUMNA 1: LOGO E ICONOS DE INTEGRANTES --- */
 .logo-section {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinea logo e imágenes a la izquierda */
+  align-items: flex-start;
   gap: 3px;
   margin-left: 20px;
 }
@@ -232,27 +248,22 @@ main {
 
 .team-github-icons {
   display: flex;
-  gap: 15px; /* Separación horizontal entre cada imagen */
+  gap: 15px;
   margin-top: 5px;
 }
 
-/* Estilos para los iconos de fuente de Bootstrap */
 .member-icon {
   font-size: 2rem;
   color: #4a3319;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
   display: inline-block;
 }
 
-/* Efecto al pasar el cursor encima de un icono */
 .team-github-icons a:hover .member-icon {
   transform: translateY(-3px);
   color: black;
 }
 
-/* Ajuste de columnas desktop*/
 .footer-container {
   max-width: 1800px;
   margin: 3px auto;
@@ -263,12 +274,11 @@ main {
   align-items: center;
 }
 
-/* --- COLUMNA 2: EXPLORA (NAVEGACIÓN) --- */
 .footer-section h3 {
   color: #4a3319;
   font-size: 1.3rem;
   font-weight: 900;
- margin-bottom: 10px;
+  margin-bottom: 10px;
   margin-left: 30px;
 }
 
@@ -295,17 +305,15 @@ main {
   color: var(--cafe-medio);
 }
 
-/* --- COLUMNA 3: ESPACIADOR INVISIBLE --- */
 .spacer-section {
   display: block;
 }
 
-/* --- PARTE INFERIOR: SECCIÓN DE COPYRIGHT --- */
 .footer-bottom {
   text-align: center;
   margin-top: 15px;
   padding-top: 10px;
-  border-top: 1px solid rgba(74, 51, 25, 0.1); /* Línea divisoria sutil */
+  border-top: 1px solid rgba(74, 51, 25, 0.1);
   width: 100%;
 }
 
@@ -316,41 +324,41 @@ main {
 }
 
 /* ==========================================================================
-   FOOTER - SPRITES 8 BIT DEL EQUIPO
+   SPRITES 8 BIT
    ========================================================================== */
 
 .pixel-section {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 4px;
-    padding-right: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  padding-right: 0;
 }
 
 .pixel-interaction-title {
-    width: 100%;
-    text-align: center;
-    color: var(--texto-principal-cafe-oscuro);
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.45rem;
-    font-weight: 700;
-    margin: 0 0 2px 0;
-    letter-spacing: 0.5px;
+  width: 100%;
+  text-align: center;
+  color: var(--texto-principal-cafe-oscuro);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin: 0 0 2px 0;
+  letter-spacing: 0.5px;
 }
 
 .pixel-interaction-title::after {
-    content: "";
-    display: block;
-    width: 95px;
-    height: 2px;
-    background-color: var(--cafe-medio);
-    margin: 4px auto 0;
-    border-radius: 999px;
+  content: "";
+  display: block;
+  width: 95px;
+  height: 2px;
+  background-color: var(--cafe-medio);
+  margin: 4px auto 0;
+  border-radius: 999px;
 }
 
-   .pixel-section {
+.pixel-section {
   width: 100%;
   display: flex;
   align-items: center;
@@ -361,7 +369,7 @@ main {
 .pixel-message {
   text-align: right;
   color: var(--texto-principal-cafe-oscuro);
-  display: none; /* Para que los sprites usen todo el espacio */
+  display: none;
 }
 
 .pixel-title {
@@ -385,13 +393,11 @@ main {
   align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
-  flex-wrap: nowrap; /* CLAVE: evita que se bajen */
+  flex-wrap: nowrap;
 }
 
-/* Base de cada sprite */
 .pixel-member {
   --sprite-size: clamp(58px, 4vw, 82px);
-
   width: var(--sprite-size);
   height: var(--sprite-size);
   background-image: var(--sprite);
@@ -413,13 +419,11 @@ main {
   from {
     background-position-x: 0;
   }
-
   to {
     background-position-x: calc(var(--sprite-size) * var(--frames) * -1);
   }
 }
 
-/*Ajuste de cada integrante*/
 .pixel-mafer {
   --sprite: url("../../assets/sprites/maf1-9.png.png");
   --frame-width: 96px;
@@ -428,204 +432,656 @@ main {
   --frames: 9;
   --speed: 1s;
 }
-
 .pixel-ilse {
   --sprite: url("../../assets/sprites/adr1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1.05s;
 }
-
 .pixel-rodrigo {
   --sprite: url("../../assets/sprites/rod1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 0.95s;
 }
-
 .pixel-israel {
   --sprite: url("../../assets/sprites/isr1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1.1s;
 }
-
 .pixel-miguel {
   --sprite: url("../../assets/sprites/mig1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1s;
 }
-
 .pixel-carlos {
   --sprite: url("../../assets/sprites/car1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 0.98s;
 }
-
 .pixel-tonantzin {
   --sprite: url("../../assets/sprites/ton1.png");
-  --frame-width: 96px;
-  --frame-height: 96px;
-  --sheet-width: 864px;
   --frames: 9;
   --speed: 1.08s;
 }
 
-
-
-
-
-
-
 /* ==========================================================================
-   AJUSTES RESPONSIVOS (Pantallas Móviles)
+   RESPONSIVE
    ========================================================================== */
 
 @media (max-width: 1030px) {
   .navbar {
     padding: 8px 0;
   }
-
   .navbar-logo {
     width: 95px;
     max-width: 95px;
   }
-
   .nav-link {
     font-size: 1.4rem;
   }
 }
 
-
 @media (max-width: 991px) {
   .navbar {
     padding: 0.4rem 1rem;
   }
-
   .navbar .container {
     min-height: 90px;
     max-width: 100%;
   }
-
   .navbar-logo {
     width: 95px;
     max-width: 95px;
   }
-
   .navbar-toggler {
     border: none;
     padding: 0.25rem;
   }
-
   .navbar-toggler:focus {
     box-shadow: none;
   }
-
   .navbar-collapse {
     background-color: var(--beige-calido-degradado);
     padding: 1rem 0;
     text-align: center;
   }
-
   .navbar-nav {
     gap: 0.4rem;
   }
-
   .nav-link {
     font-size: 1.4rem;
     padding: 0.4rem 0;
   }
-
   .nav-link:hover {
     transform: none;
   }
-
   .navbar-icon {
     width: 36px;
     height: 36px;
   }
-
-
-
   .footer-container {
-    grid-template-columns: 1fr; /* Cambia a una sola columna vertical */
+    grid-template-columns: 1fr;
     text-align: center;
     gap: 25px;
   }
-
-  /* Centra contenidos en celulares y remueve el margen izquierdo */
   .logo-section {
     align-items: center;
     justify-content: center;
     margin-left: 0;
   }
-
-  /*Responsive de los 8bit*/
   .pixel-section {
-        align-items: center;
-        gap: 8px;
-    }
-
-    .pixel-interaction-title {
-        font-size: 1.25rem;
-        margin-bottom: 4px;
-    }
-
-    .pixel-interaction-title::after {
-        width: 75px;
-    }
-  
+    align-items: center;
+    gap: 8px;
+  }
+  .pixel-interaction-title {
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+  }
+  .pixel-interaction-title::after {
+    width: 75px;
+  }
   .pixel-section {
     align-items: center;
     text-align: center;
     padding-right: 0;
     gap: 10px;
   }
-
   .pixel-message {
     text-align: center;
   }
-
   .pixel-description {
     max-width: 280px;
     font-size: 0.85rem;
   }
-
   .pixel-team {
     justify-content: center;
     gap: 4px;
   }
-
   .pixel-member {
     transform: scale(0.75);
     margin: -10px;
   }
-
   .pixel-member:hover {
     transform: scale(0.8) translateY(-4px);
   }
 }
 
-
 @media (max-width: 576px) {
   .navbar .container {
     min-height: 78px;
   }
-
   .navbar-logo {
     width: 78px;
     max-width: 78px;
   }
+}
+
+/* ===================================== */
+/* SECCIONES */
+/* ===================================== */
+
+.categoria {
+  margin-bottom: 60px;
+}
+
+.categoria-titulo {
+  font-family: "Cormorant Garamond";
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+}
+
+/* ================================= */
+/* CARRUSEL PRINCIPAL (SAGAS Y CATEGORÍAS) */
+/* ================================= */
+
+.carrusel-libros {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carrusel-libros::-webkit-scrollbar {
+  display: none;
+}
+
+.carrusel-contenedor {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.carrusel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #4b1d13;
+  color: #f1f0e5;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.carrusel-btn:hover {
+  background-color: #a0653d;
+  transform: translateY(-50%) scale(1.05);
+}
+.carrusel-btn-izq {
+  left: -20px;
+}
+.carrusel-btn-der {
+  right: -20px;
+}
+
+@media (max-width: 768px) {
+  .carrusel-btn {
+    display: none;
+  }
+  .carrusel-contenedor {
+    margin-bottom: 0;
+  }
+}
+
+/* ================================= */
+/* TARJETAS (general) */
+/* ================================= */
+
+.card-libro {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 480px;
+  height: auto;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--fondo-blanco-calido);
+  box-shadow: var(--sombra-suave);
+  transition: var(--transicion);
+  display: flex;
+  flex-direction: column;
+}
+.card-libro:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--sombra-media);
+}
+.card-libro img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  background: white;
+  padding: 10px;
+}
+.card-libro .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+.card-title {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  color: var(--texto-principal-cafe-oscuro);
+  font-family: "Cormorant Garamond";
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.dato-libro {
+  margin-bottom: 8px;
+  color: var(--cafe-medio);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.precio-container {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+.texto-precio {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--texto-principal-cafe-oscuro);
+}
+.precio {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #85BB65;
+  margin: 0;
+}
+.btn-libro {
+  margin-top: auto;
+  background: var(--boton-principal-acento-fuerte);
+  color: white;
+  border: none;
+}
+.btn-libro:hover {
+  background: var(--cafe-medio);
+  color: white;
+}
+.btn-sagas {
+  margin-top: auto;
+  background: var(--boton-principal-acento-fuerte);
+  color: white;
+  border: none;
+}
+.btn-sagas:hover {
+  background: var(--cafe-medio);
+  color: white;
+}
+.card-saga {
+  min-width: 250px;
+  max-width: 250px;
+  height: 480px;
+}
+.card-saga img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  background: white;
+  padding: 10px;
+}
+
+/* ================================= */
+/* BOTONES AGREGAR AL CARRITO (VERDE DÓLAR, TEXTO BLANCO) */
+/* ================================= */
+
+/* General */
+.btn-carrito {
+  background-color: #85BB65 !important;
+  color: white !important;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-weight: 600;
+}
+.btn-carrito:hover {
+  background-color: #6b9e4a !important;
+  color: white !important;
+}
+
+/* Dentro del footer del modal de libro */
+.modal-footer .btn-carrito {
+  background-color: #85BB65 !important;
+  color: white !important;
+}
+.modal-footer .btn-carrito:hover {
+  background-color: #6b9e4a !important;
+}
+
+/* Dentro del carrusel de libros del modal de saga */
+#modalSagas .btn-carrito {
+  background-color: #85BB65 !important;
+  color: white !important;
+}
+#modalSagas .btn-carrito:hover {
+  background-color: #6b9e4a !important;
+}
+
+/* Botón "Agregar saga al carrito" (footer del modal de saga) */
+#modalSagas .btn-carrito-saga {
+  background-color: #85BB65 !important;
+  color: white !important;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-weight: 600;
+}
+#modalSagas .btn-carrito-saga:hover {
+  background-color: #6b9e4a !important;
+}
+
+/* ================================= */
+/* MODALES GENERALES (libro y saga) */
+/* ================================= */
+
+.precio-modal {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #85BB65;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.modal-footer .btn {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+.modal-footer .btn-secondary {
+  background-color: #ff0f0f;
+  color: white;
+  border: none;
+}
+.modal-footer .btn-secondary:hover {
+  background-color: #cc0000;
+}
+
+/* ================================= */
+/* CARRUSEL DE LIBROS DENTRO DEL MODAL DE SAGA */
+/* ================================= */
+
+/* Asegurar que el contenedor tenga flechas y sin barra */
+#modalSagas .carrusel-contenedor {
+  position: relative;
+  margin-bottom: 2rem;
+}
+#modalSagas .carrusel-libros {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#modalSagas .carrusel-libros::-webkit-scrollbar {
+  display: none;
+}
+#modalSagas .carrusel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #4b1d13;
+  color: #f1f0e5;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+#modalSagas .carrusel-btn:hover {
+  background-color: #a0653d;
+  transform: translateY(-50%) scale(1.05);
+}
+#modalSagas .carrusel-btn-izq {
+  left: -20px;
+}
+#modalSagas .carrusel-btn-der {
+  right: -20px;
+}
+@media (max-width: 768px) {
+  #modalSagas .carrusel-btn {
+    display: none;
+  }
+}
+
+/* Expansión de tarjetas para títulos largos (sin scroll interno) */
+#modalSagas .card-libro {
+  max-width: none !important;
+  width: auto !important;
+  min-width: 250px;
+}
+#modalSagas .card-title {
+  white-space: normal !important;
+  overflow: visible !important;
+  word-break: break-word;
+}
+#modalSagas .d-flex.gap-2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+#modalSagas .d-flex.gap-2 .btn {
+  flex: 1 1 auto;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 0.5rem 0.8rem;
+}
+@media (max-width: 576px) {
+  #modalSagas .d-flex.gap-2 .btn {
+    white-space: normal;
+  }
+}
+
+/* ================================= */
+/* OTROS ESTILOS DEL MODAL SAGA */
+/* ================================= */
+
+#descripcionModals {
+  color: var(--cafe-medio);
+}
+#modalSagas .precio-texto {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--texto-principal-cafe-oscuro);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ================================= */
+/* RESTO DE ESTILOS MODALES (sin cambios) */
+/* ================================= */
+
+.modal-dialog {
+  max-width: 950px;
+}
+.modal-content {
+  border: none;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--fondo-blanco-calido);
+  box-shadow: var(--sombra-media);
+}
+.modal-header {
+  position: relative;
+  justify-content: center;
+  padding: 25px 40px;
+  border-bottom: 1px solid var(--beige-grisaceo);
+}
+.modal-header .btn-close {
+  position: absolute;
+  right: 30px;
+}
+.modal-title {
+  width: 100%;
+  text-align: center;
+  font-family: "Cormorant Garamond";
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--texto-principal-cafe-oscuro);
+}
+.modal-body {
+  padding: 18px 22px;
+}
+.contenedor-info-libro {
+  background: #fdfbf8;
+  border: 2px solid #e7d9ca;
+  border-radius: 24px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+.portada-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#imagenModal {
+  width: 190px;
+  max-width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  transition: 0.3s ease;
+}
+#imagenModal:hover {
+  transform: scale(1.03);
+}
+.datos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  height: 100%;
+  align-content: center;
+}
+.dato-card {
+  padding: 15px 10px;
+  border-bottom: 1px solid #ece1d7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dato-label {
+  font-family: "Cormorant Garamond";
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--texto-principal-cafe-oscuro);
+  margin-bottom: 6px;
+}
+.dato-valor {
+  font-size: 1.05rem;
+  color: var(--cafe-medio);
+}
+.precio-card {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.precio-texto {
+  font-size: 1.1rem;
+  color: var(--texto-principal-cafe-oscuro);
+  margin-bottom: 5px;
+}
+.titulo-sinopsis {
+  font-family: "Cormorant Garamond";
+  font-size: 2.2rem;
+  color: var(--texto-principal-cafe-oscuro);
+  margin-bottom: 15px;
+}
+#sinopsisModal {
+  background: #fdfbf8;
+  border: 2px solid #e7d9ca;
+  border-radius: 20px;
+  padding: 18px;
+  line-height: 1.6;
+  text-align: justify;
+  line-height: 1.9;
+  font-size: 1.08rem;
+  color: var(--texto-principal-cafe-oscuro);
+}
+.modal-footer {
+  justify-content: center;
+  gap: 20px;
+  padding: 25px;
+  border-top: 1px solid var(--beige-grisaceo);
+}
+
+@media (max-width: 768px) {
+  .modal-title {
+    font-size: 2.2rem;
+  }
+  .datos-grid {
+    grid-template-columns: 1fr;
+    margin-top: 25px;
+  }
+  .dato-label {
+    font-size: 1.3rem;
+  }
+  .precio-modal {
+    font-size: 2.4rem;
+  }
+  #imagenModal {
+    width: 200px;
+  }
+}
+
+/*Modal sagas*/
+#imagenSagaModal {
+  width: 220px;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: var(--sombra-media);
+}
+#librosSagaModal {
+  margin-top: 20px;
 }
