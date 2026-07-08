@@ -2,6 +2,7 @@
    IMPORTACIÓN DE FUENTES (API de Google Fonts)
    ========================================================================== */
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+@import "../../variables.css";
 
 /* ==========================================================================
    RESET, CONFIGURACIÓN GLOBAL Y VARIABLES
@@ -13,17 +14,7 @@
   font-family: "Cormorant Garamond", serif;
 }
 
-:root {
-  --fondo-principal-crema: #f1f0e5;
-  --fondo-blanco-calido: #f6ebd9;
-  --texto-principal-cafe-oscuro: #521f12;
-  --boton-principal-acento-fuerte: #4b1d13;
-  --beige-calido-degradado: #f8e1c1;
-  --crema-secundario: #f6ebd9;
-  --cafe-medio: #a0653d;
-  --beige-grisaceo: #d9cdc1;
-  --color-verde-acento: #2e5a44;
-}
+
 
 body {
   width: 100%;
@@ -45,94 +36,511 @@ main {
   flex: 1;
 }
 
+/*==========================================================================
+    NAVBAR
+==========================================================================*/
+
+.navbar{
+    background: var(--beige-calido-degradado);
+    box-shadow: var(--sombra-suave);
+    padding: .5rem 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.navbar .container{
+    min-height: 90px;
+}
+
+.navbar-brand{
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-logo{
+    width: 90px;
+    height: auto;
+    display: block;
+}
+
+.navbar-nav{
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar .nav-link{
+    position: relative;
+    padding: .6rem 1rem;
+    color: var(--texto-principal-cafe-oscuro);
+    transition: color .25s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active{
+    color: var(--cafe-medio);
+}
+
+.navbar .nav-link::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    width: 0;
+    height: 2px;
+    background: var(--cafe-medio);
+    transform: translateX(-50%);
+    transition: width .25s ease;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after{
+    width: 60%;
+}
+
+
+/*==========================================================================
+    ICONOS
+==========================================================================*/
+
+.nav-icon-item{
+    margin-left: 8px;
+}
+
+.nav-icon-link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+    border-radius:50%;
+    transition:background .25s ease;
+}
+
+.navbar-icon{
+    width: 42px;
+    height: 42px;
+    display: block;
+    object-fit: contain;
+    transition: transform .25s ease;
+}
+
+/* Deja esto así para el contenedor */
+.nav-icon-link:hover {
+    transform: scale(1.08);
+    background: rgba(0,0,0,.05);
+}
+
+/*==========================================================================
+    ANIMACIONES
+==========================================================================*/
+
+/* Definimos cómo será el "salto" del carrito */
+@keyframes pop-carrito {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+/* Esta es la clase que activa la animación */
+.animacion-pop {
+    animation: pop-carrito 0.3s ease-in-out;
+}
+
+
+/*==========================================================================
+    CARRITO
+==========================================================================*/
+
+.caja-icono-carrito{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#contador-carrito{
+    position: absolute;
+    top: -6px;
+    right: -8px;
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: #dc3545;
+    color: #fff;
+
+    font-size: .7rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+
+/*==========================================================================
+    BOTÓN HAMBURGUESA
+==========================================================================*/
+
+.navbar-toggler{
+
+    width:52px;
+    height:52px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.navbar-toggler:focus{
+    box-shadow: none;
+}
+
+
+/*==========================================================================
+    RESPONSIVE
+==========================================================================*/
+
+
+/* Tablets grandes */
+
+@media (max-width:1200px){
+
+    .navbar{
+        font-size: 1.45rem;
+    }
+
+    .navbar .container{
+        min-height: 80px;
+    }
+
+    .navbar-logo{
+        width: 80px;
+    }
+
+    .navbar-nav{
+        gap: 8px;
+    }
+
+}
+
+
+/* Tablets */
+
+@media (max-width:992px){
+
+    .navbar{
+        padding: .75rem 0;
+    }
+
+    .navbar .container{
+        min-height: auto;
+        align-items: flex-start;
+    }
+
+    .navbar-collapse{
+        transition:.3s ease;
+        margin-top: 1rem;
+        text-align: center;
+        transition:.3s ease;
+
+    }
+
+    .navbar-nav{
+        width: 100%;
+        gap: 0;
+        align-items: center;
+    }
+
+    .nav-item{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav-link{
+          border-radius:8px;
+    }
+
+    .nav-link::after{
+        display: none;
+    }
+
+    .nav-icon-item{
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .navbar-icon{
+        width: 38px;
+        height: 38px;
+    }
+
+}
+
+
+/* Celulares grandes */
+
+@media (max-width:768px){
+
+    .navbar{
+        font-size: 1.2rem;
+    }
+
+    .navbar-logo{
+        width: 70px;
+    }
+
+    .navbar-icon{
+        width: 34px;
+        height: 34px;
+    }
+
+    .nav-link{
+        padding: .8rem 0;
+    }
+
+}
+
+
+/* Celulares */
+
+@media (max-width:576px){
+
+    .navbar{
+        padding: .5rem 0;
+        font-size: 1.05rem;
+    }
+
+    .navbar-logo{
+        width: 60px;
+    }
+
+    .navbar-icon{
+        width: 30px;
+        height: 30px;
+    }
+
+    .nav-link{
+        padding: .75rem 0;
+    }
+
+}
+
+
+/* Galaxy Fold */
+
+@media (max-width:320px){
+
+    .navbar{
+        font-size: .95rem;
+    }
+
+    .navbar-logo{
+        width: 50px;
+    }
+
+    .navbar-icon{
+        width: 26px;
+        height: 26px;
+    }
+
+    .nav-link{
+        padding: .6rem 0;
+        font-size: .95rem;
+    }
+
+}
+
 /* ==========================================================================
-   NAVBAR
+   PANTALLAS MUY GRANDES
+   Monitores 2K y 4K
    ========================================================================== */
 
-.navbar {
-  background-color: var(--beige-calido-degradado);
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-  padding: 0.5rem 0;
-  box-shadow: var(--sombra);
+@media (min-width:1400px){
+
+    .navbar{
+        font-size:1.15rem;
+    }
+
+    .navbar-logo{
+        width:95px;
+    }
+
+    .navbar-nav{
+        gap:16px;
+    }
+
+    .navbar-icon{
+        width:44px;
+        height:44px;
+    }
+
 }
 
-.navbar .container {
-  min-height: 90px;
-  display: flex;
-  align-items: center;
+
+/* ==========================================================================
+   LAPTOPS
+   1024px - 1399px
+   ========================================================================== */
+
+@media (min-width:1024px) and (max-width:1399px){
+
+    .navbar-nav{
+        gap:12px;
+    }
+
 }
 
-.navbar-brand {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
+
+/* ==========================================================================
+   TABLETS HORIZONTALES
+   ========================================================================== */
+
+@media (max-width:900px){
+
+    .navbar-logo{
+
+        width:65px;
+
+    }
+
+    .navbar{
+
+        font-size:1.05rem;
+
+    }
+
+    .navbar-icon{
+
+        width:32px;
+        height:32px;
+
+    }
+
 }
 
-.navbar-logo {
-  width: 90px;
-  max-width: 90px;
-  height: auto;
-  object-fit: contain;
-  transform: none;
+@media (max-width:280px){
+
+    .navbar-logo{
+
+        width:42px;
+
+    }
+
+    .navbar{
+
+        font-size:.85rem;
+
+    }
+
+    .navbar-icon{
+
+        width:24px;
+        height:24px;
+
+    }
+
 }
 
-.nav-link {
-  position: relative;
-  color: var(--texto-principal-cafe-oscuro) !important;
-  padding: 0.5rem 1rem;
-  transition:
-    transform 0.3s ease,
-    color 0.3s ease;
+@media (max-height:500px) and (orientation:landscape){
+
+    .navbar-collapse{
+        transition:.3s ease;
+        max-height:70vh;
+        overflow-y:auto;
+
+    }
+
 }
 
-.nav-link:hover,
-.nav-link.active {
-  color: var(--cafe-medio) !important;
-  transform: translateY(-2px);
-  text-decoration: none;
+.nav-link:focus-visible,
+.nav-icon-link:focus-visible{
+
+    outline:2px solid var(--cafe-medio);
+    outline-offset:2px;
+
 }
 
-.nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 0.2rem;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background-color: var(--cafe-medio);
-  transform: translateX(-50%);
-  transition: width 0.3s ease;
+/*==========================================================================
+    ESTILOS DEL MENÚ DESPLEGABLE (DROPDOWN)
+==========================================================================*/
+
+/* 1. Corrección del conflicto visual: Ocultamos la flecha de Bootstrap */
+.navbar .dropdown-toggle::after {
+    display: none !important; 
 }
 
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 60%;
+/* 2. Estilo de la caja blanca del menú para que combine con el tema */
+.navbar .dropdown-menu {
+    background-color: #FDF9F1; /* Un beige muy clarito */
+    border: 1px solid rgba(75, 29, 19, 0.1); /* Borde café súper sutil */
+    border-radius: 8px; /* Bordes ligeramente redondeados */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra suave para dar profundidad */
+    padding: 0.5rem 0;
 }
 
-.navbar-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
+/* 3. Estilo del texto de las opciones (Sagas, Ver todo) */
+.navbar .dropdown-item {
+    /* Usamos los colores que definiste en tu JS, con soporte a tus variables */
+    color: var(--texto-principal-cafe-oscuro, #4B1D13); 
+    font-weight: 500;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.25s ease;
 }
 
-.search-form input {
-  font-size: 1rem;
+/* 4. Efecto al pasar el ratón sobre las opciones */
+.navbar .dropdown-item:hover {
+    background-color: var(--cafe-medio, #A0653D);
+    color: #ffffff; /* Letra blanca para que resalte sobre el fondo café */
 }
 
-.search-form .btn {
-  background-color: var(--boton-principal-acento-fuerte);
-  color: var(--fondo-principal-crema);
-  border: none;
-  font-size: 1rem;
-  padding: 0.45rem 1rem;
+/* 5. Línea separadora más suave */
+.navbar .dropdown-divider {
+    border-top-color: rgba(75, 29, 19, 0.15);
 }
 
-.search-form .btn:hover {
-  background-color: var(--texto-principal-cafe-oscuro);
-  color: var(--fondo-principal-crema);
+
+/*==========================================================================
+    NOTIFICACIÓN TOAST (CARRITO)
+==========================================================================*/
+.toast-notificacion {
+    visibility: hidden; /* Oculto por defecto */
+    min-width: 250px;
+    background-color: var(--cafe-medio, #4B1D13); /* Tu color café */
+    color: #FDF9F1; /* Texto color crema/beige */
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1055; /* Asegura que esté por encima del offcanvas y navbar */
+    right: 20px;
+    bottom: 30px; /* Esquina inferior derecha */
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
+}
+
+/* Esta clase es la que agregaremos con JavaScript para que aparezca */
+.toast-notificacion.mostrar {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px; /* Hace un pequeño efecto de subir al aparecer */
+}
+
+.toast-icono {
+    font-size: 1.2rem;
 }
 
 /* ==========================================================================
@@ -170,48 +578,6 @@ main {
   transition: transform 0.4s ease-in-out !important;
 }
 
-/* ==========================================================================
-   ICONOS NAVBAR
-   ========================================================================== */
-
-.navbar-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  transition: transform var(--transicion);
-}
-
-.nav-link:hover .navbar-icon {
-  transform: scale(1.1);
-  transform: translateY(-2px);
-}
-
-.navbar-nav {
-  align-items: center;
-  gap: 10px;
-}
-
-.nav-item:nth-last-child(2) {
-  margin-left: 20px;
-}
-
-.nav-item:last-child {
-  margin-left: 10px;
-}
-
-.navbar-toggler {
-  border: none;
-}
-
-.navbar-toggler:focus {
-  box-shadow: none;
-}
-
-.btn {
-  background-color: var(--boton-principal-acento-fuerte);
-  font-weight: 800;
-  transition: 0.1s ease;
-}
 
 /* ==========================================================================
    FOOTER
@@ -427,7 +793,7 @@ main {
 }
 
 .pixel-mafer {
-  --sprite: url("../../assets/sprites/maf1-9.png.png");
+  --sprite: url("/../assets/sprites/maf1-9.png.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -435,32 +801,32 @@ main {
   --speed: 1s;
 }
 .pixel-ilse {
-  --sprite: url("../../assets/sprites/adr1.png");
+  --sprite: url("/../assets/sprites/adr1.png");
   --frames: 9;
   --speed: 1.05s;
 }
 .pixel-rodrigo {
-  --sprite: url("../../assets/sprites/rod1.png");
+  --sprite: url("/../assets/sprites/rod1.png");
   --frames: 9;
   --speed: 0.95s;
 }
 .pixel-israel {
-  --sprite: url("../../assets/sprites/isr1.png");
+  --sprite: url("/../assets/sprites/isr1.png");
   --frames: 9;
   --speed: 1.1s;
 }
 .pixel-miguel {
-  --sprite: url("../../assets/sprites/mig1.png");
+  --sprite: url("/../assets/sprites/mig1.png");
   --frames: 9;
   --speed: 1s;
 }
 .pixel-carlos {
-  --sprite: url("../../assets/sprites/car1.png");
+  --sprite: url("/../assets/sprites/car1.png");
   --frames: 9;
   --speed: 0.98s;
 }
 .pixel-tonantzin {
-  --sprite: url("../../assets/sprites/ton1.png");
+  --sprite: url("/../assets/sprites/ton1.png");
   --frames: 9;
   --speed: 1.08s;
 }
@@ -520,7 +886,6 @@ main {
     width: 36px;
     height: 36px;
   }
-
   .footer-container {
     grid-template-columns: 1fr;
     text-align: center;
@@ -722,7 +1087,7 @@ main {
 .precio {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #85BB65;
+  color: #521f12;
   margin: 0;
 }
 .btn-libro {
@@ -764,7 +1129,7 @@ main {
 
 /* General */
 .btn-carrito {
-  background-color: #85BB65 !important;
+  background-color: #521f12 !important;
   color: white !important;
   border: none;
   border-radius: 10px;
@@ -772,31 +1137,31 @@ main {
   font-weight: 600;
 }
 .btn-carrito:hover {
-  background-color: #6b9e4a !important;
+  background-color: #4b1d13 !important;
   color: white !important;
 }
 
 /* Dentro del footer del modal de libro */
 .modal-footer .btn-carrito {
-  background-color: #85BB65 !important;
+  background-color: #521f12 !important;
   color: white !important;
 }
 .modal-footer .btn-carrito:hover {
-  background-color: #6b9e4a !important;
+  background-color: #4b1d13 !important;
 }
 
 /* Dentro del carrusel de libros del modal de saga */
 #modalSagas .btn-carrito {
-  background-color: #85BB65 !important;
+  background-color: #521f12 !important;
   color: white !important;
 }
 #modalSagas .btn-carrito:hover {
-  background-color: #6b9e4a !important;
+  background-color: #4b1d13 !important;
 }
 
 /* Botón "Agregar saga al carrito" (footer del modal de saga) */
 #modalSagas .btn-carrito-saga {
-  background-color: #85BB65 !important;
+  background-color: #521f12 !important;
   color: white !important;
   border: none;
   border-radius: 10px;
@@ -804,7 +1169,7 @@ main {
   font-weight: 600;
 }
 #modalSagas .btn-carrito-saga:hover {
-  background-color: #6b9e4a !important;
+  background-color: #4b1d13 !important;
 }
 
 /* ================================= */
@@ -814,7 +1179,7 @@ main {
 .precio-modal {
   font-size: 2.2rem;
   font-weight: 800;
-  color: #85BB65;
+  color: #521f12;
   margin: 0;
   padding: 0;
   border: none;
@@ -830,12 +1195,12 @@ main {
   line-height: 1.2;
 }
 .modal-footer .btn-secondary {
-  background-color: #ff0f0f;
+  background-color: #521f12;
   color: white;
   border: none;
 }
 .modal-footer .btn-secondary:hover {
-  background-color: #cc0000;
+  background-color: #4b1d13;
 }
 
 /* ================================= */
@@ -1089,14 +1454,47 @@ main {
   box-shadow: var(--sombra-media);
 }
 
-.carrusel-libros::-webkit-scrollbar{
-    height:8px;
+.carrusel-contenedor {
+    position: relative;
+    margin-bottom: 2rem;
 }
 
-.carrusel-libros::-webkit-scrollbar-thumb{
-    background:var(--cafe-medio);
-    border-radius:10px;
+/* =========================================== */
+/* FLECHAS DEL CARRUSEL (GENERAL) */
+/* =========================================== */
+
+.carrusel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #4b1d13;
+  color: #f1f0e5;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+.carrusel-btn:hover {
+  background-color: #a0653d;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.carrusel-btn-izq {
+  left: -20px;
+}
+.carrusel-btn-der {
+  right: -20px;
+}
+
 /* ================================= */
 /* CARD LIBRO */
 /* ================================= */
@@ -1693,25 +2091,168 @@ main {
     margin-top:20px;
 
 }
-.btn-wishlit{
-    background:var(--color-verde-acento);
 
-    color:white;
+/* ==========================================================================
+   CATÁLOGO - SAGAS Y BOTONES
+   ========================================================================== */
 
-    border:none;
-
-    border-radius:10px;
-
-    padding:12px 28px;
-
-    font-weight:600;
-
+.card-saga {
+  background-color: var(--fondo-blanco-calido);
 }
 
-.btn-wishlit:hover{
+.btn-sagas,
+.btn-carrito,
+.btn-carrito-saga {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border: none;
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  font-weight: 700;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
 
-    opacity:.9;
+.btn-sagas:hover,
+.btn-carrito:hover,
+.btn-carrito-saga:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
+  transform: translateY(-2px);
+}
 
-    color:white;
+/* ==========================================================================
+   CATÁLOGO - MODAL SAGAS
+   ========================================================================== */
 
+#modalSagas #imagenModals {
+  width: 220px;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(82, 31, 18, 0.15);
+}
+
+#modalSagas #descripcionModals {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* Contenedor principal del carrusel en el modal */
+#modalSagas .carrusel-contenedor {
+  position: relative !important;
+  margin: 1rem 0 2rem 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* El carrusel en sí */
+#modalSagas .carrusel-libros {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 20px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-behavior: smooth !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding: 10px 0 !important;
+  width: calc(3 * 200px + 2 * 20px) !important; /* 640px */
+  max-width: 100% !important;
+  flex-shrink: 0 !important;
+  margin: 0 auto !important; /* Asegura centrado en caso de fallo */
+}
+
+#modalSagas .carrusel-libros::-webkit-scrollbar {
+  display: none !important;
+}
+
+#modalSagas .card-libro {
+  flex: 0 0 200px; /* ← Fuerza ancho fijo */
+  min-width: 200px;
+  max-width: 200px;
+}
+
+#modalSagas .card-libro img {
+  height: 260px;
+  object-fit: cover;
+}
+
+#modalSagas .carrusel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #4b1d13; /* Café fijo (no uses variable) */
+  color: #f1f0e5;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 9999 !important; /* ← Por encima de todo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+#modalSagas .carrusel-btn:hover {
+  background-color: #a0653d;
+}
+
+#modalSagas .carrusel-btn:hover {
+  background-color: var(--cafe-medio);
+}
+
+#modalSagas .carrusel-btn-izq {
+  left: 5px;
+}
+#modalSagas .carrusel-btn-der {
+  right: 5px;
+}
+
+@media (max-width: 768px) {
+  /* OCULTAR TODAS LAS FLECHAS EN MÓVILES (scroll táctil) */
+  .carrusel-btn,
+  #modalSagas .carrusel-btn {
+    display: none !important;
+  }
+
+  /* Ajustes de tarjetas en el modal */
+  #modalSagas .card-libro {
+    min-width: 160px;
+    max-width: 160px;
+  }
+  #modalSagas .card-libro img {
+    height: 200px;
+  }
+}
+
+/* ================================= 
+Boton Wishlist
+ ================================= */
+
+.btn-wishlist{
+    background: transparent;
+    border: none;
+    color:  var(--boton-principal-acento-fuerte);
+    font-size: 3rem;
+    padding: 0 10px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.btn-wishlist:hover{
+    transform: scale(1.2);
+}
+
+.btn-wishlist.activo{
+    color:  var(--boton-principal-acento-fuerte);;
 }

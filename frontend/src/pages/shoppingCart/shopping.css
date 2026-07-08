@@ -2,6 +2,7 @@
    IMPORTACIÓN DE FUENTES (API de Google Fonts)
    ========================================================================== */
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+@import "../../variables.css";
 
 /* ==========================================================================
    RESET, CONFIGURACIÓN GLOBAL Y VARIABLES
@@ -13,18 +14,7 @@
   font-family: "Cormorant Garamond", serif;
 }
 
-:root {
-  --fondo-principal-crema: #f1f0e5;
-  --fondo-blanco-calido: #f6ebd9;
-  --texto-principal-cafe-oscuro: #521f12;
-  --boton-principal-acento-fuerte: #4b1d13;
-  --beige-calido-degradado: #f8e1c1;
-  --crema-secundario: #f6ebd9;
-  --cafe-medio: #a0653d;
-  --beige-grisaceo: #d9cdc1;
-  /* Nota: Asegúrate de tener definida esta variable en tu proyecto si la vas a usar */
-  --color-verde-acento: #2e5a44;
-}
+
 
 body {
   width: 100%;
@@ -46,6 +36,513 @@ body {
 /* El elemento <main> se expande para empujar el footer al fondo */
 main {
   flex: 1;
+}
+
+/*==========================================================================
+    NAVBAR
+==========================================================================*/
+
+.navbar{
+    background: var(--beige-calido-degradado);
+    box-shadow: var(--sombra-suave);
+    padding: .5rem 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.navbar .container{
+    min-height: 90px;
+}
+
+.navbar-brand{
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-logo{
+    width: 90px;
+    height: auto;
+    display: block;
+}
+
+.navbar-nav{
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar .nav-link{
+    position: relative;
+    padding: .6rem 1rem;
+    color: var(--texto-principal-cafe-oscuro);
+    transition: color .25s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active{
+    color: var(--cafe-medio);
+}
+
+.navbar .nav-link::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    width: 0;
+    height: 2px;
+    background: var(--cafe-medio);
+    transform: translateX(-50%);
+    transition: width .25s ease;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after{
+    width: 60%;
+}
+
+
+/*==========================================================================
+    ICONOS
+==========================================================================*/
+
+.nav-icon-item{
+    margin-left: 8px;
+}
+
+.nav-icon-link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+    border-radius:50%;
+    transition:background .25s ease;
+}
+
+.navbar-icon{
+    width: 42px;
+    height: 42px;
+    display: block;
+    object-fit: contain;
+    transition: transform .25s ease;
+}
+
+/* Deja esto así para el contenedor */
+.nav-icon-link:hover {
+    transform: scale(1.08);
+    background: rgba(0,0,0,.05);
+}
+
+/*==========================================================================
+    ANIMACIONES
+==========================================================================*/
+
+/* Definimos cómo será el "salto" del carrito */
+@keyframes pop-carrito {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+/* Esta es la clase que activa la animación */
+.animacion-pop {
+    animation: pop-carrito 0.3s ease-in-out;
+}
+
+
+/*==========================================================================
+    CARRITO
+==========================================================================*/
+
+.caja-icono-carrito{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#contador-carrito{
+    position: absolute;
+    top: -6px;
+    right: -8px;
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: #dc3545;
+    color: #fff;
+
+    font-size: .7rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+
+/*==========================================================================
+    BOTÓN HAMBURGUESA
+==========================================================================*/
+
+.navbar-toggler{
+
+    width:52px;
+    height:52px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.navbar-toggler:focus{
+    box-shadow: none;
+}
+
+
+/*==========================================================================
+    RESPONSIVE
+==========================================================================*/
+
+
+/* Tablets grandes */
+
+@media (max-width:1200px){
+
+    .navbar{
+        font-size: 1.45rem;
+    }
+
+    .navbar .container{
+        min-height: 80px;
+    }
+
+    .navbar-logo{
+        width: 80px;
+    }
+
+    .navbar-nav{
+        gap: 8px;
+    }
+
+}
+
+
+/* Tablets */
+
+@media (max-width:992px){
+
+    .navbar{
+        padding: .75rem 0;
+    }
+
+    .navbar .container{
+        min-height: auto;
+        align-items: flex-start;
+    }
+
+    .navbar-collapse{
+        transition:.3s ease;
+        margin-top: 1rem;
+        text-align: center;
+        transition:.3s ease;
+
+    }
+
+    .navbar-nav{
+        width: 100%;
+        gap: 0;
+        align-items: center;
+    }
+
+    .nav-item{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav-link{
+          border-radius:8px;
+    }
+
+    .nav-link::after{
+        display: none;
+    }
+
+    .nav-icon-item{
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .navbar-icon{
+        width: 38px;
+        height: 38px;
+    }
+
+}
+
+
+/* Celulares grandes */
+
+@media (max-width:768px){
+
+    .navbar{
+        font-size: 1.2rem;
+    }
+
+    .navbar-logo{
+        width: 70px;
+    }
+
+    .navbar-icon{
+        width: 34px;
+        height: 34px;
+    }
+
+    .nav-link{
+        padding: .8rem 0;
+    }
+
+}
+
+
+/* Celulares */
+
+@media (max-width:576px){
+
+    .navbar{
+        padding: .5rem 0;
+        font-size: 1.05rem;
+    }
+
+    .navbar-logo{
+        width: 60px;
+    }
+
+    .navbar-icon{
+        width: 30px;
+        height: 30px;
+    }
+
+    .nav-link{
+        padding: .75rem 0;
+    }
+
+}
+
+
+/* Galaxy Fold */
+
+@media (max-width:320px){
+
+    .navbar{
+        font-size: .95rem;
+    }
+
+    .navbar-logo{
+        width: 50px;
+    }
+
+    .navbar-icon{
+        width: 26px;
+        height: 26px;
+    }
+
+    .nav-link{
+        padding: .6rem 0;
+        font-size: .95rem;
+    }
+
+}
+
+/* ==========================================================================
+   PANTALLAS MUY GRANDES
+   Monitores 2K y 4K
+   ========================================================================== */
+
+@media (min-width:1400px){
+
+    .navbar{
+        font-size:1.15rem;
+    }
+
+    .navbar-logo{
+        width:95px;
+    }
+
+    .navbar-nav{
+        gap:16px;
+    }
+
+    .navbar-icon{
+        width:44px;
+        height:44px;
+    }
+
+}
+
+
+/* ==========================================================================
+   LAPTOPS
+   1024px - 1399px
+   ========================================================================== */
+
+@media (min-width:1024px) and (max-width:1399px){
+
+    .navbar-nav{
+        gap:12px;
+    }
+
+}
+
+
+/* ==========================================================================
+   TABLETS HORIZONTALES
+   ========================================================================== */
+
+@media (max-width:900px){
+
+    .navbar-logo{
+
+        width:65px;
+
+    }
+
+    .navbar{
+
+        font-size:1.05rem;
+
+    }
+
+    .navbar-icon{
+
+        width:32px;
+        height:32px;
+
+    }
+
+}
+
+@media (max-width:280px){
+
+    .navbar-logo{
+
+        width:42px;
+
+    }
+
+    .navbar{
+
+        font-size:.85rem;
+
+    }
+
+    .navbar-icon{
+
+        width:24px;
+        height:24px;
+
+    }
+
+}
+
+@media (max-height:500px) and (orientation:landscape){
+
+    .navbar-collapse{
+        transition:.3s ease;
+        max-height:70vh;
+        overflow-y:auto;
+
+    }
+
+}
+
+.nav-link:focus-visible,
+.nav-icon-link:focus-visible{
+
+    outline:2px solid var(--cafe-medio);
+    outline-offset:2px;
+
+}
+
+/*==========================================================================
+    ESTILOS DEL MENÚ DESPLEGABLE (DROPDOWN)
+==========================================================================*/
+
+/* 1. Corrección del conflicto visual: Ocultamos la flecha de Bootstrap */
+.navbar .dropdown-toggle::after {
+    display: none !important; 
+}
+
+/* 2. Estilo de la caja blanca del menú para que combine con el tema */
+.navbar .dropdown-menu {
+    background-color: #FDF9F1; /* Un beige muy clarito */
+    border: 1px solid rgba(75, 29, 19, 0.1); /* Borde café súper sutil */
+    border-radius: 8px; /* Bordes ligeramente redondeados */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra suave para dar profundidad */
+    padding: 0.5rem 0;
+}
+
+/* 3. Estilo del texto de las opciones (Sagas, Ver todo) */
+.navbar .dropdown-item {
+    /* Usamos los colores que definiste en tu JS, con soporte a tus variables */
+    color: var(--texto-principal-cafe-oscuro, #4B1D13); 
+    font-weight: 500;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.25s ease;
+}
+
+/* 4. Efecto al pasar el ratón sobre las opciones */
+.navbar .dropdown-item:hover {
+    background-color: var(--cafe-medio, #A0653D);
+    color: #ffffff; /* Letra blanca para que resalte sobre el fondo café */
+}
+
+/* 5. Línea separadora más suave */
+.navbar .dropdown-divider {
+    border-top-color: rgba(75, 29, 19, 0.15);
+}
+
+
+/*==========================================================================
+    NOTIFICACIÓN TOAST (CARRITO)
+==========================================================================*/
+.toast-notificacion {
+    visibility: hidden; /* Oculto por defecto */
+    min-width: 250px;
+    background-color: var(--cafe-medio, #4B1D13); /* Tu color café */
+    color: #FDF9F1; /* Texto color crema/beige */
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1055; /* Asegura que esté por encima del offcanvas y navbar */
+    right: 20px;
+    bottom: 30px; /* Esquina inferior derecha */
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
+}
+
+/* Esta clase es la que agregaremos con JavaScript para que aparezca */
+.toast-notificacion.mostrar {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px; /* Hace un pequeño efecto de subir al aparecer */
+}
+
+.toast-icono {
+    font-size: 1.2rem;
 }
 
 /* ==========================================================================
@@ -88,147 +585,6 @@ main {
   transition: transform 0.4s ease-in-out !important;
 }
 
-/* ==========================================================================
-   NAVBAR
-   ========================================================================== */
-
-.navbar {
-  background-color: var(--beige-calido-degradado);
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-  padding: 0.5rem 0;
-  box-shadow: var(--sombra);
-}
-
-/* Contenedor interno de Bootstrap */
-.navbar .container {
-  min-height: 90px;
-  display: flex;
-  align-items: center;
-}
-
-/* Marca / logo */
-.navbar-brand {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
-/* Logo */
-.navbar-logo {
-  width: 90px;
-  max-width: 90px;
-  height: auto;
-  object-fit: contain;
-  transform: none;
-}
-
-/* Links */
-.nav-link {
-  position: relative;
-  color: var(--texto-principal-cafe-oscuro) !important;
-  padding: 0.5rem 1rem;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: var(--cafe-medio) !important;
-  transform: translateY(-2px);
-  text-decoration: none;
-}
-
-/* Línea decorativa inferior */
-.nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 0.2rem;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background-color: var(--cafe-medio);
-  transform: translateX(-50%);
-  transition: width 0.3s ease;
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 60%;
-}
-
-/* Iconos de cuenta y carrito */
-.navbar-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-/* Buscador */
-.search-form input {
-  font-size: 1rem;
-}
-
-.search-form .btn {
-  background-color: var(--boton-principal-acento-fuerte);
-  color: var(--fondo-principal-crema);
-  border: none;
-  font-size: 1rem;
-  padding: 0.45rem 1rem;
-}
-
-.search-form .btn:hover {
-  background-color: var(--texto-principal-cafe-oscuro);
-  color: var(--fondo-principal-crema);
-}
-
-/* ==========================================================================
-   ICONOS NAVBAR
-   ========================================================================== */
-
-.navbar-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  transition: transform var(--transicion);
-}
-
-/* Hover sobre iconos */
-.nav-link:hover .navbar-icon {
-  transform: scale(1.1);
-  transform: translateY(-2px);
-}
-
-/* Separación entre los elementos del menú */
-.navbar-nav {
-  align-items: center;
-  gap: 10px;
-}
-
-/* Más espacio antes del icono de usuario */
-.nav-item:nth-last-child(2) {
-  margin-left: 20px;
-}
-
-/* Espacio entre usuario y carrito */
-.nav-item:last-child {
-  margin-left: 10px;
-}
-
-.navbar-toggler {
-  border: none;
-}
-
-.navbar-toggler:focus {
-  box-shadow: none;
-}
-
-.btn {
-  background-color: var(--boton-principal-acento-fuerte);
-  font-weight: 800;
-  transition: 0.1s ease;
-}
 
 /*Icono Carrito*/
 
@@ -925,7 +1281,7 @@ main {
 
 /*Ajuste de cada integrante*/
 .pixel-mafer {
-  --sprite: url("../../assets/sprites/maf1-9.png.png");
+  --sprite: url("/../assets/sprites/maf1-9.png.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -934,7 +1290,7 @@ main {
 }
 
 .pixel-ilse {
-  --sprite: url("../../assets/sprites/adr1.png");
+  --sprite: url("/../assets/sprites/adr1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -943,7 +1299,7 @@ main {
 }
 
 .pixel-rodrigo {
-  --sprite: url("../../assets/sprites/rod1.png");
+  --sprite: url("/../assets/sprites/rod1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -952,7 +1308,7 @@ main {
 }
 
 .pixel-israel {
-  --sprite: url("../../assets/sprites/isr1.png");
+  --sprite: url("/../assets/sprites/isr1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -961,7 +1317,7 @@ main {
 }
 
 .pixel-miguel {
-  --sprite: url("../../assets/sprites/mig1.png");
+  --sprite: url("/../assets/sprites/mig1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -970,7 +1326,7 @@ main {
 }
 
 .pixel-carlos {
-  --sprite: url("../../assets/sprites/car1.png");
+  --sprite: url("/../assets/sprites/car1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -979,7 +1335,7 @@ main {
 }
 
 .pixel-tonantzin {
-  --sprite: url("../../assets/sprites/ton1.png");
+  --sprite: url("/../assets/sprites/ton1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;

@@ -2,6 +2,7 @@
    IMPORTACIÓN DE FUENTES (API de Google Fonts)
    ========================================================================== */
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+@import "../../variables.css";
 
 /* ==========================================================================
    RESET, CONFIGURACIÓN GLOBAL Y VARIABLES
@@ -13,18 +14,7 @@
   font-family: "Cormorant Garamond", serif;
 }
 
-:root {
-  --fondo-principal-crema: #f1f0e5;
-  --fondo-blanco-calido: #f6ebd9;
-  --texto-principal-cafe-oscuro: #521f12;
-  --boton-principal-acento-fuerte: #4b1d13;
-  --beige-calido-degradado: #f8e1c1;
-  --crema-secundario: #f6ebd9;
-  --cafe-medio: #a0653d;
-  --beige-grisaceo: #d9cdc1;
-  /* Nota: Asegúrate de tener definida esta variable en tu proyecto si la vas a usar */
-  --color-verde-acento: #2e5a44;
-}
+
 
 body {
   width: 100%;
@@ -731,7 +721,7 @@ main {
 
 /*Ajuste de cada integrante*/
 .pixel-mafer {
-  --sprite: url("../../assets/sprites/maf1-9.png.png");
+  --sprite: url("/../assets/sprites/maf1-9.png.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -740,7 +730,7 @@ main {
 }
 
 .pixel-ilse {
-  --sprite: url("../../assets/sprites/adr1.png");
+  --sprite: url("/../assets/sprites/adr1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -749,7 +739,7 @@ main {
 }
 
 .pixel-rodrigo {
-  --sprite: url("../../assets/sprites/rod1.png");
+  --sprite: url("/../assets/sprites/rod1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -758,7 +748,7 @@ main {
 }
 
 .pixel-israel {
-  --sprite: url("../../assets/sprites/isr1.png");
+  --sprite: url("/../assets/sprites/isr1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -767,7 +757,7 @@ main {
 }
 
 .pixel-miguel {
-  --sprite: url("../../assets/sprites/mig1.png");
+  --sprite: url("/../assets/sprites/mig1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -776,7 +766,7 @@ main {
 }
 
 .pixel-carlos {
-  --sprite: url("../../assets/sprites/car1.png");
+  --sprite: url("/../assets/sprites/car1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -785,7 +775,7 @@ main {
 }
 
 .pixel-tonantzin {
-  --sprite: url("../../assets/sprites/ton1.png");
+  --sprite: url("/../assets/sprites/ton1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;

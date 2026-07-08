@@ -1,0 +1,41 @@
+/* ==========================================================================
+   VARIABLES GLOBALES DE DISEÑO — MUNDO ENTRE LIBROS
+   Fuente única de verdad para colores, sombras y transiciones.
+   Se importa desde style.css y desde todos los CSS de /src/pages/*
+   para evitar duplicar y desincronizar la paleta entre páginas.
+   ========================================================================== */
+
+:root {
+  /* Paleta principal */
+  --fondo-principal-crema: #f1f0e5;
+  --fondo-blanco-calido: #f6ebd9;
+  --texto-principal-cafe-oscuro: #521f12;
+  --boton-principal-acento-fuerte: #4b1d13;
+  --beige-calido-degradado: #f8e1c1;
+  --crema-secundario: #f6ebd9;
+  --cafe-medio: #a0653d;
+  --beige-grisaceo: #d9cdc1;
+  --color-verde-acento: #2e5a44;
+
+  /* Estados */
+  --color-exito: #2e5a44;
+  --color-error: #a13636;
+  --color-advertencia: #a0653d;
+
+  /* Sombras */
+  --sombra-suave: 0 8px 20px rgba(82, 31, 18, 0.08);
+  --sombra-media: 0 12px 26px rgba(82, 31, 18, 0.12);
+  --sombra-fuerte: 0 16px 34px rgba(82, 31, 18, 0.18);
+
+  /* Transiciones */
+  --transicion: 0.3s ease;
+  --transicion-rapida: 0.15s ease;
+
+  /* Radios de borde (consistencia visual entre tarjetas, botones, inputs) */
+  --radio-sm: 8px;
+  --radio-md: 14px;
+  --radio-lg: 22px;
+
+  /* Tipografía */
+  --fuente-principal: "Cormorant Garamond", serif;
+}

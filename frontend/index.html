@@ -13,77 +13,10 @@
 
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg sticky-top" aria-label="Navegación principal">
-            <div class="container">
 
-                <a class="navbar-brand fw-bold" href="/">
-                    <img src="/src/assets/icons/logo-mel.png" alt="Logo Mundo Entre Libros" class="navbar-logo"
-                        loading="lazy" />
-                </a>
+     <div id="navbar-root"></div>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir menú">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link active" href="/"> Inicio </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/catalog/catalog.html">
-                                Catálogo
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/forums/forums.html">
-                                Foros
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/aboutUs/aboutUs.html">
-                                Nosotros
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/contact/contact.html">
-                                Contacto
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/account/account.html">
-                                <img src="/src/assets/icons/icono-cuenta-navbar.png" alt="Mi Cuenta" class="navbar-icon"
-                                    loading="lazy" />
-                            </a>
-                        </li>
-
-                    <!----Carrito  modal----->
-
-                        <li class="nav-item contenedor-carrito-offcanvas">
-                            <a class="nav-link" href="/shoppingCart/shopping.html" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasCarrito" aria-controls="offcanvasCarrito">
-
-                                <div class="caja-icono-carrito">
-                                    <img src="/src/assets/icons/icono-carrito-navbar.png" alt="Carrito"
-                                        class="navbar-icon">
-                                    <span id="contador-carrito">0</span>
-                                </div>
-                            </a>
-                        </li>
-
-                    </ul>
-
-                    <form class="search-form d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Buscar libros..."
-                            aria-label="Buscar libros" />
-                        <button class="btn btn-outline-light" type="submit">
-                            Buscar
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </nav>
         <!--? Header / Carrusel: Mafer -->
         <header class="home-header" aria-label="Carrusel principal de Mundo Entre Libros">
             <div id="homeHeroCarousel" class="carousel slide home-hero-carousel" data-bs-ride="carousel"
@@ -105,7 +38,7 @@
                     <!-- Slide 1: Bienvenida -->
                     <div class="carousel-item active">
                         <section class="home-hero-slide">
-                            <img src="/src/assets/img/BackHeader.png" alt="Espacio cálido de lectura"
+                            <img src="/assets/img/BackHeader.png" alt="Espacio cálido de lectura"
                                 class="home-hero-bg" />
 
                             <div class="home-hero-content">
@@ -134,7 +67,7 @@
                     <!-- Slide 2: Libros más vendidos -->
                     <div class="carousel-item">
                         <section class="home-hero-slide">
-                            <img src="/src/assets/img/home-libros-vendidos.jpg" alt="Libros destacados y más vendidos"
+                            <img src="/assets/img/home-libros-vendidos.jpg" alt="Libros destacados y más vendidos"
                                 class="home-hero-bg" />
 
                             <div class="home-hero-content">
@@ -154,13 +87,13 @@
                             </div>
 
                             <div class="home-hero-books-preview" aria-label="Libros destacados">
-                                <img src="/src/assets/libros/HP_Piedra_Filosofal.webp"
+                                <img src="/assets/libros/HP_Piedra_Filosofal.webp"
                                     alt="Harry Potter y la piedra filosofal" loading="lazy" />
 
-                                <img src="/src/assets/libros/9788419599216.jpg" alt="Orgullo y prejuicio"
+                                <img src="/assets/libros/9788419599216.jpg" alt="Orgullo y prejuicio"
                                     loading="lazy" />
 
-                                <img src="/src/assets/libros/It.webp" alt="It" loading="lazy" />
+                                <img src="/assets/libros/It.webp" alt="It" loading="lazy" />
                             </div>
                         </section>
                     </div>
@@ -168,7 +101,7 @@
                     <!-- Slide 3: Foros -->
                     <div class="carousel-item">
                         <section class="home-hero-slide">
-                            <img src="/src/assets/img/home-foros.jpg" alt="Biblioteca cálida para comunidad lectora"
+                            <img src="/assets/img/home-foros.jpg" alt="Biblioteca cálida para comunidad lectora"
                                 class="home-hero-bg" />
 
                             <div class="home-hero-content">
@@ -233,45 +166,57 @@
                     <div class="libros-ventana">
                         <div class="libros-track" id="librosTrack">
                             <div class="libro-card">
-                                <img src="/src/assets/libros/HP_Piedra_Filosofal.webp" alt="Harry Potter"
+                                <img src="/assets/libros/HP_Piedra_Filosofal.webp" alt="Harry Potter"
                                     class="libro-img">
                                 <div class="libro-info">
                                     <h4>Harry Potter</h4>
                                     <p>J. K. Rowling</p>
                                     <div class="libro-precio">$300.00</div>
                                 </div>
-                                <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                <button class="btn-carrito btn-agregar-carrito" data-id="hp-01" 
+                                data-titulo="Harry Potter" data-precio="300" 
+                                data-portada="/assets/libros/HP_Piedra_Filosofal.webp">
+                                Agregar al carrito</button>
                             </div>
 
                             <div class="libro-card">
-                                <img src="./src/assets/libros/9788419599216.jpg" alt="Orgullo y prejuicio"
+                                <img src="./assets/libros/9788419599216.jpg" alt="Orgullo y prejuicio"
                                     class="libro-img">
                                 <div class="libro-info">
                                     <h4>Orgullo y prejuicio</h4>
                                     <p>Jane Austen</p>
                                     <div class="libro-precio">$599.00</div>
                                 </div>
-                                <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                <button class="btn-carrito btn-agregar-carrito" data-id="op-01" 
+                                data-titulo="Orgullo y prejuicio" data-precio="599" 
+                                data-portada="/assets/libros/novelaJuvenil/Orgullo_y_prejuicio.jpg">
+                                Agregar al carrito</button>
                             </div>
 
                             <div class="libro-card">
-                                <img src="./src/assets/libros/It.webp" alt="1984" class="libro-img">
+                                <img src="./assets/libros/It.webp" alt="1984" class="libro-img">
                                 <div class="libro-info">
                                     <h4>It (Eso)</h4>
                                     <p>Stephen King</p>
                                     <div class="libro-precio">659.00</div>
                                 </div>
-                                <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                <button class="btn-carrito btn-agregar-carrito" data-id="it-01" 
+                                data-titulo="It (Eso)" data-precio="659" 
+                                data-portada="/assets/libros/It.webp">
+                                Agregar al carrito</button>
                             </div>
 
                             <div class="libro-card">
-                                <img src="./src/assets/libros/Dune.jpg" alt="El principito" class="libro-img">
+                                <img src="./assets/libros/Dune.jpg" alt="El principito" class="libro-img">
                                 <div class="libro-info">
                                     <h4>Dune</h4>
                                     <p>Frank Herbert</p>
                                     <div class="libro-precio">$400.00</div>
                                 </div>
-                                <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                <button class="btn-carrito btn-agregar-carrito" data-id="dune-01" 
+                                data-titulo="Dune" data-precio="400" 
+                                data-portada="/assets/libros/Dune.jpg">
+                                Agregar al carrito</button>
                             </div>
 
                         </div>
@@ -281,86 +226,11 @@
                 </div>
             </section>
         </main>
-        <!--? Footer: Rodrigo-->
-        <footer class="main-footer">
-            <div class="footer-container">
-
-                <div class="footer-section logo-section">
-                    <img src="/src/assets/icons/logo-mel-horizontal.png" alt="Mundo Entre Libros"
-                        class="img-fluid footer-logo">
-                </div>
-
-                <div class="footer-section links-section">
-                    <h3>Explora</h3>
-                    <ul>
-                        <li><a href="/">Inicio</a></li>
-                        <li><a href="/catalog/catalog.html">Catálogo</a></li>
-                        <li><a href="/forums/forums.html">Foros</a></li>
-                        <li><a href="/aboutUs/aboutUs.html">Nosotros</a></li>
-                        <li><a href="/contact/contact.html">Contacto</a></li>
-                    </ul>
-                </div>
-
-
-                <div class="footer-section pixel-section">
-                    <p class="pixel-interaction-title">¡Pasa a saludarnos!</p>
-                    <div class="pixel-team">
-                        <!--Mafer-->
-                        <a href="https://github.com/mafernandarodrigueztdev-byte" target="_blank"
-                            rel="noopener noreferrer" class="pixel-member pixel-mafer"
-                            title="GitHub de María Fernanda Rodríguez Trinidad"
-                            aria-label="Ir al perfil de GitHub de María Fernanda Rodríguez Trinidad">
-                        </a>
-
-                        <!--Adri-->
-                        <a href="https://github.com/iladricg14-lab" target="_blank" rel="noopener noreferrer"
-                            class="pixel-member pixel-ilse" title="GitHub de Ilse Adriana Careo Galicia"
-                            aria-label="Ir al perfil de GitHub de Ilse Adriana Careo Galicia">
-                        </a>
-
-                        <!--Rodrigo-->
-                        <a href="https://github.com/Rock2612" target="_blank" rel="noopener noreferrer"
-                            class="pixel-member pixel-rodrigo" title="GitHub de Rodrigo González Pastrana"
-                            aria-label="Ir al perfil de GitHub de Rodrigo González Pastrana">
-                        </a>
-
-                        <!--Israel-->
-                        <a href="https://github.com/IsraelMRQ" target="_blank" rel="noopener noreferrer"
-                            class="pixel-member pixel-israel" title="GitHub de José Israel Manrique Roque"
-                            aria-label="Ir al perfil de GitHub de José Israel Manrique Roque">
-                        </a>
-
-                        <!--Miguel-->
-                        <a href="https://github.com/Miguel02mg" target="_blank" rel="noopener noreferrer"
-                            class="pixel-member pixel-miguel" title="GitHub de Miguel Ángel Martínez Garduño"
-                            aria-label="Ir al perfil de GitHub de Miguel Ángel Martínez Garduño">
-                        </a>
-
-                        <!--Carlos-->
-                        <a href="https://github.com/Carlos-Software-Engineer-1999" target="_blank"
-                            rel="noopener noreferrer" class="pixel-member pixel-carlos"
-                            title="GitHub de Carlos Navarrete Tapia"
-                            aria-label="Ir al perfil de GitHub de Carlos Navarrete Tapia">
-                        </a>
-
-                        <!--Tonantzin-->
-                        <a href="https://github.com/Tonantzinap" target="_blank" rel="noopener noreferrer"
-                            class="pixel-member pixel-tonantzin" title="GitHub de Tonantzin Alquisira Palma"
-                            aria-label="Ir al perfil de GitHub de Tonantzin Alquisira Palma">
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; Mundo Entre Libros - 2026</p>
-            </div>
-        </footer>
+        <div id="footer-root"></div>
     </div>
 
 
-    <<!-------Carrito Modal------>
+    <!-------Carrito Modal------>
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasCarritoLabel">
         <div class="offcanvas-header border-bottom">
@@ -386,9 +256,18 @@
         </div>
     </div>
 
+    <div id="toast-carrito" class="toast-notificacion">
+        <span class="toast-icono">✔️</span>
+        <span class="toast-mensaje">¡Libro agregado al carrito!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="/src/components/layout.js"></script>
+
     <script type="module" src="/src/main.js"></script>
     <script src="/src/carrito.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/src/auth.js"></script>
 </body>
 
 </html>

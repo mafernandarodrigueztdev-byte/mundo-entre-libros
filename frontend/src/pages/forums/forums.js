@@ -1,6 +1,97 @@
-/* ==========================================================================
+/* ============================================================================
    PÁGINA DE FOROS - MUNDO ENTRE LIBROS
-   ========================================================================== */
+   Versión adaptada a Spring Boot + MySQL + JWT
+   ---------------------------------------------------------------------------
+   Requisitos:
+   - Login guarda el JWT en localStorage con la llave: mel_token
+   - Backend corriendo en: http://localhost:8080
+   - Endpoints usados:
+     GET    /api/forums
+     GET    /api/posts/forum/{forumId}
+     POST   /api/posts
+     DELETE /api/posts/{id}
+     GET    /api/comments/post/{postId}
+     POST   /api/comments
+     PUT    /api/comments/{id}
+     DELETE /api/comments/{id}
+     POST   /api/subscriptions
+     DELETE /api/subscriptions/{forumId}
+     GET    /api/subscriptions/check/{forumId}
+     GET    /api/subscriptions/points/{forumId}
+     PUT    /api/subscriptions/points
+     GET    /api/subscriptions/members/{forumId}
+   ============================================================================ */
+
+const API_URL = window.location.port === "5173"
+  ? "http://localhost:8080"
+  : "";
+
+const TOKEN_STORAGE_KEY = "mel_token";
+const USER_STORAGE_KEY = "mel_logged_user";
+
+// ============================================================================
+// API GLOBAL CON JWT
+// ============================================================================
+
+function getToken() {
+  return localStorage.getItem(TOKEN_STORAGE_KEY);
+}
+
+function removeSession() {
+  localStorage.removeItem(TOKEN_STORAGE_KEY);
+  localStorage.removeItem(USER_STORAGE_KEY);
+}
+
+async function apiFetch(endpoint, options = {}) {
+  const token = getToken();
+
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {})
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${API_URL}${endpoint}`, {
+    ...options,
+    headers
+  });
+
+  if (response.status === 401 || response.status === 403) {
+    removeSession();
+    throw new Error("Sesión expirada o sin permisos");
+  }
+
+  if (!response.ok) {
+    let errorText = "Error en la petición";
+
+    try {
+      errorText = await response.text();
+    } catch (error) {
+      console.error("No se pudo leer el error del backend:", error);
+    }
+
+    throw new Error(errorText);
+  }
+
+  if (response.status === 204) {
+    return null;
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    return await response.json();
+  }
+
+  return await response.text();
+}
+
+// ============================================================================
+// INICIO
+// ============================================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
   /* ==========================================================================
@@ -55,200 +146,97 @@ document.addEventListener("DOMContentLoaded", async () => {
   let forums = [];
   let selectedForum = null;
   let selectedPost = null;
+  let currentUser = null;
   let showAllPosts = false;
-
-  let editingPostId = null;
   let editingReplyId = null;
 
+  const postsCache = new Map();
+  const commentsCache = new Map();
+  const membersCache = new Map();
+  const pointsCache = new Map();
+  const subscriptionCache = new Map();
+
   /* ==========================================================================
-     LLAVES DE LOCALSTORAGE
+     SESIÓN / USUARIO
      ========================================================================== */
 
-  const USER_STORAGE_KEY = "mel_logged_user";
-  const MEMBERSHIPS_STORAGE_KEY = "mel_forum_memberships";
-
-  /* ==========================================================================
-     USUARIO / SESIÓN
-     ========================================================================== */
-
-  function getLoggedUser() {
-    const storedUser = localStorage.getItem(USER_STORAGE_KEY);
-
-    if (!storedUser) return null;
+  async function loadCurrentUser() {
+    if (!getToken()) {
+      currentUser = null;
+      localStorage.removeItem(USER_STORAGE_KEY);
+      return null;
+    }
 
     try {
-      return JSON.parse(storedUser);
+      currentUser = await apiFetch("/api/auth/me");
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(currentUser));
+      return currentUser;
     } catch (error) {
-      console.error("Error leyendo usuario desde localStorage:", error);
+      console.error("Sesión inválida o expirada:", error);
+      currentUser = null;
+      removeSession();
       return null;
     }
   }
 
-  function getCurrentUserId() {
-    return getLoggedUser()?.id || null;
-  }
-
   function isUserLoggedIn() {
-    return getLoggedUser() !== null;
+    return Boolean(getToken() && currentUser);
+  }
+
+  function getCurrentUserId() {
+    return currentUser?.idUser ?? currentUser?.id ?? currentUser?.userId ?? null;
+  }
+
+  function isCurrentUserOwner(item) {
+    const userId = Number(getCurrentUserId());
+    const itemUserId = Number(item?.userId);
+
+    return Boolean(userId && itemUserId && userId === itemUserId);
   }
 
   /* ==========================================================================
-     LOCALSTORAGE: PUBLICACIONES
+     NORMALIZADORES
      ========================================================================== */
 
-  function getForumStorageKey(forumId) {
-    return `mel_forum_posts_${forumId}`;
+  function normalizeForum(rawForum) {
+    return {
+      ...rawForum,
+      id: rawForum.idForum ?? rawForum.id ?? rawForum.forumId,
+      nombre: rawForum.nombre ?? rawForum.name ?? "Foro",
+      descripcion: rawForum.descripcion ?? rawForum.description ?? "",
+      icono: rawForum.icono ?? rawForum.icon ?? "📚",
+      posts: Array.isArray(rawForum.posts) ? rawForum.posts : []
+    };
   }
 
-  function getStoredPosts(forumId) {
-    const storedPosts = localStorage.getItem(getForumStorageKey(forumId));
-
-    if (!storedPosts) return [];
-
-    try {
-      return JSON.parse(storedPosts);
-    } catch (error) {
-      console.error("Error leyendo publicaciones desde localStorage:", error);
-      return [];
-    }
+  function normalizePost(rawPost) {
+    return {
+      ...rawPost,
+      id: rawPost.id ?? rawPost.idPost,
+      forumId: rawPost.forumId,
+      userId: rawPost.userId,
+      titulo: rawPost.titulo ?? rawPost.titlePost ?? rawPost.title ?? "Sin título",
+      comentario: normalizeHTMLContent(rawPost),
+      autor: rawPost.autor ?? rawPost.author ?? "Usuario lector",
+      fecha: formatDate(rawPost.fecha ?? rawPost.createdAt),
+      rawFecha: rawPost.fecha ?? rawPost.createdAt,
+      comentarios: Number(rawPost.comentarios) || 0,
+      source: "backend"
+    };
   }
 
-  function saveStoredPosts(forumId, posts) {
-    localStorage.setItem(getForumStorageKey(forumId), JSON.stringify(posts));
-  }
-
-  /* ==========================================================================
-     LOCALSTORAGE: RESPUESTAS
-     ========================================================================== */
-
-  function getReplyStorageKey(forumId, postId) {
-    return `mel_forum_replies_${forumId}_${postId}`;
-  }
-
-  function getStoredReplies(forumId, postId) {
-    const storedReplies = localStorage.getItem(getReplyStorageKey(forumId, postId));
-
-    if (!storedReplies) return [];
-
-    try {
-      return JSON.parse(storedReplies);
-    } catch (error) {
-      console.error("Error leyendo respuestas desde localStorage:", error);
-      return [];
-    }
-  }
-
-  function saveStoredReplies(forumId, postId, replies) {
-    localStorage.setItem(getReplyStorageKey(forumId, postId), JSON.stringify(replies));
-  }
-
-  function removeStoredReplies(forumId, postId) {
-    localStorage.removeItem(getReplyStorageKey(forumId, postId));
-  }
-
-  /* ==========================================================================
-     LOCALSTORAGE: SUSCRIPCIONES Y PUNTOS
-     ========================================================================== */
-
-  function getAllMemberships() {
-    const memberships = localStorage.getItem(MEMBERSHIPS_STORAGE_KEY);
-
-    if (!memberships) return {};
-
-    try {
-      return JSON.parse(memberships);
-    } catch (error) {
-      console.error("Error leyendo suscripciones:", error);
-      return {};
-    }
-  }
-
-  function saveAllMemberships(memberships) {
-    localStorage.setItem(MEMBERSHIPS_STORAGE_KEY, JSON.stringify(memberships));
-  }
-
-  function isUserSubscribedToForum(forumId) {
-    const userId = getCurrentUserId();
-
-    if (!userId) return false;
-
-    const memberships = getAllMemberships();
-
-    return Boolean(memberships[userId]?.[forumId]);
-  }
-
-  function subscribeUserToForum(forumId) {
-    const user = getLoggedUser();
-
-    if (!user) return;
-
-    const memberships = getAllMemberships();
-
-    if (!memberships[user.id]) {
-      memberships[user.id] = {};
-    }
-
-    if (!memberships[user.id][forumId]) {
-      memberships[user.id][forumId] = {
-        forumId,
-        joinedAt: new Date().toISOString(),
-        points: 0
-      };
-    }
-
-    saveAllMemberships(memberships);
-  }
-
-  function unsubscribeUserFromForum(forumId) {
-    const userId = getCurrentUserId();
-
-    if (!userId) return;
-
-    const memberships = getAllMemberships();
-
-    if (memberships[userId]?.[forumId]) {
-      delete memberships[userId][forumId];
-
-      if (Object.keys(memberships[userId]).length === 0) {
-        delete memberships[userId];
-      }
-    }
-
-    saveAllMemberships(memberships);
-  }
-
-  function getForumMembersCount(forumId) {
-    const memberships = getAllMemberships();
-
-    return Object.values(memberships).filter((userMemberships) => {
-      return Boolean(userMemberships[forumId]);
-    }).length;
-  }
-
-  function getUserForumPoints(forumId) {
-    const userId = getCurrentUserId();
-
-    if (!userId) return 0;
-
-    const memberships = getAllMemberships();
-
-    return memberships[userId]?.[forumId]?.points || 0;
-  }
-
-  function updateUserForumPoints(forumId, pointsToAdd) {
-    const userId = getCurrentUserId();
-
-    if (!userId) return;
-
-    const memberships = getAllMemberships();
-
-    if (!memberships[userId]?.[forumId]) return;
-
-    const currentPoints = Number(memberships[userId][forumId].points) || 0;
-
-    memberships[userId][forumId].points = Math.max(0, currentPoints + pointsToAdd);
-
-    saveAllMemberships(memberships);
+  function normalizeReply(rawReply) {
+    return {
+      ...rawReply,
+      id: rawReply.id ?? rawReply.idComment,
+      postId: rawReply.postId,
+      userId: rawReply.userId,
+      comentario: rawReply.content ?? rawReply.comentario ?? "",
+      autor: rawReply.autor ?? rawReply.author ?? "Usuario lector",
+      fecha: formatDate(rawReply.fecha ?? rawReply.createdAt),
+      rawFecha: rawReply.fecha ?? rawReply.createdAt,
+      source: "backend"
+    };
   }
 
   /* ==========================================================================
@@ -257,14 +245,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function formatNumber(number) {
     return Number(number || 0).toLocaleString("es-MX");
-  }
-
-  function createId() {
-    if (window.crypto && crypto.randomUUID) {
-      return crypto.randomUUID();
-    }
-
-    return `id-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
   }
 
   function escapeHTML(text) {
@@ -276,8 +256,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       .replaceAll("'", "&#039;");
   }
 
-  function getTodayLabel() {
-    return new Date().toLocaleDateString("es-MX", {
+  function formatDate(value) {
+    if (!value) return "Fecha no disponible";
+
+    const cleanedValue = String(value).replace(/(\.\d{3})\d+/, "$1");
+    const date = new Date(cleanedValue);
+
+    if (Number.isNaN(date.getTime())) {
+      return String(value);
+    }
+
+    return date.toLocaleDateString("es-MX", {
       day: "numeric",
       month: "short",
       year: "numeric"
@@ -287,8 +276,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   function normalizeHTMLContent(post) {
     return (
       post?.comentario ||
-      post?.contenido ||
       post?.content ||
+      post?.contenido ||
       post?.body ||
       post?.descripcionPost ||
       ""
@@ -307,40 +296,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const hasImage = tempElement.querySelector("img[src]") !== null;
 
     return hasText || hasImage;
-  }
-
-  function isDemoOrEmptyPost(post) {
-    const title = String(post?.titulo || post?.title || "")
-      .trim()
-      .toLowerCase();
-
-    const content = normalizeHTMLContent(post);
-
-    const demoTitles = [
-      "publicación de ejemplo",
-      "publicacion de ejemplo",
-      "post de ejemplo",
-      "entrada de ejemplo",
-      "demo",
-      "ejemplo",
-      "título",
-      "titulo",
-      "sin título",
-      "sin titulo"
-    ];
-
-    const looksLikeDemo = demoTitles.some((demoTitle) => {
-      return title === demoTitle || title.includes(demoTitle);
-    });
-
-    const hasTitle = title.length > 0;
-    const hasContent = hasRealContent(content);
-
-    return !hasTitle || !hasContent || looksLikeDemo;
-  }
-
-  function hasPostContent(post) {
-    return !isDemoOrEmptyPost(post);
   }
 
   function sanitizeRichHTML(html) {
@@ -433,59 +388,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     editor.innerHTML = "";
   }
 
-  function getValidStoredPosts(forumId) {
-    return getStoredPosts(forumId)
-      .map((post) => ({
-        ...post,
-        comentario: normalizeHTMLContent(post)
-      }))
-      .filter(hasPostContent);
-  }
+  function setButtonLoading(button, isLoading, loadingText, normalText) {
+    if (!button) return;
 
-  function getValidJsonPosts(forum) {
-    const jsonPosts = Array.isArray(forum.posts) ? forum.posts : [];
-
-    return jsonPosts
-      .map((post, index) => ({
-        ...post,
-        id: post.id || `${forum.id}-json-post-${index}`,
-        comentario: normalizeHTMLContent(post),
-        source: "json"
-      }))
-      .filter(hasPostContent);
-  }
-
-  function getAllPostsFromForum(forum) {
-    const localPosts = getValidStoredPosts(forum.id).map((post, index) => ({
-      ...post,
-      id: post.id || `${forum.id}-local-post-${index}`,
-      source: "local"
-    }));
-
-    const jsonPosts = getValidJsonPosts(forum);
-
-    return [...localPosts, ...jsonPosts];
-  }
-
-  function getForumTopicsCount(forum) {
-    return getAllPostsFromForum(forum).length;
-  }
-
-  function getReplyCount(forumId, post) {
-    const baseComments = Number(post.comentarios) || 0;
-    const storedReplies = getStoredReplies(forumId, post.id);
-
-    return baseComments + storedReplies.length;
-  }
-
-  function isCurrentUserOwner(item) {
-    const userId = getCurrentUserId();
-
-    return Boolean(userId && item?.userId === userId);
-  }
-
-  function findLocalPostById(forumId, postId) {
-    return getStoredPosts(forumId).find((post) => post.id === postId);
+    button.disabled = isLoading;
+    button.textContent = isLoading ? loadingText : normalText;
   }
 
   /* ==========================================================================
@@ -528,7 +435,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       Swal.fire({
         icon: "warning",
         title: "Suscríbete al foro",
-        text: "Para publicar o responder necesitas estar suscrita a este foro.",
+        text: "Para publicar o responder necesitas estar suscrito a este foro.",
         confirmButtonText: "Entendido",
         confirmButtonColor: "#4B1D13",
         background: "#F6EBD9",
@@ -538,7 +445,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    alert("Para publicar o responder necesitas estar suscrita a este foro.");
+    alert("Para publicar o responder necesitas estar suscrito a este foro.");
   }
 
   function showIncompletePostAlert() {
@@ -635,6 +542,296 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* ==========================================================================
+     BACKEND: FOROS
+     ========================================================================== */
+
+  async function getForumsFromBackend() {
+    const data = await apiFetch("/api/forums");
+
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    return data.map(normalizeForum);
+  }
+
+  async function loadForums() {
+    try {
+      forums = await getForumsFromBackend();
+
+      await renderForumCards();
+      renderGenreMenu();
+
+      const params = new URLSearchParams(window.location.search);
+      const forumIdFromUrl = params.get("genero");
+
+      if (forumIdFromUrl) {
+        if (!isUserLoggedIn()) {
+          showForumHome(false);
+          showLoginRequiredAlert();
+          return;
+        }
+
+        await showForumDetail(forumIdFromUrl, false);
+      }
+    } catch (error) {
+      console.error("Error cargando foros:", error);
+
+      if (forumsList) {
+        forumsList.innerHTML = `
+          <p class="forums-error">
+            No pudimos cargar los foros por el momento. Intenta más tarde.
+          </p>
+        `;
+      }
+    }
+  }
+
+  /* ==========================================================================
+     BACKEND: SUSCRIPCIONES Y PUNTOS
+     ========================================================================== */
+
+  async function isUserSubscribedToForum(forumId, refresh = false) {
+    if (!isUserLoggedIn()) return false;
+
+    const key = String(forumId);
+
+    if (!refresh && subscriptionCache.has(key)) {
+      return subscriptionCache.get(key);
+    }
+
+    try {
+      const result = await apiFetch(`/api/subscriptions/check/${forumId}`);
+      subscriptionCache.set(key, Boolean(result));
+      return Boolean(result);
+    } catch (error) {
+      console.error("Error verificando suscripción:", error);
+      subscriptionCache.set(key, false);
+      return false;
+    }
+  }
+
+  async function subscribeUserToForum(forumId) {
+    await apiFetch("/api/subscriptions", {
+      method: "POST",
+      body: JSON.stringify({
+        forumId: Number(forumId)
+      })
+    });
+
+    subscriptionCache.set(String(forumId), true);
+    pointsCache.delete(String(forumId));
+    membersCache.delete(String(forumId));
+  }
+
+  async function unsubscribeUserFromForum(forumId) {
+    await apiFetch(`/api/subscriptions/${forumId}`, {
+      method: "DELETE"
+    });
+
+    subscriptionCache.set(String(forumId), false);
+    pointsCache.delete(String(forumId));
+    membersCache.delete(String(forumId));
+  }
+
+  async function getForumMembersCount(forumId, refresh = false) {
+    const key = String(forumId);
+
+    if (!refresh && membersCache.has(key)) {
+      return membersCache.get(key);
+    }
+
+    try {
+      const count = await apiFetch(`/api/subscriptions/members/${forumId}`);
+      membersCache.set(key, Number(count) || 0);
+      return Number(count) || 0;
+    } catch (error) {
+      console.error("Error obteniendo miembros:", error);
+      membersCache.set(key, 0);
+      return 0;
+    }
+  }
+
+  async function getUserForumPoints(forumId, refresh = false) {
+    if (!isUserLoggedIn()) return 0;
+
+    const key = String(forumId);
+
+    if (!refresh && pointsCache.has(key)) {
+      return pointsCache.get(key);
+    }
+
+    try {
+      const points = await apiFetch(`/api/subscriptions/points/${forumId}`);
+      pointsCache.set(key, Number(points) || 0);
+      return Number(points) || 0;
+    } catch (error) {
+      pointsCache.set(key, 0);
+      return 0;
+    }
+  }
+
+  async function updateUserForumPoints(forumId, pointsToAdd) {
+    if (!isUserLoggedIn()) return;
+
+    try {
+      await apiFetch("/api/subscriptions/points", {
+        method: "PUT",
+        body: JSON.stringify({
+          forumId: Number(forumId),
+          points: Number(pointsToAdd)
+        })
+      });
+
+      pointsCache.delete(String(forumId));
+    } catch (error) {
+      console.error("No se pudieron actualizar puntos:", error);
+    }
+  }
+
+  /* ==========================================================================
+     BACKEND: PUBLICACIONES
+     ========================================================================== */
+
+  async function getPostsByForum(forumId, refresh = false) {
+    const key = String(forumId);
+
+    if (!refresh && postsCache.has(key)) {
+      return postsCache.get(key);
+    }
+
+    try {
+      const posts = await apiFetch(`/api/posts/forum/${forumId}`);
+
+      if (!Array.isArray(posts)) {
+        postsCache.set(key, []);
+        return [];
+      }
+
+      const normalizedPosts = posts
+        .map(normalizePost)
+        .filter((post) => hasRealContent(post.comentario));
+
+      postsCache.set(key, normalizedPosts);
+      return normalizedPosts;
+    } catch (error) {
+      console.error("Error obteniendo publicaciones:", error);
+      postsCache.set(key, []);
+      return [];
+    }
+  }
+
+  async function getForumTopicsCount(forum) {
+    const posts = await getPostsByForum(forum.id);
+    return posts.length;
+  }
+
+  async function createPost(forumId, titlePost, content) {
+    const savedPost = await apiFetch("/api/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        forumId: Number(forumId),
+        titlePost,
+        content
+      })
+    });
+
+    postsCache.delete(String(forumId));
+    return normalizePost(savedPost);
+  }
+
+  async function deletePostFromBackend(postId) {
+    await apiFetch(`/api/posts/${postId}`, {
+      method: "DELETE"
+    });
+
+    if (selectedForum) {
+      postsCache.delete(String(selectedForum.id));
+    }
+
+    commentsCache.delete(String(postId));
+  }
+
+  async function findPostById(postId) {
+    if (!selectedForum) return null;
+
+    const posts = await getPostsByForum(selectedForum.id);
+    return posts.find((post) => String(post.id) === String(postId)) || null;
+  }
+
+  /* ==========================================================================
+     BACKEND: COMENTARIOS / RESPUESTAS
+     ========================================================================== */
+
+  async function getRepliesByPost(postId, refresh = false) {
+    const key = String(postId);
+
+    if (!refresh && commentsCache.has(key)) {
+      return commentsCache.get(key);
+    }
+
+    try {
+      const comments = await apiFetch(`/api/comments/post/${postId}`);
+
+      if (!Array.isArray(comments)) {
+        commentsCache.set(key, []);
+        return [];
+      }
+
+      const normalizedComments = comments.map(normalizeReply);
+      commentsCache.set(key, normalizedComments);
+      return normalizedComments;
+    } catch (error) {
+      console.error("Error obteniendo respuestas:", error);
+      commentsCache.set(key, []);
+      return [];
+    }
+  }
+
+  async function getReplyCount(post) {
+    const replies = await getRepliesByPost(post.id);
+    return replies.length;
+  }
+
+  async function createReply(postId, content) {
+    const savedReply = await apiFetch("/api/comments", {
+      method: "POST",
+      body: JSON.stringify({
+        postId: Number(postId),
+        content
+      })
+    });
+
+    commentsCache.delete(String(postId));
+    return normalizeReply(savedReply);
+  }
+
+  async function updateReply(replyId, content) {
+    const updatedReply = await apiFetch(`/api/comments/${replyId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        content
+      })
+    });
+
+    if (selectedPost) {
+      commentsCache.delete(String(selectedPost.id));
+    }
+
+    return normalizeReply(updatedReply);
+  }
+
+  async function deleteReplyFromBackend(replyId) {
+    await apiFetch(`/api/comments/${replyId}`, {
+      method: "DELETE"
+    });
+
+    if (selectedPost) {
+      commentsCache.delete(String(selectedPost.id));
+    }
+  }
+
+  /* ==========================================================================
      EDITOR ENRIQUECIDO
      ========================================================================== */
 
@@ -708,13 +905,15 @@ document.addEventListener("DOMContentLoaded", async () => {
      RESUMEN DEL FORO
      ========================================================================== */
 
-  function updateForumSummaryPanel(forum) {
+  async function updateForumSummaryPanel(forum) {
     if (!forum) return;
 
-    const membersCount = getForumMembersCount(forum.id);
-    const topicsCount = getForumTopicsCount(forum);
-    const userPoints = getUserForumPoints(forum.id);
-    const isSubscribed = isUserSubscribedToForum(forum.id);
+    const [membersCount, topicsCount, userPoints, isSubscribed] = await Promise.all([
+      getForumMembersCount(forum.id),
+      getForumTopicsCount(forum),
+      getUserForumPoints(forum.id),
+      isUserSubscribedToForum(forum.id)
+    ]);
 
     if (summaryMembers) {
       summaryMembers.textContent = formatNumber(membersCount);
@@ -739,95 +938,66 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* ==========================================================================
-     CARGA DE FOROS
-     ========================================================================== */
-
-  async function loadForums() {
-    try {
-      const response = await fetch("/data/forums.json");
-
-      if (!response.ok) {
-        throw new Error(`Error al cargar JSON: ${response.status}`);
-      }
-
-      forums = await response.json();
-
-      renderForumCards();
-      renderGenreMenu();
-
-      const params = new URLSearchParams(window.location.search);
-      const forumIdFromUrl = params.get("genero");
-
-      if (forumIdFromUrl) {
-        if (!isUserLoggedIn()) {
-          showForumHome(false);
-          showLoginRequiredAlert();
-          return;
-        }
-
-        showForumDetail(forumIdFromUrl, false);
-      }
-    } catch (error) {
-      console.error("Error cargando foros:", error);
-
-      if (forumsList) {
-        forumsList.innerHTML = `
-          <p class="forums-error">
-            No pudimos cargar los foros por el momento. Intenta más tarde.
-          </p>
-        `;
-      }
-    }
-  }
-
-  /* ==========================================================================
      RENDER: CARDS DE FOROS
      ========================================================================== */
 
-  function renderForumCards() {
+  async function renderForumCards() {
     if (!forumsList) return;
 
-    forumsList.innerHTML = forums
-      .map((forum) => {
-        const topicsCount = getForumTopicsCount(forum);
-        const membersCount = getForumMembersCount(forum.id);
+    if (!forums || forums.length === 0) {
+      forumsList.innerHTML = `
+        <p class="forums-error">
+          No hay foros disponibles por el momento.
+        </p>
+      `;
+      return;
+    }
 
-        return `
-          <article class="forum-card">
-            <div class="forum-card-icon">${forum.icono}</div>
+    let html = "";
 
-            <div class="forum-card-content">
-              <h3>${escapeHTML(forum.nombre)}</h3>
+    for (const forum of forums) {
+      const [topicsCount, membersCount] = await Promise.all([
+        getForumTopicsCount(forum),
+        getForumMembersCount(forum.id)
+      ]);
 
-              <p>${escapeHTML(forum.descripcion)}</p>
+      html += `
+        <article class="forum-card">
+          <div class="forum-card-icon">${forum.icono}</div>
 
-              <div class="forum-card-stats">
-                <span>👥 ${formatNumber(membersCount)} miembros activos</span>
-                <span>💬 ${formatNumber(topicsCount)} temas</span>
-              </div>
+          <div class="forum-card-content">
+            <h3>${escapeHTML(forum.nombre)}</h3>
 
-              <button 
-                class="forum-enter-button" 
-                type="button"
-                data-forum-id="${forum.id}"
-              >
-                Entrar al foro
-              </button>
+            <p>${escapeHTML(forum.descripcion)}</p>
+
+            <div class="forum-card-stats">
+              <span>👥 ${formatNumber(membersCount)} miembros activos</span>
+              <span>💬 ${formatNumber(topicsCount)} temas</span>
             </div>
-          </article>
-        `;
-      })
-      .join("");
+
+            <button 
+              class="forum-enter-button" 
+              type="button"
+              data-forum-id="${forum.id}"
+            >
+              Entrar al foro
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    forumsList.innerHTML = html;
 
     document.querySelectorAll(".forum-enter-button").forEach((button) => {
-      button.addEventListener("click", () => {
+      button.addEventListener("click", async () => {
         if (!isUserLoggedIn()) {
           showLoginRequiredAlert();
           return;
         }
 
         const forumId = button.dataset.forumId;
-        showForumDetail(forumId, true);
+        await showForumDetail(forumId, true);
       });
     });
   }
@@ -851,14 +1021,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       .join("");
 
     document.querySelectorAll(".genre-menu-button").forEach((button) => {
-      button.addEventListener("click", () => {
+      button.addEventListener("click", async () => {
         if (!isUserLoggedIn()) {
           showLoginRequiredAlert();
           return;
         }
 
         const forumId = button.dataset.forumId;
-        showForumDetail(forumId, true);
+        await showForumDetail(forumId, true);
       });
     });
   }
@@ -883,13 +1053,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function showForumDetail(forumId, updateUrl = true) {
+  async function showForumDetail(forumId, updateUrl = true) {
     if (!isUserLoggedIn()) {
       showLoginRequiredAlert();
       return;
     }
 
-    const forum = forums.find((item) => item.id === forumId);
+    const forum = forums.find((item) => String(item.id) === String(forumId));
 
     if (!forum) {
       showForumHome(false);
@@ -903,7 +1073,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     forumsHomeView?.classList.add("is-hidden");
     forumDetailView?.classList.remove("is-hidden");
 
-    showPostsListPanel(false);
+    await showPostsListPanel(false);
 
     if (forumDetailIcon) {
       forumDetailIcon.textContent = forum.icono;
@@ -917,8 +1087,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       forumDetailDescription.textContent = forum.descripcion;
     }
 
-    updateForumSummaryPanel(forum);
-    renderRecentPosts(forum);
+    await updateForumSummaryPanel(forum);
     updateActiveGenreButton(forum.id);
 
     if (updateUrl) {
@@ -931,7 +1100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  function showPostsListPanel(scroll = true) {
+  async function showPostsListPanel(scroll = true) {
     createPostCard?.classList.remove("is-hidden");
     recentPostsSection?.classList.remove("is-hidden");
     postDetailPanel?.classList.add("is-hidden");
@@ -940,8 +1109,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearReplyEditMode();
 
     if (selectedForum) {
-      renderRecentPosts(selectedForum);
-      updateForumSummaryPanel(selectedForum);
+      await renderRecentPosts(selectedForum);
+      await updateForumSummaryPanel(selectedForum);
     }
 
     if (scroll && recentPostsSection) {
@@ -952,7 +1121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function showPostDetailPanel(post) {
+  async function showPostDetailPanel(post) {
     createPostCard?.classList.add("is-hidden");
     recentPostsSection?.classList.add("is-hidden");
     postDetailPanel?.classList.remove("is-hidden");
@@ -972,7 +1141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       postDetailMeta.textContent = `${post.autor} · ${post.fecha}`;
     }
 
-    const canManagePost = post.source === "local" && isCurrentUserOwner(post);
+    const canDeletePost = isCurrentUserOwner(post);
 
     if (postDetailBody) {
       postDetailBody.innerHTML = `
@@ -981,13 +1150,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
 
         ${
-          canManagePost
+          canDeletePost
             ? `
               <div class="post-management-actions">
-                <button type="button" class="edit-current-post-button">
-                  Editar publicación
-                </button>
-
                 <button type="button" class="delete-current-post-button">
                   Borrar publicación
                 </button>
@@ -998,19 +1163,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
 
       postDetailBody
-        .querySelector(".edit-current-post-button")
-        ?.addEventListener("click", () => {
-          editPost(post.id);
-        });
-
-      postDetailBody
         .querySelector(".delete-current-post-button")
         ?.addEventListener("click", () => {
           deletePost(post.id);
         });
     }
 
-    renderReplies();
+    await renderReplies();
 
     postDetailPanel?.scrollIntoView({
       behavior: "smooth",
@@ -1020,7 +1179,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function updateActiveGenreButton(forumId) {
     document.querySelectorAll(".genre-menu-button").forEach((button) => {
-      button.classList.toggle("is-active", button.dataset.forumId === forumId);
+      button.classList.toggle("is-active", String(button.dataset.forumId) === String(forumId));
     });
   }
 
@@ -1028,10 +1187,10 @@ document.addEventListener("DOMContentLoaded", async () => {
      RENDER: PUBLICACIONES
      ========================================================================== */
 
-  function renderRecentPosts(forum) {
+  async function renderRecentPosts(forum) {
     if (!recentPostsList) return;
 
-    const allPosts = getAllPostsFromForum(forum);
+    const allPosts = await getPostsByForum(forum.id);
     const postsToRender = showAllPosts ? allPosts : allPosts.slice(0, 3);
 
     if (allPosts.length === 0) {
@@ -1048,73 +1207,61 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    recentPostsList.innerHTML = postsToRender
-      .map((post) => {
-        const repliesCount = getReplyCount(forum.id, post);
-        const canManagePost = post.source === "local" && isCurrentUserOwner(post);
+    let html = "";
 
-        return `
-          <article class="recent-post-card">
-            <div class="post-avatar">${forum.icono}</div>
+    for (const post of postsToRender) {
+      const repliesCount = await getReplyCount(post);
+      const canDeletePost = isCurrentUserOwner(post);
 
-            <div class="post-content">
-              <h3>${escapeHTML(post.titulo)}</h3>
-              <p>${escapeHTML(post.autor)} · ${escapeHTML(post.fecha)}</p>
-            </div>
+      html += `
+        <article class="recent-post-card">
+          <div class="post-avatar">${forum.icono}</div>
 
-            <div class="post-actions">
-              <span>💬 ${formatNumber(repliesCount)}</span>
+          <div class="post-content">
+            <h3>${escapeHTML(post.titulo)}</h3>
+            <p>${escapeHTML(post.autor)} · ${escapeHTML(post.fecha)}</p>
+          </div>
 
-              <button 
-                type="button" 
-                class="reply-post-button"
-                data-post-id="${post.id}"
-              >
-                Responder
-              </button>
+          <div class="post-actions">
+            <span>💬 ${formatNumber(repliesCount)}</span>
 
-              ${
-                canManagePost
-                  ? `
-                    <button 
-                      type="button" 
-                      class="edit-post-button"
-                      data-post-id="${post.id}"
-                    >
-                      Editar
-                    </button>
+            <button 
+              type="button" 
+              class="reply-post-button"
+              data-post-id="${post.id}"
+            >
+              Responder
+            </button>
 
-                    <button 
-                      type="button" 
-                      class="delete-post-button"
-                      data-post-id="${post.id}"
-                    >
-                      Borrar
-                    </button>
-                  `
-                  : ""
-              }
-            </div>
-          </article>
-        `;
-      })
-      .join("");
+            ${
+              canDeletePost
+                ? `
+                  <button 
+                    type="button" 
+                    class="delete-post-button"
+                    data-post-id="${post.id}"
+                  >
+                    Borrar
+                  </button>
+                `
+                : ""
+            }
+          </div>
+        </article>
+      `;
+    }
+
+    recentPostsList.innerHTML = html;
 
     document.querySelectorAll(".reply-post-button").forEach((button) => {
-      button.addEventListener("click", () => {
+      button.addEventListener("click", async () => {
         if (!isUserLoggedIn()) {
           showLoginRequiredAlert();
           return;
         }
 
         const postId = button.dataset.postId;
-        openPostDetail(postId);
-      });
-    });
-
-    document.querySelectorAll(".edit-post-button").forEach((button) => {
-      button.addEventListener("click", () => {
-        editPost(button.dataset.postId);
+        await openPostDetail(postId);
       });
     });
 
@@ -1136,25 +1283,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function openPostDetail(postId) {
+  async function openPostDetail(postId) {
     if (!selectedForum) return;
 
-    const allPosts = getAllPostsFromForum(selectedForum);
-    const post = allPosts.find((item) => item.id === postId);
+    const allPosts = await getPostsByForum(selectedForum.id);
+    const post = allPosts.find((item) => String(item.id) === String(postId));
 
     if (!post) return;
 
-    showPostDetailPanel(post);
+    await showPostDetailPanel(post);
   }
 
   /* ==========================================================================
      RENDER: RESPUESTAS
      ========================================================================== */
 
-  function renderReplies() {
+  async function renderReplies() {
     if (!selectedForum || !selectedPost || !repliesList) return;
 
-    const replies = getStoredReplies(selectedForum.id, selectedPost.id);
+    const replies = await getRepliesByPost(selectedPost.id);
 
     if (replies.length === 0) {
       repliesList.innerHTML = `
@@ -1208,14 +1355,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       .join("");
 
     document.querySelectorAll(".edit-reply-button").forEach((button) => {
-      button.addEventListener("click", () => {
-        editReply(button.dataset.replyId);
+      button.addEventListener("click", async () => {
+        await editReply(button.dataset.replyId);
       });
     });
 
     document.querySelectorAll(".delete-reply-button").forEach((button) => {
-      button.addEventListener("click", () => {
-        deleteReply(button.dataset.replyId);
+      button.addEventListener("click", async () => {
+        await deleteReply(button.dataset.replyId);
       });
     });
   }
@@ -1244,40 +1391,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return cancelButton;
   }
 
-  function setPostEditMode(post) {
-    editingPostId = post.id;
-
-    if (createPostTitle) {
-      createPostTitle.textContent = "Editar publicación";
-    }
-
-    if (postSubmitButton) {
-      postSubmitButton.textContent = "Guardar cambios";
-    }
-
-    if (postTitleInput) {
-      postTitleInput.value = post.titulo;
-    }
-
-    if (postCommentEditor) {
-      postCommentEditor.innerHTML = sanitizeRichHTML(post.comentario);
-    }
-
-    ensureCancelPostEditButton();
-
-    createPostCard?.classList.remove("is-hidden");
-    recentPostsSection?.classList.remove("is-hidden");
-    postDetailPanel?.classList.add("is-hidden");
-
-    createPostCard?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }
-
   function clearPostEditMode() {
-    editingPostId = null;
-
     if (createPostTitle) {
       createPostTitle.textContent = "Crear publicación";
     }
@@ -1293,66 +1407,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearEditor(postCommentEditor);
 
     document.querySelector("#cancelPostEditBtn")?.remove();
-  }
-
-  function editPost(postId) {
-    if (!selectedForum) return;
-
-    const post = findLocalPostById(selectedForum.id, postId);
-
-    if (!post || !isCurrentUserOwner(post)) {
-      showErrorAlert(
-        "No disponible",
-        "Solo puedes editar publicaciones que tú hayas creado."
-      );
-      return;
-    }
-
-    setPostEditMode(post);
-  }
-
-  async function deletePost(postId) {
-    if (!selectedForum) return;
-
-    const post = findLocalPostById(selectedForum.id, postId);
-
-    if (!post || !isCurrentUserOwner(post)) {
-      showErrorAlert(
-        "No disponible",
-        "Solo puedes borrar publicaciones que tú hayas creado."
-      );
-      return;
-    }
-
-    const confirmed = await showConfirmAlert(
-      "¿Borrar publicación?",
-      "Esta acción eliminará la publicación y sus respuestas guardadas localmente.",
-      "Sí, borrar"
-    );
-
-    if (!confirmed) return;
-
-    const storedPosts = getStoredPosts(selectedForum.id);
-    const updatedPosts = storedPosts.filter((item) => item.id !== postId);
-
-    saveStoredPosts(selectedForum.id, updatedPosts);
-    removeStoredReplies(selectedForum.id, postId);
-    updateUserForumPoints(selectedForum.id, -10);
-
-    clearPostEditMode();
-
-    if (selectedPost?.id === postId) {
-      showPostsListPanel(false);
-    }
-
-    renderRecentPosts(selectedForum);
-    renderForumCards();
-    updateForumSummaryPanel(selectedForum);
-
-    showSuccessAlert(
-      "Publicación borrada",
-      "La publicación fue eliminada correctamente."
-    );
   }
 
   /* ==========================================================================
@@ -1379,7 +1433,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     return cancelButton;
   }
 
-  function setReplyEditMode(reply) {
+  async function editReply(replyId) {
+    if (!selectedPost) return;
+
+    const replies = await getRepliesByPost(selectedPost.id);
+    const reply = replies.find((item) => String(item.id) === String(replyId));
+
+    if (!reply || !isCurrentUserOwner(reply)) {
+      showErrorAlert(
+        "No disponible",
+        "Solo puedes editar respuestas que tú hayas creado."
+      );
+      return;
+    }
+
     editingReplyId = reply.id;
 
     if (replyFormTitle) {
@@ -1418,28 +1485,60 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector("#cancelReplyEditBtn")?.remove();
   }
 
-  function editReply(replyId) {
-    if (!selectedForum || !selectedPost) return;
+  async function deletePost(postId) {
+    if (!selectedForum) return;
 
-    const replies = getStoredReplies(selectedForum.id, selectedPost.id);
-    const reply = replies.find((item) => item.id === replyId);
+    const post = await findPostById(postId);
 
-    if (!reply || !isCurrentUserOwner(reply)) {
+    if (!post || !isCurrentUserOwner(post)) {
       showErrorAlert(
         "No disponible",
-        "Solo puedes editar respuestas que tú hayas creado."
+        "Solo puedes borrar publicaciones que tú hayas creado."
       );
       return;
     }
 
-    setReplyEditMode(reply);
+    const confirmed = await showConfirmAlert(
+      "¿Borrar publicación?",
+      "Esta acción eliminará la publicación y sus respuestas.",
+      "Sí, borrar"
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await deletePostFromBackend(postId);
+      await updateUserForumPoints(selectedForum.id, -10);
+
+      clearPostEditMode();
+
+      if (String(selectedPost?.id) === String(postId)) {
+        await showPostsListPanel(false);
+      } else {
+        await renderRecentPosts(selectedForum);
+        await updateForumSummaryPanel(selectedForum);
+      }
+
+      await renderForumCards();
+
+      showSuccessAlert(
+        "Publicación borrada",
+        "La publicación fue eliminada correctamente."
+      );
+    } catch (error) {
+      console.error(error);
+      showErrorAlert(
+        "Error",
+        "No se pudo eliminar la publicación."
+      );
+    }
   }
 
   async function deleteReply(replyId) {
     if (!selectedForum || !selectedPost) return;
 
-    const replies = getStoredReplies(selectedForum.id, selectedPost.id);
-    const reply = replies.find((item) => item.id === replyId);
+    const replies = await getRepliesByPost(selectedPost.id);
+    const reply = replies.find((item) => String(item.id) === String(replyId));
 
     if (!reply || !isCurrentUserOwner(reply)) {
       showErrorAlert(
@@ -1457,27 +1556,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!confirmed) return;
 
-    const updatedReplies = replies.filter((item) => item.id !== replyId);
+    try {
+      await deleteReplyFromBackend(replyId);
+      await updateUserForumPoints(selectedForum.id, -5);
 
-    saveStoredReplies(selectedForum.id, selectedPost.id, updatedReplies);
-    updateUserForumPoints(selectedForum.id, -5);
+      clearReplyEditMode();
+      await renderReplies();
+      await renderRecentPosts(selectedForum);
+      await updateForumSummaryPanel(selectedForum);
 
-    clearReplyEditMode();
-    renderReplies();
-    renderRecentPosts(selectedForum);
-    updateForumSummaryPanel(selectedForum);
-
-    showSuccessAlert(
-      "Respuesta borrada",
-      "La respuesta fue eliminada correctamente."
-    );
+      showSuccessAlert(
+        "Respuesta borrada",
+        "La respuesta fue eliminada correctamente."
+      );
+    } catch (error) {
+      console.error(error);
+      showErrorAlert(
+        "Error",
+        "No se pudo eliminar la respuesta."
+      );
+    }
   }
 
   /* ==========================================================================
-     CREAR O EDITAR PUBLICACIÓN
+     CREAR PUBLICACIÓN
      ========================================================================== */
 
-  forumPostForm?.addEventListener("submit", (event) => {
+  forumPostForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     if (!isUserLoggedIn()) {
@@ -1487,12 +1592,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!selectedForum) return;
 
-    if (!isUserSubscribedToForum(selectedForum.id)) {
+    const isSubscribed = await isUserSubscribedToForum(selectedForum.id, true);
+
+    if (!isSubscribed) {
       showSubscribeRequiredAlert();
       return;
     }
-
-    const loggedUser = getLoggedUser();
 
     const title = postTitleInput?.value.trim() || "";
     const comment = getEditorHTML(postCommentEditor);
@@ -1502,75 +1607,40 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const storedPosts = getStoredPosts(selectedForum.id);
+    try {
+      setButtonLoading(postSubmitButton, true, "Publicando...", "Publicar");
 
-    if (editingPostId) {
-      const postIndex = storedPosts.findIndex((post) => post.id === editingPostId);
+      await createPost(selectedForum.id, title, comment);
+      await updateUserForumPoints(selectedForum.id, 10);
 
-      if (postIndex === -1 || !isCurrentUserOwner(storedPosts[postIndex])) {
-        showErrorAlert(
-          "No disponible",
-          "No se pudo editar esta publicación."
-        );
-        return;
-      }
-
-      storedPosts[postIndex] = {
-        ...storedPosts[postIndex],
-        titulo: title,
-        comentario: comment,
-        updatedAt: new Date().toISOString()
-      };
-
-      saveStoredPosts(selectedForum.id, storedPosts);
+      forumPostForm.reset();
+      clearEditor(postCommentEditor);
       clearPostEditMode();
 
-      renderRecentPosts(selectedForum);
-      renderForumCards();
-      updateForumSummaryPanel(selectedForum);
+      await renderRecentPosts(selectedForum);
+      await renderForumCards();
+      await updateForumSummaryPanel(selectedForum);
 
       showSuccessAlert(
-        "Publicación actualizada",
-        "Los cambios se guardaron correctamente."
+        "Publicación creada",
+        "Tu entrada se guardó correctamente. Sumaste 10 puntos."
       );
-
-      return;
+    } catch (error) {
+      console.error(error);
+      showErrorAlert(
+        "Error",
+        "No fue posible crear la publicación."
+      );
+    } finally {
+      setButtonLoading(postSubmitButton, false, "Publicando...", "Publicar");
     }
-
-    const newPost = {
-      id: createId(),
-      titulo: title,
-      comentario: comment,
-      autor: loggedUser.nombre || "Usuario lector",
-      userId: loggedUser.id || "user-local",
-      fecha: getTodayLabel(),
-      comentarios: 0,
-      createdAt: new Date().toISOString(),
-      source: "local"
-    };
-
-    storedPosts.unshift(newPost);
-    saveStoredPosts(selectedForum.id, storedPosts);
-    updateUserForumPoints(selectedForum.id, 10);
-
-    forumPostForm.reset();
-    clearEditor(postCommentEditor);
-
-    renderRecentPosts(selectedForum);
-    renderForumCards();
-    updateForumSummaryPanel(selectedForum);
-
-    showSuccessAlert(
-      "Publicación creada",
-      "Tu entrada se guardó correctamente. Sumaste 10 puntos."
-    );
   });
 
   /* ==========================================================================
      CREAR O EDITAR RESPUESTA
      ========================================================================== */
 
-  replyForm?.addEventListener("submit", (event) => {
+  replyForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     if (!isUserLoggedIn()) {
@@ -1580,12 +1650,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!selectedForum || !selectedPost) return;
 
-    if (!isUserSubscribedToForum(selectedForum.id)) {
+    const isSubscribed = await isUserSubscribedToForum(selectedForum.id, true);
+
+    if (!isSubscribed) {
       showSubscribeRequiredAlert();
       return;
     }
 
-    const loggedUser = getLoggedUser();
     const comment = getEditorHTML(replyEditor);
 
     if (!hasRealContent(comment)) {
@@ -1593,63 +1664,57 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const replies = getStoredReplies(selectedForum.id, selectedPost.id);
+    try {
+      setButtonLoading(
+        replySubmitButton,
+        true,
+        "Guardando...",
+        editingReplyId ? "Guardar cambios" : "Responder"
+      );
 
-    if (editingReplyId) {
-      const replyIndex = replies.findIndex((reply) => reply.id === editingReplyId);
+      if (editingReplyId) {
+        await updateReply(editingReplyId, comment);
+        clearReplyEditMode();
 
-      if (replyIndex === -1 || !isCurrentUserOwner(replies[replyIndex])) {
-        showErrorAlert(
-          "No disponible",
-          "No se pudo editar esta respuesta."
+        await renderReplies();
+        await renderRecentPosts(selectedForum);
+
+        showSuccessAlert(
+          "Respuesta actualizada",
+          "Los cambios se guardaron correctamente."
         );
+
         return;
       }
 
-      replies[replyIndex] = {
-        ...replies[replyIndex],
-        comentario: comment,
-        updatedAt: new Date().toISOString()
-      };
+      await createReply(selectedPost.id, comment);
+      await updateUserForumPoints(selectedForum.id, 5);
 
-      saveStoredReplies(selectedForum.id, selectedPost.id, replies);
-      clearReplyEditMode();
+      replyForm.reset();
+      clearEditor(replyEditor);
 
-      renderReplies();
-      renderRecentPosts(selectedForum);
+      await renderReplies();
+      await renderRecentPosts(selectedForum);
+      await updateForumSummaryPanel(selectedForum);
 
       showSuccessAlert(
-        "Respuesta actualizada",
-        "Los cambios se guardaron correctamente."
+        "Respuesta guardada",
+        "Tu respuesta se agregó correctamente. Sumaste 5 puntos."
       );
-
-      return;
+    } catch (error) {
+      console.error(error);
+      showErrorAlert(
+        "Error",
+        "No fue posible guardar la respuesta."
+      );
+    } finally {
+      setButtonLoading(
+        replySubmitButton,
+        false,
+        "Guardando...",
+        editingReplyId ? "Guardar cambios" : "Responder"
+      );
     }
-
-    const newReply = {
-      id: createId(),
-      comentario: comment,
-      autor: loggedUser.nombre || "Usuario lector",
-      userId: loggedUser.id || "user-local",
-      fecha: getTodayLabel(),
-      createdAt: new Date().toISOString()
-    };
-
-    replies.push(newReply);
-    saveStoredReplies(selectedForum.id, selectedPost.id, replies);
-    updateUserForumPoints(selectedForum.id, 5);
-
-    replyForm.reset();
-    clearEditor(replyEditor);
-
-    renderReplies();
-    renderRecentPosts(selectedForum);
-    updateForumSummaryPanel(selectedForum);
-
-    showSuccessAlert(
-      "Respuesta guardada",
-      "Tu respuesta se agregó correctamente. Sumaste 5 puntos."
-    );
   });
 
   /* ==========================================================================
@@ -1664,17 +1729,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!selectedForum) return;
 
-    const isSubscribed = isUserSubscribedToForum(selectedForum.id);
+    const isSubscribed = await isUserSubscribedToForum(selectedForum.id, true);
 
     if (!isSubscribed) {
-      subscribeUserToForum(selectedForum.id);
-      updateForumSummaryPanel(selectedForum);
-      renderForumCards();
+      try {
+        subscribeForumBtn.disabled = true;
+        await subscribeUserToForum(selectedForum.id);
 
-      showSuccessAlert(
-        "Suscripción realizada",
-        `Ahora formas parte del foro de ${selectedForum.nombre}.`
-      );
+        await updateForumSummaryPanel(selectedForum);
+        await renderForumCards();
+
+        showSuccessAlert(
+          "Suscripción realizada",
+          `Ahora formas parte del foro de ${selectedForum.nombre}.`
+        );
+      } catch (error) {
+        console.error(error);
+        showErrorAlert(
+          "Error",
+          "No se pudo realizar la suscripción."
+        );
+      } finally {
+        subscribeForumBtn.disabled = false;
+      }
 
       return;
     }
@@ -1687,14 +1764,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!confirmed) return;
 
-    unsubscribeUserFromForum(selectedForum.id);
-    updateForumSummaryPanel(selectedForum);
-    renderForumCards();
+    try {
+      subscribeForumBtn.disabled = true;
+      await unsubscribeUserFromForum(selectedForum.id);
 
-    showSuccessAlert(
-      "Te desuscribiste del foro",
-      `Ya no formas parte del foro de ${selectedForum.nombre}.`
-    );
+      await updateForumSummaryPanel(selectedForum);
+      await renderForumCards();
+
+      showSuccessAlert(
+        "Te desuscribiste del foro",
+        `Ya no formas parte del foro de ${selectedForum.nombre}.`
+      );
+    } catch (error) {
+      console.error(error);
+      showErrorAlert(
+        "Error",
+        "No se pudo cancelar la suscripción."
+      );
+    } finally {
+      subscribeForumBtn.disabled = false;
+    }
   });
 
   /* ==========================================================================
@@ -1705,18 +1794,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     showForumHome(true);
   });
 
-  backToPostsBtn?.addEventListener("click", () => {
-    showPostsListPanel(true);
+  backToPostsBtn?.addEventListener("click", async () => {
+    await showPostsListPanel(true);
   });
 
-  loadMorePostsBtn?.addEventListener("click", () => {
+  loadMorePostsBtn?.addEventListener("click", async () => {
     if (!selectedForum) return;
 
     showAllPosts = !showAllPosts;
-    renderRecentPosts(selectedForum);
+    await renderRecentPosts(selectedForum);
   });
 
-  window.addEventListener("popstate", () => {
+  window.addEventListener("popstate", async () => {
     const params = new URLSearchParams(window.location.search);
     const forumIdFromUrl = params.get("genero");
 
@@ -1727,7 +1816,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      showForumDetail(forumIdFromUrl, false);
+      await showForumDetail(forumIdFromUrl, false);
     } else {
       showForumHome(false);
     }
@@ -1737,6 +1826,7 @@ document.addEventListener("DOMContentLoaded", async () => {
      INICIO
      ========================================================================== */
 
+  await loadCurrentUser();
   initializeRichEditors();
-  loadForums();
+  await loadForums();
 });

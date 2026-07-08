@@ -1,0 +1,11 @@
+{
+  "id": "",
+  "nombre": "",
+  "apellidos": "",
+  "telefono": "",
+  "email": "",
+  "passwordHash": "",
+  "creadoEn": "",
+  "rol": "usuario",
+  "activo": true
+}

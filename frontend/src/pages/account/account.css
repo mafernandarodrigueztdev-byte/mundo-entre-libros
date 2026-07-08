@@ -2,6 +2,7 @@
    IMPORTACIÓN DE FUENTES (API de Google Fonts)
    ========================================================================== */
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+@import "../../variables.css";
 
 /* ==========================================================================
    RESET, CONFIGURACIÓN GLOBAL Y VARIABLES
@@ -13,18 +14,7 @@
   font-family: "Cormorant Garamond", serif;
 }
 
-:root {
-  --fondo-principal-crema: #f1f0e5;
-  --fondo-blanco-calido: #f6ebd9;
-  --texto-principal-cafe-oscuro: #521f12;
-  --boton-principal-acento-fuerte: #4b1d13;
-  --beige-calido-degradado: #f8e1c1;
-  --crema-secundario: #f6ebd9;
-  --cafe-medio: #a0653d;
-  --beige-grisaceo: #d9cdc1;
-  /* Nota: Asegúrate de tener definida esta variable en tu proyecto si la vas a usar */
-  --color-verde-acento: #2e5a44;
-}
+
 
 body {
   width: 100%;
@@ -47,6 +37,515 @@ body {
 main {
   flex: 1;
 }
+
+
+/*==========================================================================
+    NAVBAR
+==========================================================================*/
+
+.navbar{
+    background: var(--beige-calido-degradado);
+    box-shadow: var(--sombra-suave);
+    padding: .5rem 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.navbar .container{
+    min-height: 90px;
+}
+
+.navbar-brand{
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-logo{
+    width: 90px;
+    height: auto;
+    display: block;
+}
+
+.navbar-nav{
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar .nav-link{
+    position: relative;
+    padding: .6rem 1rem;
+    color: var(--texto-principal-cafe-oscuro);
+    transition: color .25s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active{
+    color: var(--cafe-medio);
+}
+
+.navbar .nav-link::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    width: 0;
+    height: 2px;
+    background: var(--cafe-medio);
+    transform: translateX(-50%);
+    transition: width .25s ease;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after{
+    width: 60%;
+}
+
+
+/*==========================================================================
+    ICONOS
+==========================================================================*/
+
+.nav-icon-item{
+    margin-left: 8px;
+}
+
+.nav-icon-link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+    border-radius:50%;
+    transition:background .25s ease;
+}
+
+.navbar-icon{
+    width: 42px;
+    height: 42px;
+    display: block;
+    object-fit: contain;
+    transition: transform .25s ease;
+}
+
+/* Deja esto así para el contenedor */
+.nav-icon-link:hover {
+    transform: scale(1.08);
+    background: rgba(0,0,0,.05);
+}
+
+/*==========================================================================
+    ANIMACIONES
+==========================================================================*/
+
+/* Definimos cómo será el "salto" del carrito */
+@keyframes pop-carrito {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+/* Esta es la clase que activa la animación */
+.animacion-pop {
+    animation: pop-carrito 0.3s ease-in-out;
+}
+
+
+/*==========================================================================
+    CARRITO
+==========================================================================*/
+
+.caja-icono-carrito{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#contador-carrito{
+    position: absolute;
+    top: -6px;
+    right: -8px;
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: #dc3545;
+    color: #fff;
+
+    font-size: .7rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+
+/*==========================================================================
+    BOTÓN HAMBURGUESA
+==========================================================================*/
+
+.navbar-toggler{
+
+    width:52px;
+    height:52px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.navbar-toggler:focus{
+    box-shadow: none;
+}
+
+
+/*==========================================================================
+    RESPONSIVE
+==========================================================================*/
+
+
+/* Tablets grandes */
+
+@media (max-width:1200px){
+
+    .navbar{
+        font-size: 1.45rem;
+    }
+
+    .navbar .container{
+        min-height: 80px;
+    }
+
+    .navbar-logo{
+        width: 80px;
+    }
+
+    .navbar-nav{
+        gap: 8px;
+    }
+
+}
+
+
+/* Tablets */
+
+@media (max-width:992px){
+
+    .navbar{
+        padding: .75rem 0;
+    }
+
+    .navbar .container{
+        min-height: auto;
+        align-items: flex-start;
+    }
+
+    .navbar-collapse{
+        transition:.3s ease;
+        margin-top: 1rem;
+        text-align: center;
+        transition:.3s ease;
+
+    }
+
+    .navbar-nav{
+        width: 100%;
+        gap: 0;
+        align-items: center;
+    }
+
+    .nav-item{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav-link{
+          border-radius:8px;
+    }
+
+    .nav-link::after{
+        display: none;
+    }
+
+    .nav-icon-item{
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .navbar-icon{
+        width: 38px;
+        height: 38px;
+    }
+
+}
+
+
+/* Celulares grandes */
+
+@media (max-width:768px){
+
+    .navbar{
+        font-size: 1.2rem;
+    }
+
+    .navbar-logo{
+        width: 70px;
+    }
+
+    .navbar-icon{
+        width: 34px;
+        height: 34px;
+    }
+
+    .nav-link{
+        padding: .8rem 0;
+    }
+
+}
+
+
+/* Celulares */
+
+@media (max-width:576px){
+
+    .navbar{
+        padding: .5rem 0;
+        font-size: 1.05rem;
+    }
+
+    .navbar-logo{
+        width: 60px;
+    }
+
+    .navbar-icon{
+        width: 30px;
+        height: 30px;
+    }
+
+    .nav-link{
+        padding: .75rem 0;
+    }
+
+}
+
+
+/* Galaxy Fold */
+
+@media (max-width:320px){
+
+    .navbar{
+        font-size: .95rem;
+    }
+
+    .navbar-logo{
+        width: 50px;
+    }
+
+    .navbar-icon{
+        width: 26px;
+        height: 26px;
+    }
+
+    .nav-link{
+        padding: .6rem 0;
+        font-size: .95rem;
+    }
+
+}
+
+/* ==========================================================================
+   PANTALLAS MUY GRANDES
+   Monitores 2K y 4K
+   ========================================================================== */
+
+@media (min-width:1400px){
+
+    .navbar{
+        font-size:1.15rem;
+    }
+
+    .navbar-logo{
+        width:95px;
+    }
+
+    .navbar-nav{
+        gap:16px;
+    }
+
+    .navbar-icon{
+        width:44px;
+        height:44px;
+    }
+
+}
+
+
+/* ==========================================================================
+   LAPTOPS
+   1024px - 1399px
+   ========================================================================== */
+
+@media (min-width:1024px) and (max-width:1399px){
+
+    .navbar-nav{
+        gap:12px;
+    }
+
+}
+
+
+/* ==========================================================================
+   TABLETS HORIZONTALES
+   ========================================================================== */
+
+@media (max-width:900px){
+
+    .navbar-logo{
+
+        width:65px;
+
+    }
+
+    .navbar{
+
+        font-size:1.05rem;
+
+    }
+
+    .navbar-icon{
+
+        width:32px;
+        height:32px;
+
+    }
+
+}
+
+@media (max-width:280px){
+
+    .navbar-logo{
+
+        width:42px;
+
+    }
+
+    .navbar{
+
+        font-size:.85rem;
+
+    }
+
+    .navbar-icon{
+
+        width:24px;
+        height:24px;
+
+    }
+
+}
+
+@media (max-height:500px) and (orientation:landscape){
+
+    .navbar-collapse{
+        transition:.3s ease;
+        max-height:70vh;
+        overflow-y:auto;
+
+    }
+
+}
+
+.nav-link:focus-visible,
+.nav-icon-link:focus-visible{
+
+    outline:2px solid var(--cafe-medio);
+    outline-offset:2px;
+
+}
+
+/*==========================================================================
+    ESTILOS DEL MENÚ DESPLEGABLE (DROPDOWN)
+==========================================================================*/
+
+/* 1. Corrección del conflicto visual: Ocultamos la flecha de Bootstrap */
+.navbar .dropdown-toggle::after {
+    display: none !important; 
+}
+
+/* 2. Estilo de la caja blanca del menú para que combine con el tema */
+.navbar .dropdown-menu {
+    background-color: #FDF9F1; /* Un beige muy clarito */
+    border: 1px solid rgba(75, 29, 19, 0.1); /* Borde café súper sutil */
+    border-radius: 8px; /* Bordes ligeramente redondeados */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra suave para dar profundidad */
+    padding: 0.5rem 0;
+}
+
+/* 3. Estilo del texto de las opciones (Sagas, Ver todo) */
+.navbar .dropdown-item {
+    /* Usamos los colores que definiste en tu JS, con soporte a tus variables */
+    color: var(--texto-principal-cafe-oscuro, #4B1D13); 
+    font-weight: 500;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.25s ease;
+}
+
+/* 4. Efecto al pasar el ratón sobre las opciones */
+.navbar .dropdown-item:hover {
+    background-color: var(--cafe-medio, #A0653D);
+    color: #ffffff; /* Letra blanca para que resalte sobre el fondo café */
+}
+
+/* 5. Línea separadora más suave */
+.navbar .dropdown-divider {
+    border-top-color: rgba(75, 29, 19, 0.15);
+}
+
+
+/*==========================================================================
+    NOTIFICACIÓN TOAST (CARRITO)
+==========================================================================*/
+.toast-notificacion {
+    visibility: hidden; /* Oculto por defecto */
+    min-width: 250px;
+    background-color: var(--cafe-medio, #4B1D13); /* Tu color café */
+    color: #FDF9F1; /* Texto color crema/beige */
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1055; /* Asegura que esté por encima del offcanvas y navbar */
+    right: 20px;
+    bottom: 30px; /* Esquina inferior derecha */
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
+}
+
+/* Esta clase es la que agregaremos con JavaScript para que aparezca */
+.toast-notificacion.mostrar {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px; /* Hace un pequeño efecto de subir al aparecer */
+}
+
+.toast-icono {
+    font-size: 1.2rem;
+}
+
 
 /* ==========================================================================
    OFFCANVAS: PANEL LATERAL DEL CARRITO
@@ -158,13 +657,6 @@ main {
   width: 60%;
 }
 
-/* Iconos de cuenta y carrito */
-.navbar-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
 /* Buscador */
 .search-form input {
   font-size: 1rem;
@@ -192,12 +684,13 @@ main {
   height: 42px;
   object-fit: contain;
   transition: transform var(--transicion);
+  flex-shrink: 0; /*evita que se comprima en flex*/
+  display: block; /*para que no colapse*/
 }
 
 /* Hover sobre iconos */
 .nav-link:hover .navbar-icon {
-  transform: scale(1.1);
-  transform: translateY(-2px);
+  transform: scale(1.1) translateY(-2px);
 }
 
 /* Separación entre los elementos del menú */
@@ -206,14 +699,19 @@ main {
   gap: 10px;
 }
 
-/* Más espacio antes del icono de usuario */
-.nav-item:nth-last-child(2) {
+#nav-mi-cuenta-btn {
   margin-left: 20px;
 }
 
-/* Espacio entre usuario y carrito */
-.nav-item:last-child {
+.contenedor-carrito-offcanvas {
   margin-left: 10px;
+}
+
+.caja-icono-carrito {
+  position: relative; /* para el badge del contador */
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .navbar-toggler {
@@ -231,8 +729,150 @@ main {
 }
 
 
+/*==========================================================================
+                SPA: Control de Vistas
+==========================================================================*/
+
+.vista { 
+  display: none;
+}
+
+.vista.activa { 
+  display: block;
+}
 
 
+
+/*============================================================*/
+              /*! Formulario de registro*/
+/*============================================================*/
+
+.regislabel{
+  font-weight: 650;
+  font-size: medium;
+  padding-bottom: 2px;
+  padding-top: 8px;
+}
+
+.form-register{
+  width: 50vw;
+  min-width: 320px;
+  max-width: 600px;
+  background-color: var(--beige-calido-degradado);
+  padding: 20px;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--cafe-medio);
+  box-shadow: 7px 13px 37px rgba(160, 101, 61, 1.0);
+  font-family: 'Comorant Garamond';
+  color: var(--boton-principal-acento-fuerte);
+  font-size: 15px;
+  font-weight: 100;
+}
+
+.form-register h4 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.regis-form-data{
+  width: 100%;
+  background-color: white;
+  /* padding: 10px; */
+  padding: 7px 10px;
+  border-radius: 4px;
+  margin-bottom: auto;
+  border: 1px solid var(--cafe-medio);
+  color: var(--boton-principal-acento-fuerte);
+  border: 1px solid var(--cafe-medio);
+  transition: border-color 0.3 ease, box-shadow 0.3s ease;
+}
+
+.regis-form-data:focus{
+  border-color: var(--boton-principal-acento-fuerte);
+  outline: none;
+  box-shadow: 0 0 5px rgba(75, 29, 19, 0.2);
+}
+
+.form-register p{
+  height: auto;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 20px;
+  margin-bottom: 8px;
+}
+
+.form-register a{
+  color: var(--boton-principal-acento-fuerte);
+  transition: color 0.3s ease;
+  font-weight: 700;
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+}
+
+.form-register a:hover{
+  color: var(--cafe-medio);
+  text-decoration: underline var(--cafe-medio);
+  transform: scale(1.08);
+}
+
+.btn-register{
+  width: 75%;
+  letter-spacing: 1px;
+  background: var(--boton-principal-acento-fuerte);
+  padding: 9px;
+  color: white;
+  display: block;
+  margin: 12px auto 10px;
+  font-size: 15px;
+  outline: none;
+  border: var(--cafe-medio);
+  border-radius: 8px;
+  transition: backgroun-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-register:hover{
+  transform: scale(1.07); 
+}
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper .regis-form-data {
+    width: 100%;
+    padding-right: 2.5rem; /* espacio para que el texto no tape el ojo */
+    box-sizing: border-box;
+}
+
+.toggle-password-icon {
+    position: absolute;
+    right: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+    color: #5a2d0c;
+}
+
+/*! Warnings*/
+.warnings{
+  width: 200px;
+  text-align: center;
+  margin: 10px auto 4px;
+  color: var(--beige-calido-degradado);
+  padding-top: 0;
+  display: block;
+}
 
 
 /* ==========================================================================
@@ -462,7 +1102,7 @@ main {
 
 /*Ajuste de cada integrante*/
 .pixel-mafer {
-  --sprite: url("../../assets/sprites/maf1-9.png.png");
+  --sprite: url("/../assets/sprites/maf1-9.png.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -471,7 +1111,7 @@ main {
 }
 
 .pixel-ilse {
-  --sprite: url("../../assets/sprites/adr1.png");
+  --sprite: url("/../assets/sprites/adr1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -480,7 +1120,7 @@ main {
 }
 
 .pixel-rodrigo {
-  --sprite: url("../../assets/sprites/rod1.png");
+  --sprite: url("/../assets/sprites/rod1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -489,7 +1129,7 @@ main {
 }
 
 .pixel-israel {
-  --sprite: url("../../assets/sprites/isr1.png");
+  --sprite: url("/../assets/sprites/isr1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -498,7 +1138,7 @@ main {
 }
 
 .pixel-miguel {
-  --sprite: url("../../assets/sprites/mig1.png");
+  --sprite: url("/../assets/sprites/mig1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -507,7 +1147,7 @@ main {
 }
 
 .pixel-carlos {
-  --sprite: url("../../assets/sprites/car1.png");
+  --sprite: url("/../assets/sprites/car1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -516,7 +1156,7 @@ main {
 }
 
 .pixel-tonantzin {
-  --sprite: url("../../assets/sprites/ton1.png");
+  --sprite: url("/../assets/sprites/ton1.png");
   --frame-width: 96px;
   --frame-height: 96px;
   --sheet-width: 864px;
@@ -668,4 +1308,1147 @@ main {
     width: 78px;
     max-width: 78px;
   }
+}
+
+/* ==========================================================================
+   MI CUENTA - PUNTOS ACUMULADOS
+   ========================================================================== */
+
+.account-points-section {
+  width: 100%;
+  max-width: 1250px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 1.5rem;
+  color: var(--texto-principal-cafe-oscuro);
+}
+
+.points-hero-card,
+.points-detail-card {
+  background-color: var(--fondo-blanco-calido);
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  border-radius: 22px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(82, 31, 18, 0.08);
+}
+
+.points-eyebrow {
+  display: inline-block;
+  color: var(--cafe-medio);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.points-hero-card h2,
+.points-detail-card h3 {
+  color: var(--texto-principal-cafe-oscuro);
+  font-weight: 700;
+  margin: 0;
+}
+
+.points-hero-card h2 {
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.points-hero-card p {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.points-total-box {
+  background-color: var(--beige-calido-degradado);
+  border: 1px solid rgba(82, 31, 18, 0.14);
+  border-radius: 18px;
+  padding: 1.7rem;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.points-total-box span {
+  display: block;
+  color: var(--boton-principal-acento-fuerte);
+  font-size: clamp(3.5rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+}
+
+.points-total-box small {
+  color: var(--cafe-medio);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.points-rules {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+.points-rules div {
+  background-color: var(--fondo-principal-crema);
+  border: 1px solid rgba(82, 31, 18, 0.12);
+  border-radius: 14px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.points-rules strong {
+  display: block;
+  color: var(--boton-principal-acento-fuerte);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.points-rules span {
+  color: var(--cafe-medio);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.points-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.points-detail-card h3 {
+  font-size: 2rem;
+}
+
+.points-forums-link {
+  background-color: var(--boton-principal-acento-fuerte);
+  color: var(--fondo-principal-crema);
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+  white-space: nowrap;
+}
+
+.points-forums-link:hover {
+  background-color: var(--texto-principal-cafe-oscuro);
+  color: var(--fondo-principal-crema);
+  transform: translateY(-2px);
+}
+
+.forum-points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.forum-points-item {
+  background-color: var(--fondo-principal-crema);
+  border: 1px solid rgba(82, 31, 18, 0.12);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.forum-points-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(82, 31, 18, 0.1);
+}
+
+.forum-points-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: var(--fondo-blanco-calido);
+  border: 1px solid rgba(82, 31, 18, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+}
+
+.forum-points-info h4 {
+  margin: 0;
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.forum-points-info p {
+  margin: 0.2rem 0 0;
+  color: var(--cafe-medio);
+  font-size: 1rem;
+}
+
+.forum-points-value {
+  text-align: right;
+  color: var(--boton-principal-acento-fuerte);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.forum-points-value small {
+  display: block;
+  color: var(--cafe-medio);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.empty-points-message {
+  background-color: var(--fondo-principal-crema);
+  border: 1px solid rgba(82, 31, 18, 0.12);
+  border-radius: 16px;
+  padding: 1.3rem;
+  color: var(--cafe-medio);
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 0;
+}
+
+/* ==========================================================================
+   MI CUENTA - PUNTOS RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .account-points-section {
+    max-width: 900px;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .account-points-section {
+    margin: 2rem auto;
+    padding: 0 1.2rem;
+  }
+
+  .points-hero-card,
+  .points-detail-card {
+    padding: 1.5rem;
+  }
+
+  .points-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .points-forums-link {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .points-rules {
+    grid-template-columns: 1fr;
+  }
+
+  .forum-points-item {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .forum-points-icon {
+    margin: 0 auto;
+  }
+
+  .forum-points-value {
+    text-align: center;
+  }
+}
+
+/* ==========================================================================
+   MI CUENTA - WISHLIST
+   ========================================================================== */
+
+/* CONTENEDOR GENERAL */
+
+.wishlist-section{
+    background-color: #f4efe3;
+    padding: 30px 0 60px;
+}
+
+/* TARJETA */
+
+.wishlist-box{
+    width: 85%;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    background-color: #f7ecd9;
+
+    border: 1px solid #d8bc96;
+    border-radius: 12px;
+
+    padding: 30px;
+}
+
+/* ETIQUETA SUPERIOR */
+
+.wishlist-tag{
+    display:block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: #8b5a3c;
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+/* TITULO */
+
+.wishlist-title{
+    font-family: "Cormorant Garamond", serif;
+    font-size: 4rem;
+    font-weight: 600;
+    color: #5a1f12;
+font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* TEXTO */
+
+.wishlist-description{
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.1rem;
+    color: #7a6d61;
+    max-width: 650px;
+    margin-bottom: 35px;
+}
+
+/* CONTENEDOR DE LIBROS */
+
+.wishlist-container{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* ESTADO VACÍO */
+
+.wishlist-vacia{
+    min-height: 250px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+/* ICONO */
+
+.wishlist-empty-icon{
+    font-size:3rem;
+    color:#8b5a3c;
+    margin-bottom:15px;
+}
+
+/* TITULO VACIO */
+
+.wishlist-vacia h3{
+    font-family: "Cormorant Garamond", serif;
+    font-size: 3rem;
+    color:#5a1f12;
+    font-weight: bold;
+    margin-bottom:10px;
+}
+
+/* TEXTO VACIO */
+
+.wishlist-vacia p{
+    font-family:"Cormorant Garamond", serif;
+    color:#7a6d61;
+    margin-bottom:25px;
+}
+
+/* BOTON */
+
+.wishlist-btn{
+    background-color:#5a1f12;
+    color:white;
+    text-decoration:none;
+    padding:10px 24px;
+    border-radius:6px;
+    transition:.3s;
+}
+
+.wishlist-btn:hover{
+    background-color:#6d2817;
+}
+
+/* CARDS*/
+
+.wishlist-card{
+    display: flex;
+    gap: 25px;
+    width: 100%;
+    padding: 20px;
+    background-color: #f8e1c1;
+    border: 1px solid #d8bc96;
+    border-radius: 12px;
+
+    margin-bottom: 20px;
+}
+
+/* Imagen */
+
+.wishlist-img{
+    width: 160px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+/* Información */
+
+.wishlist-info{
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.wishlist-info h3{
+    color: #5a1f12;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.wishlist-info p{
+    color: #6e5c4c;
+    margin-bottom: 12px;
+}
+
+/* Precio */
+
+.wishlist-precio{
+    color: #315c45;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Botones */
+
+.wishlist-actions{
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-carrito-wishlist,
+.btn-eliminar{
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.btn-carrito-wishlist{
+    background-color: #5a1f12;
+    color: white;
+    border: none;
+}
+
+.btn-eliminar{
+    background-color: transparent;
+    border: 1px solid #5a1f12;
+    color: #5a1f12;
+}
+
+.btn-eliminar-wishlist{
+    background-color: #5a1f12;
+    color: white;
+
+    border: none;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.btn-eliminar-wishlist:hover{
+    background-color: #6a2414;
+}
+
+/*RESPONSIVO*/ 
+
+@media (max-width: 768px){
+
+    .wishlist-card{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .wishlist-img{
+        width: 180px;
+        height: 250px;
+    }
+
+    .wishlist-actions{
+        justify-content: center;
+    }
+  }
+
+  /* ==========================================================================
+   MI CUENTA - LOG IN
+   ========================================================================== */
+
+   .login-section {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.login-section a{
+  color: var(--boton-principal-acento-fuerte);
+  transition: color 0.3s ease;
+  font-weight: 700;
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+}
+
+.login-section a:hover {
+  color: var(--cafe-medio);
+  text-decoration: underline var(--cafe-medio);
+  transform: scale(1.08);
+}
+.login-banner {
+  background-color: var(--fondo-blanco-calido);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.login-banner h2 {
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px 70px;
+}
+
+.login-user-icon {
+  color: var(--texto-principal-cafe-oscuro);
+  margin-bottom: 20px;
+}
+
+#loginForm {
+  width: 100%;
+  max-width: 450px;
+}
+
+.login-field {
+  margin-bottom: 18px;
+}
+
+.login-field label {
+  display: block;
+  text-align: center;
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--beige-grisaceo);
+  border-radius: 4px;
+  background-color: var(--fondo-blanco-calido);
+  color: var(--texto-principal-cafe-oscuro);
+  font-size: 1rem;
+}
+
+.login-field input:focus {
+  outline: none;
+  border-color: var(--cafe-medio);
+}
+
+.login-btn {
+  width: 100%;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  background-color: var(--boton-principal-acento-fuerte);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+}
+
+.error-message {
+  display: block;
+  margin-top: 5px;
+  color: #b22222;
+  font-size: 0.9rem;
+}
+
+.success-message {
+  text-align: center;
+  margin-top: 15px;
+  color: var(--color-verde-acento);
+  font-weight: 700;
+}
+
+.input-error {
+  border: 2px solid #b22222 !important;
+}
+
+.olvidaste-contra {
+  color: var(--texto-principal-cafe-oscuro);
+}
+
+@media (max-width: 768px) {
+  .login-banner h2 {
+    font-size: 2rem;
+  }
+
+  .login-field label {
+    font-size: 1.5rem;
+  }
+}
+
+/* =========================
+   HISTORIAL
+========================= */
+
+#contenido{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin-top:20px;
+    padding:10px;
+    width:100%;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card-historial{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    width:100%;
+    min-height:75px;
+
+    gap:25px;
+
+    background:var(--fondo-blanco-calido);
+    border:1px solid var(--beige-grisaceo);
+
+    padding:18px 25px;
+
+    border-radius:16px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card-historial:hover{
+    transform:translateY(-5px);
+}
+
+.card-historial span{
+    flex:1;
+    text-align:center;
+}
+
+.pedido-numero{
+    font-weight:700;
+    text-align:left !important;
+}
+
+.pedido-total{
+    font-weight:700;
+    color:#2e7d32;
+}
+
+.pedido-estado{
+    text-transform:capitalize;
+}
+
+/* BOTÓN */
+
+.btn-ver{
+    background:var(--boton-principal-acento-fuerte);
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.btn-ver:hover{
+    background:var(--cafe-medio);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.modal-content{
+    background:var(--fondo-blanco-calido);
+    width:90%;
+    max-width:650px;
+    border-radius:14px;
+    padding:20px;
+    max-height:80vh;
+    overflow-y:auto;
+}
+
+/* =========================
+   TABLA INFO
+========================= */
+
+.tabla-info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    background:rgba(241,240,229,.7);
+    padding:12px;
+    border-radius:12px;
+}
+
+.tabla-info .col p{
+    margin:5px 0;
+}
+
+/* =========================
+   LIBROS / SAGAS
+========================= */
+
+.grid-libros{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:10px;
+    margin-top:10px;
+}
+
+.item-libro{
+    display:flex;
+    gap:10px;
+    align-items:center;
+
+    background:#f7f3ea;
+    padding:10px;
+    border-radius:12px;
+}
+
+.item-libro.saga{
+    border-left:4px solid var(--cafe-medio);
+}
+
+.item-libro img{
+    width:45px;
+    height:65px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+/* =========================
+   PAGAR
+========================= */
+
+.pagar-wrapper{
+    display:flex;
+    justify-content:center;
+    margin-top:15px;
+}
+
+.btn-ver.pagar{
+    width:60%;
+}
+
+/* PAGADO */
+
+.pagado{
+    color:green;
+    font-weight:bold;
+    text-align:center;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px){
+
+    .card-historial{
+        flex-wrap:wrap;
+        gap:12px;
+    }
+
+    .card-historial span{
+        flex:1 1 40%;
+        text-align:left;
+    }
+
+    .btn-ver{
+        width:100%;
+    }
+}
+
+/* ==========================================
+   Contenedor Principal y Estructura
+   ========================================== */
+.account-container {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Pseudo-elemento que pinta el fondo crema de todo el lado izquierdo */
+.account-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400px;
+    height: 100%;
+    background-color: #F7E3C3;
+    z-index: 0;
+}
+
+/* Área de contenido de la derecha (Donde viven el historial, puntos y wishlist) */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    background-color: #ffffff;
+    /* Margen izquierdo igual al width del sidebar para evitar que se encimen */
+    margin-left: 400px;
+}
+
+/* Control de secciones mediante JS */
+.content-section {
+    display: none; /* Ocultas por defecto */
+}
+
+.content-section.active {
+    display: block; /* Solo se muestra la sección activa */
+}
+
+/* ==========================================
+   Sidebar (Menú Izquierdo Fijo)
+   ========================================== */
+.sidebar {
+    width: 400px;
+    padding: 20px 20px;
+    box-sizing: border-box;
+    background-color: transparent; /* Ya no necesita fondo propio */
+    /* Posicionamiento fijo lateral para que no se deslice */
+    position: fixed;
+    top: 75px; /* Evita que el Navbar tape el título */
+    left: 0;
+    /* CLAVE: el sidebar termina justo antes del footer */
+    height: calc(100vh - 75px);
+    overflow-y: auto;
+    /* Fuerza al sidebar a flotar por encima del contenido derecho */
+    z-index: 1; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* Título 'Mi cuenta' */
+.sidebar h2 {
+    color: #5C2D1B !important;
+    font-size: 40px !important; 
+    display: block !important;  
+    
+    /* Margen superior para bajar el título */
+    margin-top: 20px; 
+    text-align: center; 
+    
+    /* Espacio que queda entre el título y el bloque de botones */
+    margin-bottom: 1px; 
+    padding-left: 10px;
+}
+
+/* ==========================================
+   Bloque de Menú y Botones
+   ========================================== */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Controla la separación entre cada botón */
+    margin-top: 30px; /* Controla qué tan abajo empieza el bloque respecto al título */
+}
+
+/* Botones del Menú */
+.menu-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 15px; /* Padding reducido de 25px */
+    background-color: #FDF4E7; /* Fondo claro del botón interactivo de la imagen */
+    border: 0.5px solid #E6D2B5;
+    color: #5C2D1B;
+    font-size: 22px; /* Texto grande acorde a la captura */
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Efecto al pasar el cursor o cuando la pestaña está activa */
+.menu-btn:hover, .menu-btn.active {
+    background-color: #F5EAD6;
+    font-weight: bold;
+}
+
+/* Iconos de los botones (mantienen tu estructura original por si añades algo después) */
+.menu-btn .icon {
+    margin-right: 15px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ==========================================================================
+   REGLAS RESPONSIVAS (Para pantallas menores a 992px) - TOTALMENTE CORREGIDO
+   ========================================================================== */
+@media (max-width: 992px) {
+    
+    .account-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        position: relative !important;
+    }
+
+    /* Cancela el pseudo-elemento del desktop */
+    .account-container::before {
+        display: none !important;
+    }
+
+    /* CLAVE: cancela todo el fixed del desktop */
+    .account-container .sidebar {
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+        left: auto !important;
+        top: auto !important;
+        padding: 20px !important;
+        box-sizing: border-box;
+        background-color: #F7E3C3 !important;
+        overflow-y: visible !important;
+    }
+
+    .account-container .sidebar h2 {
+        font-size: 30px;
+        margin-top: 15px;
+        margin-bottom: 0px;
+        text-align: center;
+    }
+
+    .account-container .sidebar-menu {
+        display: flex; 
+        flex-direction: row; 
+        gap: 15px;
+        margin-top: 25px;
+        overflow-x: auto; 
+        padding-bottom: 10px;
+        width: 100%;
+        scrollbar-width: none; 
+    }
+    
+    .account-container .sidebar-menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    .account-container .menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto; 
+        white-space: nowrap; 
+        padding: 15px 25px;
+        font-size: 18px;
+        box-sizing: border-box;
+    }
+
+    .account-container .menu-btn .icon {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+
+    .account-container .main-content {
+        margin-left: 0 !important; 
+        width: 100%;
+        padding: 30px 20px;
+        box-sizing: border-box;
+    }
+
+    /* Historial y Modales Responsivos */
+    #contenido .card-historial {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start; 
+        gap: 12px;
+        padding: 15px;
+        min-height: auto;
+    }
+
+    #contenido .card-historial span {
+        text-align: left;
+        width: 100%;
+        flex: none;
+    }
+
+    .card-historial .btn-ver {
+        width: 100%;
+        text-align: center;
+        padding: 12px 0;
+        margin-top: 5px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .tabla-info {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+
+/* ==========================================================================
+   Formulario: Actualiza tus Datos (Estilo Imagen Clonal)
+   ========================================================================== */
+.update-profile-container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* Título exterior */
+.update-title {
+    color: #5C2D1B;
+    font-size: 40px;
+    margin-bottom: 25px;
+    font-weight: normal;
+}
+
+/* Caja contenedora color crema de la imagen */
+#form-update-profile {
+    background-color: #F6EAD6; /* Fondo beige suave */
+    border-radius: 15px;      /* Bordes muy redondeados */
+    padding: 35px 40px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+/* Bloques de campos */
+.update-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+/* Etiquetas del input */
+.update-field label {
+    color: #5C2D1B;
+    font-size: 25px;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+/* Cajas de texto blancas de la imagen */
+.update-field input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #FDFDFD;
+    border: 1px solid #E6D2B5;
+    font-size: 20px;
+    color: #333;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.update-field input:focus {
+    outline: none;
+    border-color: #5C2D1B;
+    background-color: #FFFFFF;
+}
+
+/* Placeholders tenues estilo imagen */
+.update-field input::placeholder {
+    color: #E2D2BC;
+    opacity: 0.8;
+}
+
+/* Contenedor del botón para centrarlo abajo */
+.update-submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Botón café oscuro elegante */
+.btn-save-profile {
+    background-color: #3B1A11; /* Café oscuro de la captura */
+    color: #FDF4E7;
+    border: none;
+    padding: 14px 80px;       /* Ancho cómodo */
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-save-profile:hover {
+    background-color: #5C2D1B;
+}
+
+/* Ajustes responsivos para celulares */
+@media (max-width: 768px) {
+    #form-update-profile {
+        padding: 20px 15px;
+    }
+    .btn-save-profile {
+        width: 100%;
+        padding: 14px 0;
+    }
 }
