@@ -1,5 +1,20 @@
+/* ==========================================================================
+   CARRITO - BACKEND + JWT
+   Mundo Entre Libros
+   ========================================================================== */
+
 document.addEventListener("DOMContentLoaded", () => {
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    const API_URL = "http://localhost:8080";
+    const TOKEN_KEY = "mel_token";
+    const USER_KEY = "mel_logged_user";
+
+    let carritoData = {
+        items: [],
+        totalProducts: 0,
+        subtotal: 0,
+        total: 0
+    };
 
     const contadorCarrito = document.querySelector("#contador-carrito");
 
@@ -7,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const resumenProductos = document.querySelector("#resumen-productos");
     const resumenSubtotal = document.querySelector("#resumen-subtotal");
     const resumenTotal = document.querySelector("#resumen-total");
+    const metodoPagoSelect = document.querySelector("#metodo-pago");
 
     const listaOffcanvas = document.querySelector(".carrito-productos-lista");
     const totalOffcanvas = document.querySelector("#total-offcanvas");
@@ -14,220 +30,354 @@ document.addEventListener("DOMContentLoaded", () => {
     const offcanvas = document.querySelector("#offcanvasCarrito");
     const contenedorIconoCarrito = document.querySelector(".contenedor-carrito-offcanvas");
 
-    if (offcanvas) {
-        offcanvas.addEventListener("show.bs.offcanvas", () => {
-            carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-            renderizarCarrito();
+    // =========================
+    // SESIÓN / TOKEN
+    // =========================
+
+    function obtenerToken() {
+        return localStorage.getItem(TOKEN_KEY);
+    }
+
+    function estaLogueado() {
+        return Boolean(obtenerToken());
+    }
+
+    function limpiarSesion() {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
+        localStorage.removeItem("token");
+    }
+
+    function mostrarLoginRequerido() {
+        if (typeof Swal !== "undefined") {
+            Swal.fire({
+                icon: "warning",
+                title: "Inicia sesión",
+                text: "Para usar el carrito necesitas iniciar sesión.",
+                confirmButtonText: "Ir a mi cuenta",
+                confirmButtonColor: "#4B1D13",
+                background: "#F6EBD9",
+                color: "#521F12"
+            }).then(() => {
+                window.location.href = "/account/account.html";
+            });
+
+            return;
+        }
+
+        alert("Necesitas iniciar sesión para usar el carrito.");
+        window.location.href = "/account/account.html";
+    }
+
+    // =========================
+    // FETCH CON JWT
+    // =========================
+
+    async function cartFetch(endpoint, options = {}) {
+        const token = obtenerToken();
+
+        if (!token) {
+            return null;
+        }
+
+        const response = await fetch(`${API_URL}${endpoint}`, {
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                ...(options.headers || {})
+            }
+        });
+
+        if (response.status === 401 || response.status === 403) {
+            limpiarSesion();
+            mostrarLoginRequerido();
+            throw new Error("Sesión expirada o sin permisos");
+        }
+
+        if (!response.ok) {
+            let errorText = "Error en carrito";
+
+            try {
+                errorText = await response.text();
+            } catch (error) {
+                console.error("No se pudo leer error:", error);
+            }
+
+            throw new Error(errorText || "Error en carrito");
+        }
+
+        if (response.status === 204) {
+            return null;
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+
+        if (contentType.includes("application/json")) {
+            return await response.json();
+        }
+
+        return null;
+    }
+
+    // =========================
+    // UTILIDADES
+    // =========================
+
+    function formatearPrecio(precio) {
+        return Number(precio || 0).toLocaleString("es-MX", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
         });
     }
 
-    document.addEventListener("click", (e) => {
-        const botonCarrito = e.target.closest(".btn-carrito");
+    function escapeHTML(text) {
+        return String(text || "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
 
-        if (botonCarrito) {
-            const producto = {
-                id: botonCarrito.dataset.id,
-                titulo: botonCarrito.dataset.titulo,
-                precio: Number(botonCarrito.dataset.precio),
-                portada: botonCarrito.dataset.portada,
-                cantidad: 1
-            };
+    function obtenerImagen(item) {
+        let imagen = item.coverUrl || item.portada || item.imagen || "";
 
-            if (
-                !producto.id ||
-                !producto.titulo ||
-                isNaN(producto.precio) ||
-                !producto.portada
-            ) {
-                console.error("Producto incompleto:", producto);
-                return;
-            }
-
-            agregarProducto(producto);
+        if (!imagen) {
+            return "/assets/img/no-image.png";
         }
 
-        const botonSaga = e.target.closest(".btn-carrito-saga");
+        imagen = String(imagen).trim();
 
-        if (botonSaga) {
-            const idSaga = botonSaga.dataset.saga;
-
-            const saga = window.todasLasSagas?.find(s => s.id === idSaga);
-
-            if (!saga) {
-                console.error("Saga no encontrada:", idSaga);
-                return;
-            }
-
-            const cantidadLibros = Array.isArray(saga.libros) ? saga.libros.length : 0;
-
-            const productoSaga = {
-                id: `saga-${saga.id}`,
-                titulo: `Saga: ${saga.nombre} (${cantidadLibros} libros)`,
-                precio: Number(saga.precioSaga),
-                portada: saga.portada,
-                cantidad: 1
-            };
-
-            if (
-                !productoSaga.id ||
-                !productoSaga.titulo ||
-                isNaN(productoSaga.precio) ||
-                !productoSaga.portada
-            ) {
-                console.error("Saga incompleta:", productoSaga);
-                return;
-            }
-
-            agregarProducto(productoSaga);
+        if (
+            imagen.startsWith("http://") ||
+            imagen.startsWith("https://") ||
+            imagen.startsWith("data:")
+        ) {
+            return imagen;
         }
 
-        const botonEliminar = e.target.closest(".btn-eliminar-producto");
-
-        if (botonEliminar) {
-            eliminarProducto(botonEliminar.dataset.id);
+        if (imagen.startsWith("/libros/")) {
+            return `${API_URL}${imagen}`;
         }
 
-        const botonRestar = e.target.closest(".btn-restar-producto");
-
-        if (botonRestar) {
-            restarProducto(botonRestar.dataset.id);
+        if (imagen.startsWith("libros/")) {
+            return `${API_URL}/${imagen}`;
         }
 
-        const botonSumar = e.target.closest(".btn-sumar-producto");
-
-        if (botonSumar) {
-            sumarProducto(botonSumar.dataset.id);
-        }
-    });
-
-    function agregarProducto(producto) {
-        const productoExiste = carrito.find(item => item.id == producto.id);
-
-        if (productoExiste) {
-            productoExiste.cantidad++;
-        } else {
-            carrito.push({
-                id: String(producto.id),
-                titulo: producto.titulo,
-                precio: Number(producto.precio),
-                portada: producto.portada,
-                cantidad: producto.cantidad
-            });
+        if (imagen.startsWith("/assets/")) {
+            return imagen;
         }
 
-        guardarCarrito();
+        return imagen;
+    }
+
+    function normalizarItems(data) {
+        return Array.isArray(data?.items) ? data.items : [];
+    }
+
+    function actualizarCarritoData(data) {
+        carritoData = data || {
+            items: [],
+            totalProducts: 0,
+            subtotal: 0,
+            total: 0
+        };
+
+        carritoData.items = normalizarItems(carritoData);
+        carritoData.totalProducts = Number(carritoData.totalProducts || 0);
+        carritoData.subtotal = Number(carritoData.subtotal || 0);
+        carritoData.total = Number(carritoData.total || 0);
+    }
+
+    function obtenerBookIdDesdeBoton(btn) {
+        return btn.dataset.bookId || btn.dataset.id;
+    }
+
+    function obtenerSagaIdDesdeBoton(btn) {
+        const raw =
+            btn.dataset.sagaId ||
+            btn.dataset.saga ||
+            btn.dataset.id ||
+            "";
+
+        return String(raw).replace("saga-", "");
+    }
+
+    // =========================
+    // API CARRITO
+    // =========================
+
+    async function cargarCarrito() {
+        if (!estaLogueado()) {
+            actualizarCarritoData(null);
+            renderizarCarrito();
+            return;
+        }
+
+        try {
+            const data = await cartFetch("/api/cart");
+
+            actualizarCarritoData(data);
+            renderizarCarrito();
+
+        } catch (error) {
+            console.error("Error cargando carrito:", error);
+
+            actualizarCarritoData(null);
+            renderizarCarrito();
+        }
+    }
+
+    async function agregarLibroCarrito(bookId) {
+        if (!bookId) return;
+
+        const data = await cartFetch(`/api/cart/books/${bookId}`, {
+            method: "POST"
+        });
+
+        actualizarCarritoData(data);
         renderizarCarrito();
-        
-        // 1. Disparamos la animación visual del número
-        if (typeof animarContadorCarrito === 'function') {
-            animarContadorCarrito(); 
-        }
-        
-        // 2. Mostramos el mensaje flotante de éxito
+        animarContadorCarrito();
         mostrarToastCarrito();
+
+        document.dispatchEvent(new CustomEvent("carrito-actualizado"));
     }
 
-    function mostrarToastCarrito() {
-        const toast = document.getElementById("toast-carrito");
-        if (!toast) return; // Si no encuentra el toast en el HTML, no hace nada
+    async function agregarSagaCarrito(sagaId) {
+        if (!sagaId) return;
 
-        // 1. Le agregamos la clase que lo hace visible
-        toast.classList.add("mostrar");
+        const data = await cartFetch(`/api/cart/sagas/${sagaId}`, {
+            method: "POST"
+        });
 
-        // 2. Usamos setTimeout para quitarle la clase después de 3 segundos (3000 ms)
-        setTimeout(() => {
-            toast.classList.remove("mostrar");
-        }, 3000);
+        actualizarCarritoData(data);
+        renderizarCarrito();
+        animarContadorCarrito();
+        mostrarToastCarrito();
+
+        document.dispatchEvent(new CustomEvent("carrito-actualizado"));
     }
 
-    function sumarProducto(id) {
-        const producto = carrito.find(item => item.id == id);
+    async function actualizarCantidadItem(itemId, quantity) {
+        const data = await cartFetch(`/api/cart/items/${itemId}`, {
+            method: "PUT",
+            body: JSON.stringify({
+                quantity
+            })
+        });
 
-        if (producto) {
-            producto.cantidad++;
-        }
-
-        guardarCarrito();
+        actualizarCarritoData(data);
         renderizarCarrito();
 
-        // Excelente idea agregar la animación aquí también
-        if (typeof animarContadorCarrito === 'function') {
-            animarContadorCarrito(); 
-        }
+        document.dispatchEvent(new CustomEvent("carrito-actualizado"));
     }
 
-    function restarProducto(id) {
-        const producto = carrito.find(item => item.id == id);
+    async function eliminarItemCarrito(itemId) {
+        const data = await cartFetch(`/api/cart/items/${itemId}`, {
+            method: "DELETE"
+        });
 
-        if (producto) {
-            producto.cantidad--;
+        actualizarCarritoData(data);
+        renderizarCarrito();
 
-            if (producto.cantidad <= 0) {
-                carrito = carrito.filter(item => item.id != id);
+        document.dispatchEvent(new CustomEvent("carrito-actualizado"));
+    }
+
+    async function realizarPedido() {
+        if (!estaLogueado()) {
+            mostrarLoginRequerido();
+            return;
+        }
+
+        if (!carritoData.items || carritoData.items.length === 0) {
+            mostrarMensajeCompra({
+                icon: "warning",
+                title: "Tu carrito está vacío",
+                text: "Agrega algún libro o saga antes de realizar el pedido."
+            });
+            return;
+        }
+
+        const paymentMethod = metodoPagoSelect?.value || "cash";
+
+        try {
+            const btnPedido = document.querySelector(".resumenbtn");
+
+            if (btnPedido) {
+                btnPedido.disabled = true;
+                btnPedido.textContent = "Enviando pedido...";
+            }
+
+            const pedido = await cartFetch("/api/orders/from-cart", {
+                method: "POST",
+                body: JSON.stringify({
+                    paymentMethod
+                })
+            });
+
+            await cargarCarrito();
+
+            await mostrarMensajeCompra({
+                icon: "success",
+                title: "¡Pedido realizado!",
+                text: `Tu pedido #${pedido.idOrder} por $${formatearPrecio(pedido.totalAmount)} se registró correctamente.`
+            });
+
+            localStorage.setItem("abrirHistorialCompras", "true");
+
+            window.location.href = "/account/account.html";
+
+        } catch (error) {
+            console.error("Error realizando pedido:", error);
+
+            mostrarMensajeCompra({
+                icon: "error",
+                title: "Error",
+                text: "No se pudo realizar el pedido. Intenta nuevamente."
+            });
+
+        } finally {
+            const btnPedido = document.querySelector(".resumenbtn");
+
+            if (btnPedido) {
+                btnPedido.disabled = false;
+                btnPedido.textContent = "Realizar pedido";
             }
         }
-
-        guardarCarrito();
-        renderizarCarrito();
     }
 
-    function eliminarProducto(id) {
-        carrito = carrito.filter(item => item.id != id);
+    // =========================
+    // RENDER
+    // =========================
 
-        guardarCarrito();
-        renderizarCarrito();
-    }
+    function actualizarTotales() {
+        const total = Number(carritoData.total || 0);
+        const cantidadProductos = Number(carritoData.totalProducts || 0);
 
-    function guardarCarrito() {
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-    }
+        if (resumenProductos) {
+            resumenProductos.textContent = cantidadProductos;
+        }
 
-    function calcularTotal() {
-        return carrito.reduce((total, producto) => {
-            return total + producto.precio * producto.cantidad;
-        }, 0);
-    }
+        if (resumenSubtotal) {
+            resumenSubtotal.textContent = `$${formatearPrecio(total)}`;
+        }
 
-    function calcularCantidadProductos() {
-        return carrito.reduce((total, producto) => {
-            return total + producto.cantidad;
-        }, 0);
+        if (resumenTotal) {
+            resumenTotal.textContent = `$${formatearPrecio(total)}`;
+        }
+
+        if (totalOffcanvas) {
+            totalOffcanvas.textContent = `$${formatearPrecio(total)}`;
+        }
     }
 
     function actualizarContador() {
         if (!contadorCarrito) return;
 
-        const cantidadProductos = calcularCantidadProductos();
+        const cantidadProductos = Number(carritoData.totalProducts || 0);
 
         contadorCarrito.textContent = cantidadProductos > 99 ? "99+" : cantidadProductos;
-    }
-
-    function animarContadorCarrito() {
-        if (!contadorCarrito) return;
-
-        // 1. Quitamos la clase por si el usuario hace clics muy rápidos
-        contadorCarrito.classList.remove("animacion-pop");
-        
-        // 2. Este pequeño truco fuerza al navegador a reiniciar la animación
-        void contadorCarrito.offsetWidth; 
-        
-        // 3. Agregamos la clase de CSS que hace el "salto"
-        contadorCarrito.classList.add("animacion-pop");
-
-        // 4. La retiramos después de 300ms para que esté lista para la próxima vez
-        setTimeout(() => {
-            contadorCarrito.classList.remove("animacion-pop");
-        }, 300);
-    }
-
-    function actualizarTotales() {
-        const total = calcularTotal();
-        const cantidadProductos = calcularCantidadProductos();
-
-        if (resumenProductos) resumenProductos.textContent = cantidadProductos;
-        if (resumenSubtotal) resumenSubtotal.textContent = `$${total}.00`;
-        if (resumenTotal) resumenTotal.textContent = `$${total}.00`;
-        if (totalOffcanvas) totalOffcanvas.textContent = `$${total}.00`;
     }
 
     function renderizarPaginaCarrito() {
@@ -235,7 +385,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         listaCarrito.innerHTML = "";
 
-        if (carrito.length === 0) {
+        const items = carritoData.items || [];
+
+        if (items.length === 0) {
             listaCarrito.innerHTML = `
                 <li class="carrito-vacio" id="mensaje-vacio">
                     Carrito vacío
@@ -244,28 +396,55 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        carrito.forEach(producto => {
+        items.forEach((item) => {
             const li = document.createElement("li");
             li.classList.add("producto-carrito");
 
+            const imagen = obtenerImagen(item);
+            const titulo = item.title || "Producto sin título";
+            const precio = Number(item.price || 0);
+            const cantidad = Number(item.quantity || 1);
+            const subtotal = Number(item.subtotal || precio * cantidad);
+            const tipo = item.type === "SAGA" ? "Saga" : "Libro";
+
             li.innerHTML = `
-                <img src="${producto.portada}" alt="${producto.titulo}" class="producto-carrito-img">
+                <img 
+                    src="${escapeHTML(imagen)}" 
+                    alt="${escapeHTML(titulo)}" 
+                    class="producto-carrito-img"
+                    onerror="this.onerror=null; this.src='/assets/img/no-image.png';"
+                >
 
                 <div class="producto-carrito-info">
-                    <h3>${producto.titulo}</h3>
-                    <p>Precio: $${producto.precio}.00</p>
+                    <h3>${escapeHTML(titulo)}</h3>
+                    <p>${tipo}</p>
+                    <p>Precio: $${formatearPrecio(precio)}</p>
 
                     <div class="producto-cantidad">
-                        <button class="btn-restar-producto" data-id="${producto.id}">-</button>
-                        <span>${producto.cantidad}</span>
-                        <button class="btn-sumar-producto" data-id="${producto.id}">+</button>
+                        <button 
+                            class="btn-restar-producto" 
+                            data-item-id="${item.idCartItem}"
+                            data-cantidad="${cantidad}">
+                            -
+                        </button>
+
+                        <span>${cantidad}</span>
+
+                        <button 
+                            class="btn-sumar-producto" 
+                            data-item-id="${item.idCartItem}"
+                            data-cantidad="${cantidad}">
+                            +
+                        </button>
                     </div>
                 </div>
 
                 <div class="producto-carrito-total">
-                    <strong>$${producto.precio * producto.cantidad}.00</strong>
+                    <strong>$${formatearPrecio(subtotal)}</strong>
 
-                    <button class="btn-eliminar-producto" data-id="${producto.id}">
+                    <button 
+                        class="btn-eliminar-producto" 
+                        data-item-id="${item.idCartItem}">
                         Eliminar
                     </button>
                 </div>
@@ -280,7 +459,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         listaOffcanvas.innerHTML = "";
 
-        if (carrito.length === 0) {
+        const items = carritoData.items || [];
+
+        if (items.length === 0) {
             listaOffcanvas.innerHTML = `
                 <p class="text-muted text-center my-5">
                     Tu carrito está vacío actualmente.
@@ -289,25 +470,49 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        carrito.forEach(producto => {
+        items.forEach((item) => {
             const div = document.createElement("div");
             div.classList.add("producto-offcanvas");
 
+            const imagen = obtenerImagen(item);
+            const titulo = item.title || "Producto sin título";
+            const precio = Number(item.price || 0);
+            const cantidad = Number(item.quantity || 1);
+
             div.innerHTML = `
-                <img src="${producto.portada}" alt="${producto.titulo}" class="producto-offcanvas-img">
+                <img 
+                    src="${escapeHTML(imagen)}" 
+                    alt="${escapeHTML(titulo)}" 
+                    class="producto-offcanvas-img"
+                    onerror="this.onerror=null; this.src='/assets/img/no-image.png';"
+                >
 
                 <div class="producto-offcanvas-info">
-                    <h6>${producto.titulo}</h6>
-                    <p>$${producto.precio}.00 x ${producto.cantidad}</p>
+                    <h6>${escapeHTML(titulo)}</h6>
+                    <p>$${formatearPrecio(precio)} x ${cantidad}</p>
 
                     <div class="producto-cantidad">
-                        <button class="btn-restar-producto" data-id="${producto.id}">-</button>
-                        <span>${producto.cantidad}</span>
-                        <button class="btn-sumar-producto" data-id="${producto.id}">+</button>
+                        <button 
+                            class="btn-restar-producto" 
+                            data-item-id="${item.idCartItem}"
+                            data-cantidad="${cantidad}">
+                            -
+                        </button>
+
+                        <span>${cantidad}</span>
+
+                        <button 
+                            class="btn-sumar-producto" 
+                            data-item-id="${item.idCartItem}"
+                            data-cantidad="${cantidad}">
+                            +
+                        </button>
                     </div>
                 </div>
 
-                <button class="btn-eliminar-producto" data-id="${producto.id}">
+                <button 
+                    class="btn-eliminar-producto" 
+                    data-item-id="${item.idCartItem}">
                     ×
                 </button>
             `;
@@ -317,13 +522,259 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderizarCarrito() {
-        carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
         renderizarPaginaCarrito();
         renderizarOffcanvas();
         actualizarTotales();
         actualizarContador();
     }
+
+    // =========================
+    // TOAST / MENSAJES
+    // =========================
+
+    function mostrarToastCarrito() {
+        const toast = document.getElementById("toast-carrito");
+
+        if (!toast) return;
+
+        toast.classList.add("mostrar");
+
+        setTimeout(() => {
+            toast.classList.remove("mostrar");
+        }, 3000);
+    }
+
+    function animarContadorCarrito() {
+        if (!contadorCarrito) return;
+
+        contadorCarrito.classList.remove("animacion-pop");
+
+        void contadorCarrito.offsetWidth;
+
+        contadorCarrito.classList.add("animacion-pop");
+
+        setTimeout(() => {
+            contadorCarrito.classList.remove("animacion-pop");
+        }, 300);
+    }
+
+    async function mostrarMensajeCompra({ icon, title, text }) {
+        if (typeof Swal !== "undefined") {
+            await Swal.fire({
+                icon,
+                title,
+                text,
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#4B1D13",
+                background: "#F6EBD9",
+                color: "#521F12"
+            });
+
+            return;
+        }
+
+        alert(`${title}\n${text}`);
+    }
+
+    // =========================
+    // EVENTOS
+    // =========================
+
+    if (offcanvas) {
+        offcanvas.addEventListener("show.bs.offcanvas", () => {
+            cargarCarrito();
+        });
+    }
+
+    document.addEventListener("click", async (e) => {
+        const botonCarrito = e.target.closest(".btn-carrito");
+        const botonSaga = e.target.closest(".btn-carrito-saga");
+        const botonCarritoWishlist = e.target.closest(".btn-carrito-wishlist");
+
+        const botonEliminar = e.target.closest(".btn-eliminar-producto");
+        const botonRestar = e.target.closest(".btn-restar-producto");
+        const botonSumar = e.target.closest(".btn-sumar-producto");
+        const botonPedido = e.target.closest(".resumenbtn");
+
+        try {
+            // =========================
+            // AGREGAR LIBRO DESDE CATÁLOGO
+            // =========================
+
+            if (botonCarrito) {
+                if (!estaLogueado()) {
+                    mostrarLoginRequerido();
+                    return;
+                }
+
+                const bookId = obtenerBookIdDesdeBoton(botonCarrito);
+
+                if (!bookId) {
+                    console.error("El botón de libro no tiene data-id o data-book-id");
+                    return;
+                }
+
+                botonCarrito.disabled = true;
+
+                await agregarLibroCarrito(bookId);
+
+                botonCarrito.disabled = false;
+
+                return;
+            }
+
+            // =========================
+            // AGREGAR SAGA DESDE CATÁLOGO
+            // =========================
+
+            if (botonSaga) {
+                if (!estaLogueado()) {
+                    mostrarLoginRequerido();
+                    return;
+                }
+
+                const sagaId = obtenerSagaIdDesdeBoton(botonSaga);
+
+                if (!sagaId) {
+                    console.error("El botón de saga no tiene data-saga, data-saga-id o data-id");
+                    return;
+                }
+
+                botonSaga.disabled = true;
+
+                await agregarSagaCarrito(sagaId);
+
+                botonSaga.disabled = false;
+
+                return;
+            }
+
+            // =========================
+            // AGREGAR DESDE WISHLIST
+            // =========================
+
+            if (botonCarritoWishlist) {
+                if (!estaLogueado()) {
+                    mostrarLoginRequerido();
+                    return;
+                }
+
+                const tipo = String(botonCarritoWishlist.dataset.tipo || "").toUpperCase();
+                const bookId = botonCarritoWishlist.dataset.bookId;
+                const sagaId = botonCarritoWishlist.dataset.sagaId;
+
+                botonCarritoWishlist.disabled = true;
+                botonCarritoWishlist.textContent = "Agregando...";
+
+                if (tipo === "BOOK" && bookId) {
+                    await agregarLibroCarrito(bookId);
+                }
+
+                if (tipo === "SAGA" && sagaId) {
+                    await agregarSagaCarrito(sagaId);
+                }
+
+                botonCarritoWishlist.textContent = "Agregado";
+
+                return;
+            }
+
+            // =========================
+            // ELIMINAR ITEM
+            // =========================
+
+            if (botonEliminar) {
+                if (!estaLogueado()) {
+                    mostrarLoginRequerido();
+                    return;
+                }
+
+                const itemId = botonEliminar.dataset.itemId;
+
+                if (!itemId) return;
+
+                botonEliminar.disabled = true;
+
+                await eliminarItemCarrito(itemId);
+
+                return;
+            }
+
+            // =========================
+            // RESTAR CANTIDAD
+            // =========================
+
+            if (botonRestar) {
+                if (!estaLogueado()) {
+                    mostrarLoginRequerido();
+                    return;
+                }
+
+                const itemId = botonRestar.dataset.itemId;
+                const cantidadActual = Number(botonRestar.dataset.cantidad || 1);
+                const nuevaCantidad = cantidadActual - 1;
+
+                await actualizarCantidadItem(itemId, nuevaCantidad);
+
+                return;
+            }
+
+            // =========================
+            // SUMAR CANTIDAD
+            // =========================
+
+            if (botonSumar) {
+                if (!estaLogueado()) {
+                    mostrarLoginRequerido();
+                    return;
+                }
+
+                const itemId = botonSumar.dataset.itemId;
+                const cantidadActual = Number(botonSumar.dataset.cantidad || 1);
+                const nuevaCantidad = cantidadActual + 1;
+
+                await actualizarCantidadItem(itemId, nuevaCantidad);
+                animarContadorCarrito();
+
+                return;
+            }
+
+            // =========================
+            // REALIZAR PEDIDO
+            // =========================
+
+            if (botonPedido) {
+                await realizarPedido();
+                return;
+            }
+
+        } catch (error) {
+            console.error("Error en evento de carrito:", error);
+
+            if (typeof Swal !== "undefined") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "No se pudo actualizar el carrito.",
+                    confirmButtonColor: "#4B1D13",
+                    background: "#F6EBD9",
+                    color: "#521F12"
+                });
+            }
+
+            document
+                .querySelectorAll("button:disabled")
+                .forEach((btn) => {
+                    if (!btn.classList.contains("resumenbtn")) {
+                        btn.disabled = false;
+                    }
+                });
+        }
+    });
+
+    // =========================
+    // OFFCANVAS HOVER
+    // =========================
 
     if (contenedorIconoCarrito && offcanvas && typeof bootstrap !== "undefined") {
         const miOffcanvas = new bootstrap.Offcanvas(offcanvas, {
@@ -350,87 +801,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // =========================
+    // FUNCIÓN GLOBAL PARA OTROS ARCHIVOS
+    // =========================
+
+    window.cargarCarritoBackend = cargarCarrito;
+
+    // =========================
+    // INICIO
+    // =========================
+
     setTimeout(() => {
-        renderizarCarrito();
+        cargarCarrito();
     }, 100);
-});
-document.addEventListener("click", (e) => {
-
-    if (e.target.classList.contains("resumenbtn")) {
-        realizarCompra();
-    }
 
 });
-
-function realizarCompra() {
-
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-    if (carrito.length === 0) {
-        mostrarMensajeCompra({
-            icon: "warning",
-            title: "Tu carrito está vacío",
-            text: "Agrega algún libro antes de realizar el pedido."
-        });
-        return;
-    }
-
-    let historialCompras =
-        JSON.parse(localStorage.getItem("historialCompras")) || [];
-
-    const total = carrito.reduce((acumulado, producto) => {
-        return acumulado + (producto.precio * producto.cantidad);
-    }, 0);
-
-    const compra = {
-        idCompra: historialCompras.length + 1,
-        fecha: new Date().toLocaleDateString(),
-        total: total,
-        productos: [...carrito]
-    };
-
-    historialCompras.push(compra);
-
-    localStorage.setItem(
-        "historialCompras",
-        JSON.stringify(historialCompras)
-    );
-
-    localStorage.setItem(
-        "carrito",
-        JSON.stringify([])
-    );
-
-    mostrarMensajeCompra({
-        icon: "success",
-        title: "¡Compra realizada!",
-        text: `Tu pedido por $${total}.00 se registró correctamente. Gracias por tu compra.`
-    });
-
-    document.dispatchEvent(new CustomEvent("carrito-actualizado"));
-}
-
-function mostrarMensajeCompra({ icon, title, text }) {
-    if (typeof Swal !== "undefined") {
-        Swal.fire({
-            icon,
-            title,
-            text,
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#4B1D13",
-            background: "#F6EBD9",
-            color: "#521F12"
-        }).then(() => {
-            if (icon === "success") {
-                window.location.reload();
-            }
-        });
-        return;
-    }
-
-    alert(`${title}\n${text}`);
-
-    if (icon === "success") {
-        window.location.reload();
-    }
-}
