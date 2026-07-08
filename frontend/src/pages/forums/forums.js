@@ -22,7 +22,10 @@
      GET    /api/subscriptions/members/{forumId}
    ============================================================================ */
 
-const API_URL = "http://localhost:8080";
+const API_URL = window.location.port === "5173"
+  ? "http://localhost:8080"
+  : "";
+
 const TOKEN_STORAGE_KEY = "mel_token";
 const USER_STORAGE_KEY = "mel_logged_user";
 
@@ -55,6 +58,11 @@ async function apiFetch(endpoint, options = {}) {
     ...options,
     headers
   });
+
+  if (response.status === 401 || response.status === 403) {
+    removeSession();
+    throw new Error("Sesión expirada o sin permisos");
+  }
 
   if (!response.ok) {
     let errorText = "Error en la petición";
@@ -176,7 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function getCurrentUserId() {
-    return currentUser?.idUser ?? currentUser?.id ?? null;
+    return currentUser?.idUser ?? currentUser?.id ?? currentUser?.userId ?? null;
   }
 
   function isCurrentUserOwner(item) {
@@ -193,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   function normalizeForum(rawForum) {
     return {
       ...rawForum,
-      id: rawForum.idForum ?? rawForum.id,
+      id: rawForum.idForum ?? rawForum.id ?? rawForum.forumId,
       nombre: rawForum.nombre ?? rawForum.name ?? "Foro",
       descripcion: rawForum.descripcion ?? rawForum.description ?? "",
       icono: rawForum.icono ?? rawForum.icon ?? "📚",
@@ -539,28 +547,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function getForumsFromBackend() {
     const data = await apiFetch("/api/forums");
-    return data.map(normalizeForum);
-  }
 
-  async function getForumsFromJsonFallback() {
-    const response = await fetch("/data/forums.json");
-
-    if (!response.ok) {
-      throw new Error(`Error al cargar JSON: ${response.status}`);
+    if (!Array.isArray(data)) {
+      return [];
     }
 
-    const data = await response.json();
     return data.map(normalizeForum);
   }
 
   async function loadForums() {
     try {
-      try {
-        forums = await getForumsFromBackend();
-      } catch (backendError) {
-        console.warn("No se pudieron cargar foros desde backend. Usando JSON local:", backendError);
-        forums = await getForumsFromJsonFallback();
-      }
+      forums = await getForumsFromBackend();
 
       await renderForumCards();
       renderGenreMenu();
@@ -705,7 +702,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       const posts = await apiFetch(`/api/posts/forum/${forumId}`);
-      const normalizedPosts = posts.map(normalizePost).filter((post) => hasRealContent(post.comentario));
+
+      if (!Array.isArray(posts)) {
+        postsCache.set(key, []);
+        return [];
+      }
+
+      const normalizedPosts = posts
+        .map(normalizePost)
+        .filter((post) => hasRealContent(post.comentario));
+
       postsCache.set(key, normalizedPosts);
       return normalizedPosts;
     } catch (error) {
@@ -766,6 +772,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       const comments = await apiFetch(`/api/comments/post/${postId}`);
+
+      if (!Array.isArray(comments)) {
+        commentsCache.set(key, []);
+        return [];
+      }
+
       const normalizedComments = comments.map(normalizeReply);
       commentsCache.set(key, normalizedComments);
       return normalizedComments;
@@ -931,6 +943,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function renderForumCards() {
     if (!forumsList) return;
+
+    if (!forums || forums.length === 0) {
+      forumsList.innerHTML = `
+        <p class="forums-error">
+          No hay foros disponibles por el momento.
+        </p>
+      `;
+      return;
+    }
 
     let html = "";
 
@@ -1644,7 +1665,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-      setButtonLoading(replySubmitButton, true, "Guardando...", editingReplyId ? "Guardar cambios" : "Responder");
+      setButtonLoading(
+        replySubmitButton,
+        true,
+        "Guardando...",
+        editingReplyId ? "Guardar cambios" : "Responder"
+      );
 
       if (editingReplyId) {
         await updateReply(editingReplyId, comment);
@@ -1682,7 +1708,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         "No fue posible guardar la respuesta."
       );
     } finally {
-      setButtonLoading(replySubmitButton, false, "Guardando...", editingReplyId ? "Guardar cambios" : "Responder");
+      setButtonLoading(
+        replySubmitButton,
+        false,
+        "Guardando...",
+        editingReplyId ? "Guardar cambios" : "Responder"
+      );
     }
   });
 

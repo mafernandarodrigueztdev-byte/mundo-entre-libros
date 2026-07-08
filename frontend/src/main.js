@@ -1,16 +1,19 @@
 /* ==========================================================================
    HOME - FOROS DESTACADOS
-   Usa la misma lógica que forums.js:
-   - No cuenta entradas vacías
-   - No muestra posts demo
+   Backend real:
+   - Foros desde /api/forums
+   - Temas desde /api/posts/forum/{forumId}
    - Miembros activos desde localStorage
-   - Temas reales desde JSON + localStorage
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", async () => {
   const forumsHomeContainer = document.querySelector("#foros-populares");
 
   if (!forumsHomeContainer) return;
+
+  const API_URL = window.location.port === "5173"
+    ? "http://localhost:8080"
+    : "";
 
   const USER_STORAGE_KEY = "mel_logged_user";
   const MEMBERSHIPS_STORAGE_KEY = "mel_forum_memberships";
@@ -32,6 +35,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     return getLoggedUser() !== null;
   }
 
+  function getForumId(forum) {
+    return forum.idForum ?? forum.id ?? forum.forumId;
+  }
+
+  function getForumName(forum) {
+    return forum.nombre ?? forum.name ?? "Foro sin nombre";
+  }
+
+  function getForumDescription(forum) {
+    return forum.descripcion ?? forum.description ?? "Sin descripción disponible.";
+  }
+
+  function getForumIcon(forum) {
+    return forum.icono ?? forum.icon ?? "📚";
+  }
+
   function getForumStorageKey(forumId) {
     return `mel_forum_posts_${forumId}`;
   }
@@ -44,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       return JSON.parse(storedPosts);
     } catch (error) {
-      console.error("Error leyendo publicaciones:", error);
+      console.error("Error leyendo publicaciones locales:", error);
       return [];
     }
   }
@@ -66,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const memberships = getAllMemberships();
 
     return Object.values(memberships).filter((userMemberships) => {
-      return Boolean(userMemberships[forumId]);
+      return Boolean(userMemberships?.[forumId]);
     }).length;
   }
 
@@ -122,21 +141,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     return !hasTitle || !hasContent || looksLikeDemo;
   }
 
-  function getValidJsonPosts(forum) {
-    const posts = Array.isArray(forum.posts) ? forum.posts : [];
-
-    return posts.filter((post) => !isDemoOrEmptyPost(post));
-  }
-
   function getValidStoredPosts(forumId) {
     return getStoredPosts(forumId).filter((post) => !isDemoOrEmptyPost(post));
   }
 
-  function getForumTopicsCount(forum) {
-    const jsonPosts = getValidJsonPosts(forum);
-    const localPosts = getValidStoredPosts(forum.id);
+  async function getBackendPostsCount(forumId) {
+    try {
+      const response = await fetch(`${API_URL}/api/posts/forum/${forumId}`);
 
-    return jsonPosts.length + localPosts.length;
+      if (!response.ok) {
+        return 0;
+      }
+
+      const posts = await response.json();
+
+      if (!Array.isArray(posts)) {
+        return 0;
+      }
+
+      return posts.filter((post) => !isDemoOrEmptyPost(post)).length;
+
+    } catch (error) {
+      console.error(`Error cargando posts del foro ${forumId}:`, error);
+      return 0;
+    }
+  }
+
+  async function getForumTopicsCount(forumId) {
+    const backendCount = await getBackendPostsCount(forumId);
+    const localPosts = getValidStoredPosts(forumId);
+
+    return backendCount + localPosts.length;
   }
 
   function formatNumber(number) {
@@ -183,22 +218,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = `/forums/forums.html?genero=${forumId}`;
   }
 
-  try {
-    const response = await fetch("/data/forums.json");
+  async function cargarForos() {
+    const response = await fetch(`${API_URL}/api/forums`);
 
     if (!response.ok) {
-      throw new Error(`Error al cargar JSON: ${response.status}`);
+      throw new Error(`Error al cargar foros: ${response.status}`);
     }
 
-    const forums = await response.json();
+    return await response.json();
+  }
 
-    const highlightedForums = forums
-      .map((forum) => ({
-        ...forum,
-        membersCount: getForumMembersCount(forum.id),
-        topicsCount: getForumTopicsCount(forum)
-      }))
-      .slice(0, 3);
+  try {
+    const forums = await cargarForos();
+
+    if (!Array.isArray(forums) || forums.length === 0) {
+      forumsHomeContainer.innerHTML = `
+        <p class="forums-error">
+          No hay foros disponibles por el momento.
+        </p>
+      `;
+      return;
+    }
+
+    const primerosTresForos = forums.slice(0, 3);
+
+    const highlightedForums = await Promise.all(
+      primerosTresForos.map(async (forum) => {
+        const forumId = getForumId(forum);
+
+        return {
+          id: forumId,
+          nombre: getForumName(forum),
+          descripcion: getForumDescription(forum),
+          icono: getForumIcon(forum),
+          membersCount: getForumMembersCount(forumId),
+          topicsCount: await getForumTopicsCount(forumId)
+        };
+      })
+    );
 
     forumsHomeContainer.innerHTML = highlightedForums
       .map((forum) => {
@@ -237,6 +294,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         goToForum(forumId);
       });
     });
+
   } catch (error) {
     console.error("Error cargando foros en home:", error);
 
@@ -248,7 +306,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-/*Libros destacados */
+/* ==========================================================================
+   LIBROS DESTACADOS
+   ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
     const trackLibros = document.getElementById("librosTrack");
@@ -264,9 +324,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const card = document.querySelector(".libro-card");
         const gap = 14;
 
-        const anchoCard = card.offsetWidth + gap;
+        if (!card) {
+            return {
+                anchoCard: 0,
+                maxScroll: 0
+            };
+        }
 
-        // Máximo desplazamiento real permitido
+        const anchoCard = card.offsetWidth + gap;
         const maxScroll = trackLibros.scrollWidth - ventanaLibros.clientWidth;
 
         return { anchoCard, maxScroll };
@@ -275,9 +340,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function moverLibros() {
         const { anchoCard, maxScroll } = obtenerMedidas();
 
+        if (anchoCard === 0) return;
+
         let desplazamiento = posicionLibro * anchoCard;
 
-        // Evita que se pase y deje espacio vacío
         if (desplazamiento > maxScroll) {
             desplazamiento = maxScroll;
         }
@@ -294,6 +360,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btnLibroNext.addEventListener("click", () => {
         const { anchoCard, maxScroll } = obtenerMedidas();
+
+        if (anchoCard === 0) return;
 
         const siguienteMovimiento = (posicionLibro + 1) * anchoCard;
 

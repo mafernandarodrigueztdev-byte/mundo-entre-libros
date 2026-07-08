@@ -1795,11 +1795,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================================================
     // 1. Control del Menú Lateral / SPA (Mostrar/Ocultar Vistas)
     // ==========================================================================
+
     const menuButtons = document.querySelectorAll(".menu-btn");
     const contentSections = document.querySelectorAll(".content-section");
 
@@ -1808,167 +1808,264 @@ document.addEventListener("DOMContentLoaded", () => {
             menuButtons.forEach(btn => btn.classList.remove("active"));
             button.classList.add("active");
 
-            contentSections.forEach(section => section.style.display = "none");
+            contentSections.forEach(section => {
+                section.style.display = "none";
+            });
 
-            const targetSectionId = `sec-${button.getAttribute("data-target")}`;
+            const target = button.getAttribute("data-target");
+            const targetSectionId = `sec-${target}`;
             const targetSection = document.getElementById(targetSectionId);
+
             if (targetSection) {
                 targetSection.style.display = "block";
-                
-                if(button.getAttribute("data-target") === "actualizar") {
+
+                if (target === "actualizar") {
                     cargarDatosUsuario();
+                }
+
+                if (target === "historial" && typeof window.mostrarHistorial === "function") {
+                    window.mostrarHistorial();
+                }
+
+                if (target === "puntos" && typeof window.renderUserPointsGlobal === "function") {
+                    window.renderUserPointsGlobal();
+                }
+
+                if (target === "wishlist" && typeof window.cargarWishlistBackend === "function") {
+                    window.cargarWishlistBackend();
                 }
             }
         });
     });
 
     // ==========================================================================
-    // 2. Carga Asíncrona de act.json con protección anti-errores
+    // 2. Cargar datos del usuario SIN JSON
     // ==========================================================================
+
     function cargarDatosUsuario() {
         const datosLocales = localStorage.getItem("usuario_perfil");
 
         if (datosLocales) {
-            inyectarDatosEnPantalla(JSON.parse(datosLocales));
-        } else {
-            fetch("/data/act.json") 
-                .then(response => {
-                    if (!response.ok) throw new Error("Error al abrir act.json");
-                    return response.text(); 
-                })
-                .then(texto => {
-                    // Si el archivo está vacío, pasa un objeto vacío sin romper el flujo
-                    const datosDesdeJson = texto ? JSON.parse(texto) : {};
-                    inyectarDatosEnPantalla(datosDesdeJson);
-                })
-                .catch(error => {
-                    console.error("Aviso: act.json está vacío o no se encontró. Iniciando limpio.", error);
-                    inyectarDatosEnPantalla({ nombre: "", apellido: "", telefono: "", email: "" });
-                });
+            try {
+                const datosPerfil = JSON.parse(datosLocales);
+                inyectarDatosEnPantalla(datosPerfil);
+                return;
+            } catch (error) {
+                console.error("Error leyendo usuario_perfil:", error);
+                localStorage.removeItem("usuario_perfil");
+            }
         }
+
+        const usuarioGuardado = localStorage.getItem("mel_logged_user");
+
+        if (usuarioGuardado) {
+            try {
+                const usuario = JSON.parse(usuarioGuardado);
+
+                const datosUsuario = {
+                    nombre: usuario.name || usuario.nombre || "",
+                    apellido: usuario.lastName || usuario.apellido || "",
+                    telefono: usuario.phone || usuario.telefono || "",
+                    email: usuario.email || ""
+                };
+
+                inyectarDatosEnPantalla(datosUsuario);
+                return;
+
+            } catch (error) {
+                console.error("Error leyendo mel_logged_user:", error);
+            }
+        }
+
+        inyectarDatosEnPantalla({
+            nombre: "",
+            apellido: "",
+            telefono: "",
+            email: ""
+        });
     }
 
     function inyectarDatosEnPantalla(datos) {
-        document.getElementById("update-nombre").value = datos.nombre || "";
-        document.getElementById("update-apellido").value = datos.apellido || "";
-        document.getElementById("update-telefono").value = datos.telefono || "";
-        document.getElementById("update-email").value = datos.email || "";
-        document.getElementById("update-email-confirm").value = datos.email || "";
+        const nombreInput = document.getElementById("update-nombre");
+        const apellidoInput = document.getElementById("update-apellido");
+        const telefonoInput = document.getElementById("update-telefono");
+        const emailInput = document.getElementById("update-email");
+        const emailConfirmInput = document.getElementById("update-email-confirm");
+
+        if (nombreInput) {
+            nombreInput.value = datos.nombre || "";
+        }
+
+        if (apellidoInput) {
+            apellidoInput.value = datos.apellido || "";
+        }
+
+        if (telefonoInput) {
+            telefonoInput.value = datos.telefono || "";
+        }
+
+        if (emailInput) {
+            emailInput.value = datos.email || "";
+        }
+
+        if (emailConfirmInput) {
+            emailConfirmInput.value = datos.email || "";
+        }
     }
 
     // ==========================================================================
-    // 3. Sistema de Restricciones y Validaciones (Submit del Formulario)
+    // 3. Sistema de Restricciones y Validaciones
     // ==========================================================================
+
     const formUpdate = document.getElementById("form-update-profile");
+
     if (formUpdate) {
         formUpdate.addEventListener("submit", (e) => {
-            e.preventDefault(); // Detiene la recarga de página
+            e.preventDefault();
 
-            // Captura de valores limpios sin espacios en los extremos
-            const nombre = document.getElementById("update-nombre").value.trim();
-            const apellido = document.getElementById("update-apellido").value.trim();
-            const telefono = document.getElementById("update-telefono").value.trim();
-            const email = document.getElementById("update-email").value.trim();
-            const emailConfirm = document.getElementById("update-email-confirm").value.trim();
-            const password = document.getElementById("update-password").value;
-            const passwordConfirm = document.getElementById("update-password-confirm").value;
+            const nombre = document.getElementById("update-nombre")?.value.trim() || "";
+            const apellido = document.getElementById("update-apellido")?.value.trim() || "";
+            const telefono = document.getElementById("update-telefono")?.value.trim() || "";
+            const email = document.getElementById("update-email")?.value.trim() || "";
+            const emailConfirm = document.getElementById("update-email-confirm")?.value.trim() || "";
+            const password = document.getElementById("update-password")?.value || "";
+            const passwordConfirm = document.getElementById("update-password-confirm")?.value || "";
 
-            // --- EXPRESIONES REGULARES (RESTRICCIONES) ---
-            const regexLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; // Solo letras y acentos
-            const regexTelefono = /^\d{10}$/; // Exactamente 10 números continuos
-            const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Estructura válida de correo electrónico
-            const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/; // Min 8 caracteres, 1 Mayús, 1 Minús, 1 Núm
+            const regexLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+            const regexTelefono = /^\d{10}$/;
+            const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-            // Validación: Campos Obligatorios Base vacíos
             if (!nombre || !apellido || !telefono || !email || !emailConfirm) {
-                mostrarAlerta("Campos incompletos", "Por favor, rellena todos los campos de tus datos personales.", "error");
+                mostrarAlerta(
+                    "Campos incompletos",
+                    "Por favor, rellena todos los campos de tus datos personales.",
+                    "error"
+                );
                 return;
             }
 
-            // Restricción: Nombre y Apellido válidos
             if (!regexLetras.test(nombre) || !regexLetras.test(apellido)) {
-                mostrarAlerta("Formato inválido", "El nombre y el apellido solo deben contener letras.", "warning");
+                mostrarAlerta(
+                    "Formato inválido",
+                    "El nombre y el apellido solo deben contener letras.",
+                    "warning"
+                );
                 return;
             }
 
-            //  Restricción: Teléfono de 10 dígitos
             if (!regexTelefono.test(telefono)) {
-                mostrarAlerta("Teléfono inválido", "El número de teléfono debe tener exactamente 10 dígitos numéricos.", "warning");
+                mostrarAlerta(
+                    "Teléfono inválido",
+                    "El número de teléfono debe tener exactamente 10 dígitos numéricos.",
+                    "warning"
+                );
                 return;
             }
 
-            // Restricción: Estructura del Email
             if (!regexEmail.test(email)) {
-                mostrarAlerta("Correo inválido", "Por favor, ingresa una dirección de correo electrónico válida.", "warning");
+                mostrarAlerta(
+                    "Correo inválido",
+                    "Por favor, ingresa una dirección de correo electrónico válida.",
+                    "warning"
+                );
                 return;
             }
 
-            // Validación: Coincidencia de correos
             if (email !== emailConfirm) {
-                mostrarAlerta("Correos no coinciden", "El correo ingresado y su confirmación no son iguales.", "error");
+                mostrarAlerta(
+                    "Correos no coinciden",
+                    "El correo ingresado y su confirmación no son iguales.",
+                    "error"
+                );
                 return;
             }
 
-            // Restricciones de Contraseña (Solo si el usuario escribe algo en el campo)
             if (password || passwordConfirm) {
-                // Validación: Coincidencia de contraseñas
                 if (password !== passwordConfirm) {
-                    mostrarAlerta("Contraseñas diferentes", "La nueva contraseña y su confirmación no coinciden.", "error");
+                    mostrarAlerta(
+                        "Contraseñas diferentes",
+                        "La nueva contraseña y su confirmación no coinciden.",
+                        "error"
+                    );
                     return;
                 }
-                
-                // Restricción: Formato y longitud de 8 dígitos seguros
+
                 if (!regexPassword.test(password)) {
                     mostrarAlerta(
-                        "Contraseña insegura", 
-                        "La contraseña debe tener mínimo 8 caracteres, e incluir al menos una letra mayúscula, una minúscula y un número.", 
+                        "Contraseña insegura",
+                        "La contraseña debe tener mínimo 8 caracteres, e incluir al menos una letra mayúscula, una minúscula y un número.",
                         "info"
                     );
                     return;
                 }
             }
 
-            // ==========================================================================
-            // 4. Guardado Exitoso con Limpieza y Cierre de Sección
-            // ==========================================================================
-            const datosActualizados = { nombre, apellido, telefono, email };
-            
-            // Guardamos localmente para persistencia inmediata en la SPA
+            const datosActualizados = {
+                nombre,
+                apellido,
+                telefono,
+                email
+            };
+
             localStorage.setItem("usuario_perfil", JSON.stringify(datosActualizados));
 
-            // Alerta de éxito con SweetAlert2
+            const usuarioActual = localStorage.getItem("mel_logged_user");
+
+            if (usuarioActual) {
+                try {
+                    const usuario = JSON.parse(usuarioActual);
+
+                    const usuarioActualizado = {
+                        ...usuario,
+                        name: nombre,
+                        lastName: apellido,
+                        phone: telefono,
+                        email: email
+                    };
+
+                    localStorage.setItem("mel_logged_user", JSON.stringify(usuarioActualizado));
+
+                } catch (error) {
+                    console.error("No se pudo actualizar mel_logged_user:", error);
+                }
+            }
+
             Swal.fire({
-                icon: 'success',
-                title: '¡Datos guardados con éxito!',
-                text: 'Tu perfil en Mundo Entre Libros ha sido actualizado.',
-                confirmButtonColor: '#3B1A11'
+                icon: "success",
+                title: "¡Datos guardados con éxito!",
+                text: "Tu perfil en Mundo Entre Libros ha sido actualizado.",
+                confirmButtonColor: "#3B1A11",
+                background: "#F6EBD9",
+                color: "#521F12"
             }).then((result) => {
-                // Este bloque se ejecuta JUSTO CUANDO EL USUARIO LE DA CLIC AL BOTÓN "OK"
                 if (result.isConfirmed) {
-                    
-                    // 1. Limpiamos por completo todos los campos del formulario
                     formUpdate.reset();
 
-                    // 2. Escondemos la sección de actualizar datos para que no se vea más
                     const secActualizar = document.getElementById("sec-actualizar");
+
                     if (secActualizar) {
                         secActualizar.style.display = "none";
                     }
 
-                    // 3. Quitamos la selección visual (clase active) del menú lateral
                     menuButtons.forEach(btn => btn.classList.remove("active"));
                 }
             });
         });
     }
-          
-    // Función auxiliar para acortar las llamadas de alertas de SweetAlert2
+
+    // ==========================================================================
+    // 4. Función auxiliar SweetAlert
+    // ==========================================================================
+
     function mostrarAlerta(titulo, mensaje, tipo) {
         Swal.fire({
             icon: tipo,
             title: titulo,
             text: mensaje,
-            confirmButtonColor: '#3B1A11'
+            confirmButtonColor: "#3B1A11",
+            background: "#F6EBD9",
+            color: "#521F12"
         });
     }
 });
