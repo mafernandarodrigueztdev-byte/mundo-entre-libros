@@ -58,14 +58,9 @@ const navbarHTML = `
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCatalog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link" href="/catalog/catalog.html">
                         Catálogo
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownCatalog">
-                        <li><a class="dropdown-item" href="/catalog/catalog.html">Sagas</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/catalog/catalog.html">Ver todo el catálogo</a></li>
-                    </ul>
                 </li>
 
                 <li class="nav-item">
@@ -213,13 +208,21 @@ inject("footer-root", footerHTML);
     const rutaActual = window.location.pathname;
     const navLinks = document.querySelectorAll(".navbar .nav-link");
 
-    navLinks.forEach((link) => {
+  navLinks.forEach((link) => {
         const linkHref = link.getAttribute("href");
 
-        if (rutaActual === linkHref || (rutaActual === "/" && linkHref === "/")) {
+        // Limpiamos la comparación:
+        // Si el href es exactamente la ruta actual, o si estamos en home
+        const esActivo = (rutaActual === linkHref) || 
+                         (rutaActual === "/" && linkHref === "/") ||
+                         (rutaActual.includes(linkHref) && linkHref !== "/");
+
+        if (esActivo) {
             link.classList.add("active");
+            link.setAttribute("aria-current", "page");
         } else {
             link.classList.remove("active");
+            link.removeAttribute("aria-current");
         }
     });
 })();

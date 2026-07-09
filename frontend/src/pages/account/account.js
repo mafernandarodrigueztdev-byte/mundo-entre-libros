@@ -39,17 +39,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================================
 
   if (haySesionActiva()) {
-    // Si ya hay sesión, SIEMPRE debe entrar a Mi Cuenta
-    // No usamos vista_activa porque pudo haberse quedado guardada como login.
+    // 1. Mostramos la vista principal (Mi Cuenta)
     mostrarVista("vista-mi-cuenta");
 
-    if (window.renderUserPointsGlobal) {
-      window.renderUserPointsGlobal();
+    // 2. FORZAMOS LA APARICIÓN DEL FORMULARIO DE ACTUALIZAR
+    // Busca en tu archivo el ID de la sección del formulario de actualización
+    // Si tu formulario está dentro de una sección con ID "sec-actualizar", haz esto:
+    const secActualizar = document.getElementById("sec-actualizar");
+    
+    if (secActualizar) {
+        secActualizar.style.display = "block"; // Esto lo muestra directamente
     }
 
-    if (window.cargarWishlistBackend) {
-      window.cargarWishlistBackend();
-    }
+    // 3. Ejecutamos los otros cargadores de datos para que no falte nada
+    if (window.renderUserPointsGlobal) window.renderUserPointsGlobal();
+    if (window.cargarWishlistBackend) window.cargarWishlistBackend();
 
   } else {
     mostrarVista("vista-login");

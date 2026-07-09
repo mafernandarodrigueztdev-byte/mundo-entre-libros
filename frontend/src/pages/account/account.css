@@ -879,7 +879,7 @@ main {
    SECCIÓN: ESTILOS DEL FOOTER
    ========================================================================== */
 .main-footer {
-  background-color: #f8e1c1; /* Color crema base */
+  background: var(--beige-calido-degradado);/* Color crema base */
   padding: 15px 0 10px 0;
   width: 100%;
   margin-top: auto; /* Refuerzo de posicionamiento */
@@ -1573,18 +1573,11 @@ main {
    MI CUENTA - WISHLIST
    ========================================================================== */
 
-/* CONTENEDOR GENERAL */
-
-.wishlist-section{
-    background-color: #f4efe3;
-    padding: 30px 0 60px;
-}
-
 /* TARJETA */
 
 .wishlist-box{
-    width: 85%;
-    max-width: 1100px;
+    width: 90%;
+    max-width: 1300px;
     margin: 0 auto;
 
     background-color: #f7ecd9;
@@ -1592,7 +1585,7 @@ main {
     border: 1px solid #d8bc96;
     border-radius: 12px;
 
-    padding: 30px;
+    padding: 50px;
 }
 
 /* ETIQUETA SUPERIOR */
@@ -1600,7 +1593,7 @@ main {
 .wishlist-tag{
     display:block;
     font-family: "Cormorant Garamond", serif;
-    font-size: 1rem;
+    font-size: 1.5rem;
     letter-spacing: 2px;
     color: #8b5a3c;
     font-weight: bold;
@@ -1612,18 +1605,18 @@ main {
 
 .wishlist-title{
     font-family: "Cormorant Garamond", serif;
-    font-size: 4rem;
+    font-size: 5rem;
     font-weight: 600;
     color: #5a1f12;
 font-weight: bold;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 /* TEXTO */
 
 .wishlist-description{
     font-family: "Cormorant Garamond", serif;
-    font-size: 1.1rem;
+    font-size: 1.7rem;
     color: #7a6d61;
     max-width: 650px;
     margin-bottom: 35px;
@@ -1640,7 +1633,7 @@ font-weight: bold;
 /* ESTADO VACÍO */
 
 .wishlist-vacia{
-    min-height: 250px;
+    min-height: 300px;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -1651,7 +1644,7 @@ font-weight: bold;
 /* ICONO */
 
 .wishlist-empty-icon{
-    font-size:3rem;
+    font-size:4rem;
     color:#8b5a3c;
     margin-bottom:15px;
 }
@@ -1660,7 +1653,7 @@ font-weight: bold;
 
 .wishlist-vacia h3{
     font-family: "Cormorant Garamond", serif;
-    font-size: 3rem;
+    font-size: 3.1rem;
     color:#5a1f12;
     font-weight: bold;
     margin-bottom:10px;
@@ -1671,7 +1664,8 @@ font-weight: bold;
 .wishlist-vacia p{
     font-family:"Cormorant Garamond", serif;
     color:#7a6d61;
-    margin-bottom:25px;
+    margin-bottom:50px;
+    font-size: 1.5rem;
 }
 
 /* BOTON */
@@ -1680,7 +1674,7 @@ font-weight: bold;
     background-color:#5a1f12;
     color:white;
     text-decoration:none;
-    padding:10px 24px;
+    padding:17px 31px;
     border-radius:6px;
     transition:.3s;
 }
@@ -2176,7 +2170,7 @@ font-weight: bold;
     width: 400px;
     padding: 20px 20px;
     box-sizing: border-box;
-    background-color: transparent; /* Ya no necesita fondo propio */
+    background: transparent; /* Ya no necesita fondo propio */
     /* Posicionamiento fijo lateral para que no se deslice */
     position: fixed;
     top: 75px; /* Evita que el Navbar tape el título */
